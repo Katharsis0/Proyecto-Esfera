@@ -19,7 +19,8 @@ reserved = {
     'When' : 'WHEN',
     'Else' : 'ELSE',
     'True' : 'TRUE',
-    'False' : 'FALSE'}
+    'False' : 'FALSE',
+    '@Principal' : 'MAIN'}
 
 #list of tokens
 tokens = ['LP',
@@ -28,9 +29,11 @@ tokens = ['LP',
           'ID',
           'COMMA',
           'SEMICOLON',
-          'ASIGN',#=
+          'ASSIGN',#=
           'PLUS',
           'MINUS',
+          'TYPE',
+          'BOOL',
           'STAR',#multiplication
           'SLASH',#division
           'GT',#greater than
@@ -46,7 +49,7 @@ t_STAR=r'\*'
 t_SLASH=r'/'
 t_LP=r'\('
 t_RP=r'\)'
-t_ASIGN=r'='
+t_ASSIGN=r'='
 t_GT=r'>'
 t_LT=r'<'
 t_COMMA=r','
@@ -81,16 +84,24 @@ def t_COMMENT(token):
 #def t_PRINT(token):
     #pass
 
-#Defines rule for true
-def t_TRUE(token):
-    r'True'
-    token.value = True
+
+#Defines rule to validate value 
+def t_BOOL(token):
+    r'(true|false)'
+    if token.value.isdigit():
+        error = "Invalid value '{0}' on line {1} not bool".format(token.value, token.lineno)
+    elif token.value == 'true':
+        token.value = True
+    elif token.value == 'false':
+        token.value = False
     return token
 
-#Defines rule for false
-def t_FALSE(token):
-    r'False'
-    token.value = False
+def t_TYPE(token):
+    r'(int|bool)'
+    return token
+
+def t_MAIN(token):
+    r'@Principal'
     return token
 
 def t_nl(token):
@@ -112,7 +123,7 @@ lexer=lex.lex()
 
 
 #Input extraido del IDE
-lexer.input("""@a123""")
+lexer.input("""@Principal""")
 
 #Testing, this should be sent to the IDEs terminal
 while True:
