@@ -1,5 +1,4 @@
 import PLY.lex as lex
-from PLY.lex import TOKEN
 import re
 
 #list of reserved words
@@ -34,6 +33,7 @@ tokens = ['LP',
           'GTE',#>= - greater or equal
           'DIF', #>< - different
           'PLUS',
+          'STRING',
           'MINUS',
           'TYPE',
           'BOOL',
@@ -41,6 +41,8 @@ tokens = ['LP',
           'SLASH',#division
           'GT',#greater than
           'LT',#less than
+          'PRINT',
+          'DIR',#Direction
             ] + list(reserved.values())
 
 
@@ -53,15 +55,17 @@ t_SLASH=r'/'
 t_LP=r'\('
 t_RP=r'\)'
 t_EQUAL=r'=='
-t_DIFF=r'><'
+t_DIF=r'><'
 t_GT=r'>'
 t_LT=r'<'
 t_GTE=r'>='
 t_LTE=r'<='
 t_COMMA=r','
 t_SEMICOLON=r';'
-#t_PRINT=r'=>\s*(.*)'
 t_PRINT=r'=>'
+t_DIR=r'ATR|ADL|ADE|AIZ|IZQ|DER|DDE|DIZ'
+
+
 
 #regular expression rules for matching tokens with actions
 
@@ -77,9 +81,22 @@ def t_ID(token):
         token.type = reserved[token.value]
     return token
 
+#Defines rule to validate procedure name (functions)
+def t_PROCNAME(token):
+    #Same rules as ID
+    r'^@[a-zA-Z0-9_#]{1,8}[a-zA-Z0-9_#]?$'
+    if token.value in reserved:
+        token.type = reserved[token.value]
+    return token
+
 def t_INT(token):
     r'[0-9]+'
     token.value = int(token.value)
+    return token
+#Define rule for string in order to print correctly
+def t_STRING(token):
+    r'^[A-Za-z0-9!@#$%^&*()_+{}\[\]:;<>,.?\/|\\\'\"\-=\s]+$'
+    token.value= str(token.value)
     return token
 
 #Defines comment rule
@@ -126,18 +143,20 @@ def t_eof(token):
 
 
 #Construye el lexer 
-lexer=lex.lex()
+#lexer=lex.lex()
 
 
 #Input extraido del IDE
-lexer.input("""true""")
+#lexer.input("""true""")
+
+
 
 #Testing, this should be sent to the IDEs terminal
-while True:
-    token=lexer.token()
+# while True:
+#     token=lexer.token()
 
-    if not token:
-        break
+#     if not token:
+#         break
 
-    print("En la linea " + str(token.lineno) + " se encontró el token: "
-            + '(' + str(token.type) + ', ' + str(token.value) + ')')
+#     print("En la linea " + str(token.lineno) + " se encontró el token: "
+#             + '(' + str(token.type) + ', ' + str(token.value) + ')')
