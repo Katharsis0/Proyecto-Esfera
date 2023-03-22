@@ -17,8 +17,10 @@ precedence = (('left','PLUS','MINUS'),
             ('right','UMINUS'))
 
 
-#Definition of parser rules
+#***PRODUCTION RULES***#
+
 #sentence: valid combo of tokens
+
 #Manages multiple sentences in a program
 def p_sentence_rule(p):
     ''' sentence : sentence sentence
@@ -52,11 +54,11 @@ def p_id_rule(p):
     else:
         p[0]=('assign',p[1],p[3])
 
-#definition of Alter(id,val) m
+#definition of Alter(id,val) 
 def p_alter_rule(p):
     ''' sentence : ALTER LP ID COMMA INT RP SEMICOLON
     '''
-    p[0]=('assign',p[1],p[3])
+    p[0]=('assign',p[3],p[5])
 
 
 #definition of expression
@@ -115,22 +117,58 @@ def p_boolean_expression(p):
 #Definition of Not(val)
 # It is called when NOT is found
 def p_not_rule(p):
-    ''' sentence : NOT LP BOOL RP SEMICOLON
+    ''' sentence : NOT LP ID RP SEMICOLON
     '''
+    if p[3]==True or False:
+        p[0]=not p[3]
+    
+    else:#TODO: Error message: not bool
+        pass
 
-    p[0] = not p[1] #Save the changed boolean value in p[0]
-
-
-#isTrue function
-#It's ambiguous
-
-def isTrue(p):
-    return p is not None
-
-
+#Definition of isTrue(val)
 def p_isTrue(p):
     ''' sentence : ISTRUE LP ID RP SEMICOLON
     '''
+    if p[3]==True or False:
+        p[0]=p[3]
+    #TODO: Error message: not bool
+    else:    
+        pass
 
-    p[0] = isTrue(p[1])
+#Definition of Mover(A) rule
+def p_mover_rule(p):
+    ''' sentence : MOVER LP DIR RP SEMICOLON
+    '''
+    p[0]=('mover',p[3])
 
+
+#Definition of Proc rule 
+def p_proc_rule(p):
+    ''' process : PROC PROCNAME LP instructions RP SEMICOLON
+    '''
+    p[0]=('proc',p[2])
+
+#Definition of instructions to handle one or more inst
+def p_instructions_rule(p):
+    ''' instructions : instructions instruction
+                     | instruction
+    '''
+    if len(p)==2:
+        p[0]=[p[1]]
+    else:
+        p[1].append(p[2])
+        p[0]=p[1]
+
+#Definition of production rule for instruction
+def p_instruction_rule(p):
+    '''instruction: sentence
+                  | expression
+                  | boolean_expression
+    '''
+    p[0]=p[1]
+
+#Definition of Call rule
+def p_call_rule(p):
+    ''' sentence : CALL LP PROCNAME RP SEMICOLON
+    '''
+    p[0]=('call',p[3])
