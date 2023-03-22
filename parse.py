@@ -52,11 +52,29 @@ def p_alter_rule(p):
     p[0]=('assign',p[1],p[3])
 
 
-#Definition for bool expressions
+#Definition for bool expressions - condition
 def p_boolean_expression(p):
-    ''' boolean_expression : BOOL
+    ''' boolean_expression : INT GT INT
+                           | INT LT INT
+                           | INT GTE INT
+                           | INT LTE INT
+                           | BOOL EQUAL BOOL
+                           | BOOL DIFF BOOL
     '''
-    p[0] = p[1]
+
+    if p[2] == '>':
+        p[0] = p[1] > p[3]
+    elif p[2] == '<':
+        p[0] = p[1] < p[3]
+    elif p[2] == '>=':
+        p[0] = p[1] >= p[3]
+    elif p[2] == '<=':
+        p[0] = p[1] <= p[3]
+    elif p[2] == '==':
+        p[0] = p[1] == p[3]
+    else:
+        p[0] = p[1] != p[3]
+
 
 
 #Definition of Not(val)

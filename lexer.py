@@ -29,7 +29,10 @@ tokens = ['LP',
           'ID',
           'COMMA',
           'SEMICOLON',
-          'ASSIGN',#=
+          'EQUAL',#==
+          'LTE',#<= - less or equal
+          'GTE',#>= - greater or equal
+          'DIF', #>< - different
           'PLUS',
           'MINUS',
           'TYPE',
@@ -44,17 +47,21 @@ tokens = ['LP',
 #regular expression rules for matching simple tokens
 t_ignore= ' \t'
 t_PLUS=r'\+'
-t_MINUS=r'-'
+t_MINUS=r'\-'
 t_STAR=r'\*'
 t_SLASH=r'/'
 t_LP=r'\('
 t_RP=r'\)'
-t_ASSIGN=r'='
+t_EQUAL=r'=='
+t_DIFF=r'><'
 t_GT=r'>'
 t_LT=r'<'
+t_GTE=r'>='
+t_LTE=r'<='
 t_COMMA=r','
 t_SEMICOLON=r';'
 #t_PRINT=r'=>\s*(.*)'
+t_PRINT=r'=>'
 
 #regular expression rules for matching tokens with actions
 
