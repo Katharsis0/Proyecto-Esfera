@@ -24,7 +24,7 @@
  * se recomienda crear un hotspot con el celular
  *TP-Link_331A, 76669385
  */
-const char* ssid = "vale";
+const char* ssid = "ra";
 const char* password = "12345678";
 
 
@@ -193,10 +193,10 @@ String implementar(String llave, String valor){
       result = "adelante";
     }
     else if(valor.toInt()<0){
-      digitalWrite (In2,HIGH);  
       digitalWrite (In1,LOW);
-      digitalWrite (In3,HIGH);  
-      digitalWrite (In4,LOW);
+      digitalWrite (In2,HIGH);  
+      digitalWrite (In3,LOW);  
+      digitalWrite (In4,HIGH);
       y= -(valor.toInt());
       analogWrite (EnA,y);
       analogWrite (EnB,y);
