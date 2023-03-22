@@ -84,15 +84,14 @@ def t_COMMENT(token):
 #def t_PRINT(token):
     #pass
 
-
 #Defines rule to validate value 
 def t_BOOL(token):
-    r'(true|false)'
+    r'(True|False)'
     if token.value.isdigit():
         error = "Invalid value '{0}' on line {1} not bool".format(token.value, token.lineno)
-    elif token.value == 'true':
+    elif token.value == 'True':
         token.value = True
-    elif token.value == 'false':
+    elif token.value == 'False':
         token.value = False
     return token
 
@@ -123,7 +122,7 @@ lexer=lex.lex()
 
 
 #Input extraido del IDE
-lexer.input("""@Principal""")
+lexer.input("""true""")
 
 #Testing, this should be sent to the IDEs terminal
 while True:
