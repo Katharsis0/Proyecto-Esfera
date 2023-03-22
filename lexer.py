@@ -54,7 +54,7 @@ t_GT=r'>'
 t_LT=r'<'
 t_COMMA=r','
 t_SEMICOLON=r';'
-#t_PRINT=r'=>\s*(.*)'
+t_PRINT=r'=>'
 
 #regular expression rules for matching tokens with actions
 
@@ -123,7 +123,7 @@ lexer=lex.lex()
 
 
 #Input extraido del IDE
-lexer.input("""@Principal""")
+lexer.input("""@iden2#_""")
 
 #Testing, this should be sent to the IDEs terminal
 while True:
