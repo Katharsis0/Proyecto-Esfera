@@ -210,14 +210,25 @@ String implementar(String llave, String valor){
   }
       
   //Direcciones
-  /**
+  
   else if(llave == "dir"){
     if(valor.toInt() == -1){
+      //Motor A apagado
+      digitalWrite (In1,LOW);
+      digitalWrite (In2,LOW);
+
+      //Motor B hacia adelante 
       digitalWrite (In3,HIGH);
       digitalWrite (In4,LOW);
+
+      analogWrite (EnA,0);
       analogWrite(EnB,1000);
       result = "izquierda";
       Serial.println("Girando izquierda");
+
+      delay(5000); //Girar durante 5s
+      implementar("pwm", "10");
+      
       }
 
       else if(valor.toInt() == 0){
@@ -229,13 +240,93 @@ String implementar(String llave, String valor){
       }
 
       else if(valor.toInt() == 1){
+      //Motor A hacia adelante 
+      digitalWrite (In1,HIGH);
+      digitalWrite (In2,LOW);
+
+      //Motor B apagado
       digitalWrite (In3,LOW);
-      digitalWrite (In4,HIGH);
+      digitalWrite (In4,LOW);
       analogWrite(EnB,1000);
       result = "derecha";
       Serial.println("Girando derecha");
+
+      delay(5000); //Girar durante 5s
+      implementar("pwm", "10");
       }
-  }*/
+      
+  }
+
+  //diagonal derecha: ->(1): Noreste/ arriba derecha
+  //                  ->(-1): Sureste/ abajo derecha
+  else if(llave == "diagD"){
+    if(valor.toInt() == 1){
+      //Motor A hacia adelante
+      digitalWrite (In1,HIGH);
+      digitalWrite (In2,LOW);
+
+      //Motor B apagado
+      digitalWrite (In3,LOW);
+      digitalWrite (In4,LOW);
+      analogWrite(EnB,1000);
+      result = "derecha";
+      Serial.println("Girando diagonal adelante derecha");
+
+      delay(2500); //Girar durante 2.5s (la mitad del tiempo de giro a la derecha)
+      implementar("pwm", "10");
+    }
+
+    else if(valor.toInt() == -1){
+      //Motor A hacia atras
+      digitalWrite (In1,LOW);
+      digitalWrite (In2,HIGH);
+
+      //Motor B apagado
+      digitalWrite (In3,LOW);
+      digitalWrite (In4,LOW);
+      analogWrite(EnB,1000);
+      result = "derecha";
+      Serial.println("Girando diagonal atras derecha");
+
+      delay(2500); //Girar durante 2.5s (la mitad del tiempo de giro a la derecha)
+      implementar("pwm", "-10");
+    }
+  }
+
+  else if(llave == "diagI"){
+    if(valor.toInt() == 1){
+      //Motor A apagado
+      digitalWrite (In1,LOW);
+      digitalWrite (In2,LOW);
+
+      //Motor B hacia adelante
+      digitalWrite (In3,HIGH);
+      digitalWrite (In4,LOW);
+      result = "izquierda";
+      Serial.println("Girando diagonal adelante izquierda");
+
+      delay(2500); //Girar durante 2.5s (la mitad del tiempo de giro a la derecha)
+      implementar("pwm", "10");
+    }
+
+    else if(valor.toInt() == -1){
+      //Motor A apagado
+      digitalWrite (In1,LOW);
+      digitalWrite (In2,LOW);
+
+      //Motor B hacia atras
+      digitalWrite (In3,LOW);
+      digitalWrite (In4,HIGH);
+      result = "izquierda";
+      Serial.println("Girando diagonal aadelante izquierda");
+
+      delay(2500); //Girar durante 2.5s (la mitad del tiempo de giro a la derecha)
+      implementar("pwm", "-10");
+    }
+    
+  }
+  
+  
 
    /* El comando tiene el formato correcto pero no tiene sentido para el servidor
    */
