@@ -260,7 +260,7 @@ def p_comment(p):
 def p_call_rule(p):
     ''' reservedkey : CALL LP PROCNAME RP SEMICOLON
     '''
-    p[0]=p[3]
+    p[0]= p[3]
 
 #definition of Repeat rule
 def p_repeat_rule(p): #TODO: define break
@@ -293,20 +293,31 @@ def p_whileuntil_error(p):
 """Procedures"""
 #Definition of procedure rule
 def p_procedure_rule(p):
-    ''' procedure : PROC ID LP instructions RP SEMICOLON
+    ''' procedure : PROC ID LP parameters RP LP instructions RP SEMICOLON
     '''
+
+    p[0] = ('FUNCTION', p[2], p[4], p[7])
     #check if ID is a reserved word
-    if p[2] in reserved.values():
-        errorList.append("Error: The procedure {0} cannot be defined on line {1} because is a reserved word.".format(p[2],p.lineno(2)))
+    #if p[2] in reserved.values():
+     #   errorList.append("Error: The procedure {0} cannot be defined on line {1} because is a reserved word.".format(p[2],p.lineno(2)))
     
     #If not, add it to the dictionary of procedures
-    if p[2] not in procedures:
-        procedures[p[2]]= [len(procedureList)]
-        procedureList.append(p[4])
+    #if p[2] not in procedures:
+     #   procedures[p[2]]= [len(procedureList)]
+      #  procedureList.append(p[4]) #append(p[4],p[7]
     #If procedure is already defined
-    elif p[2] in procedures:
-        errorList.append("Error: The procedure {0} cannot be defined on line {1} because it was already defined.".format(p[2],p.lineno(2)))
-    
+    #elif p[2] in procedures:
+     #   errorList.append("Error: The procedure {0} cannot be defined on line {1} because it was already defined.".format(p[2],p.lineno(2)))
+
+def p_parameters(p):
+    'parameters : ID'
+    'parameters : parameters COMMA ID'
+
+    if len(p)==2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + p[[3]]
+
 def p_procedure_error(p):
     ''' procedure : PROC error SEMICOLON
     '''
@@ -355,6 +366,9 @@ def p_instructions_rule(p):
     else:
         p[1].append(p[2])
         p[0]=p[1]
+        #p[0] = p[1] + p[[2]]
+
+
 
 #Definition of production rule for instruction
 def p_instruction_rule(p):
@@ -369,3 +383,36 @@ def p_instruction_rule(p):
     else:
         #if more than one instruction, concatenate them
         p[0]= p[1] + [p[2]]
+
+#Definition for CASE statement -SIMPLE
+def p_case_rule(p):
+    ''' reservedkey: CASE when_rule then_rule else_rule
+                   | CASE when_rule then_rule
+    '''
+    if len(p) == 4:
+        p[0] = (p[1], p[2], p[3], p[4])
+    else:
+        p[0] = (p[1], p[2], p[3])
+
+#Rule for WHEN statement
+def p_when_rule(p):
+    ''' reservedkey: WHEN LP condition_expression RP
+
+    '''
+
+    p[0] = (p[1],p[3])
+
+#Rule for THEN statement
+def p_then_rule(p):
+    '''reservedkey: THEN LP instructions RP
+    '''
+
+    p[0] = (p[1],p[3])
+
+#Rule for ELSE statement
+def p_else_rule(p):
+    ''' reservedkey: LSB ELSE LP instructions RP RSB SEMICOLON
+    '''
+
+    p[0] = (p[1],p[3])
+
