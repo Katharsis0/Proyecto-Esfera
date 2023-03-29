@@ -1,0 +1,134 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ALEATORIO
+    CASE
+    DIF
+    ELSE
+    FALSE
+    LSB
+    PLUS
+    RSB
+    SLASH
+    STAR
+    TRUE
+    WHEN
+
+Grammar
+
+Rule 0     S' -> sentence
+Rule 1     sentence -> sentence sentence
+Rule 2     sentence -> sentence
+Rule 3     sentence -> error
+Rule 4     reservedkey -> DEF LP ID COMMA TYPE RP SEMICOLON
+Rule 5     reservedkey -> DEF LP ID COMMA TYPE COMMA BOOL RP SEMICOLON
+Rule 6     reservedkey -> DEF LP ID COMMA TYPE COMMA INT RP SEMICOLON
+Rule 7     sentence -> DEF error SEMICOLON
+Rule 8     id -> ID LP VALUE RP SEMICOLON
+Rule 9     id -> ID LP ID RP SEMICOLON
+Rule 10    id -> ID LP expression RP SEMICOLON
+Rule 11    reservedkey -> ALTER LP ID COMMA VALUE RP SEMICOLON
+Rule 12    reservedkey -> ALTER LP ID COMMA ID RP SEMICOLON
+Rule 13    value -> INT
+Rule 14    value -> ID
+Rule 15    reservedkey -> PRINT LP ID RP SEMICOLON
+Rule 16    reservedkey -> PRINT LP INT RP SEMICOLON
+Rule 17    reservedkey -> PRINT LP BOOL RP SEMICOLON
+Rule 18    reservedkey -> PRINT LP STRING RP SEMICOLON
+Rule 19    reservedkey -> NOT LP ID RP SEMICOLON
+Rule 20    reservedkey -> ISTRUE LP ID RP SEMICOLON
+Rule 21    reservedkey -> MOVER LP DIR RP SEMICOLON
+Rule 22    expression -> INT
+Rule 23    expression -> LP expression RP
+Rule 24    expression -> MINUS expression
+Rule 25    expression -> MINUS error
+Rule 26    condition_expression -> oper GT oper
+Rule 27    condition_expression -> oper LT oper
+Rule 28    condition_expression -> oper GTE oper
+Rule 29    condition_expression -> oper LTE oper
+Rule 30    condition_expression -> oper EQUAL oper
+Rule 31    condition_expression -> oper DIFF oper
+Rule 32    comment -> COMMENT
+Rule 33    reservedkey -> CALL LP PROCNAME RP SEMICOLON
+Rule 34    reservedkey -> REPEAT LP instructions BREAK RP SEMICOLON
+Rule 35    reservedkey -> UNTIL LP instructions RP condition_expression SEMICOLON
+Rule 36    reservedkey -> WHILE condition_expression LP instructions RP SEMICOLON
+Rule 37    reservedkey -> WHILE error SEMICOLON
+Rule 38    reservedkey -> UNTIL error SEMICOLON
+Rule 39    procedure -> PROC ID LP parameters RP LP instructions RP SEMICOLON
+Rule 40    parameters -> ID
+Rule 41    procedure -> PROC error SEMICOLON
+Rule 42    main -> MAIN LP instructions RP SEMICOLON
+Rule 43    main -> MAIN error SEMICOLON
+Rule 44    main -> MAIN LP error RP SEMICOLON
+Rule 45    procecall -> ID LP RP SEMICOLON
+Rule 46    instructions -> instructions instruction
+Rule 47    instructions -> instruction
+
+Terminals, with rules where they appear
+
+ALEATORIO            : 
+ALTER                : 11 12
+BOOL                 : 5 17
+CALL                 : 33
+CASE                 : 
+COMMA                : 4 5 5 6 6 11 12
+DEF                  : 4 5 6 7
+DIF                  : 
+DIR                  : 21
+ELSE                 : 
+EQUAL                : 30
+FALSE                : 
+GT                   : 26
+GTE                  : 28
+ID                   : 4 5 6 8 9 9 10 11 12 12 14 15 19 20 39 40 45
+INT                  : 6 13 16 22
+ISTRUE               : 20
+LP                   : 4 5 6 8 9 10 11 12 15 16 17 18 19 20 21 23 33 34 35 36 39 39 42 44 45
+LSB                  : 
+LT                   : 27
+LTE                  : 29
+MAIN                 : 42 43 44
+MINUS                : 24 25
+MOVER                : 21
+NOT                  : 19
+PLUS                 : 
+PRINT                : 15 16 17 18
+PROC                 : 39 41
+REPEAT               : 34
+RP                   : 4 5 6 8 9 10 11 12 15 16 17 18 19 20 21 23 33 34 35 36 39 39 42 44 45
+RSB                  : 
+SEMICOLON            : 4 5 6 7 8 9 10 11 12 15 16 17 18 19 20 21 33 34 35 36 37 38 39 41 42 43 44 45
+SLASH                : 
+STAR                 : 
+STRING               : 18
+TRUE                 : 
+TYPE                 : 4 5 6
+UNTIL                : 35 38
+WHEN                 : 
+WHILE                : 36 37
+error                : 3 7 25 37 38 41 43 44
+
+Nonterminals, with rules where they appear
+
+BREAK                : 34
+COMMENT              : 32
+DIFF                 : 31
+PROCNAME             : 33
+VALUE                : 8 11
+comment              : 
+condition_expression : 35 36
+expression           : 10 23 24
+id                   : 
+instruction          : 46 47
+instructions         : 34 35 36 39 42 46
+main                 : 
+oper                 : 26 26 27 27 28 28 29 29 30 30 31 31
+parameters           : 39
+procecall            : 
+procedure            : 
+reservedkey          : 
+sentence             : 1 1 2 0
+value                : 
+

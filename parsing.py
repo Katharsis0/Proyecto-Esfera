@@ -56,7 +56,7 @@ def p_sentence_error(p):
 #Out: ['Def',id,type,val]
 def p_def_rule(p):
     ''' reservedkey : DEF LP ID COMMA TYPE RP SEMICOLON
-                 | DEF LP ID COMMA TYPE COMMA BOOl RP SEMICOLON
+                 | DEF LP ID COMMA TYPE COMMA BOOL RP SEMICOLON
                  | DEF LP ID COMMA TYPE COMMA INT RP SEMICOLON
     '''
 
@@ -98,13 +98,13 @@ def p_alter_rule(p):
         p[0]=(p[1],p[3],p[5])
 
 #definition of error in Alter
-def p_alter_error(p):
-    '''alter: ALTER error SEMICOLON
-    | ALTER LP error RP SEMICOLON
-    | ALTER LP ID error RP SEMICOLON
-       
-    '''
-    errorList.append("Syntax error in procedure {0}, line {1}".format(p[1].type,p.lineno(2)))
+# def p_alter_error(p):
+#     '''alter: ALTER error SEMICOLON
+#     | ALTER LP error RP SEMICOLON
+#     | ALTER LP ID error RP SEMICOLON
+#
+#     '''
+#     errorList.append("Syntax error in procedure {0}, line {1}".format(p[1].type,p.lineno(2)))
 
 #definition of value (not sure if needed)
 def p_value_rule(p):
@@ -159,26 +159,26 @@ def p_mover_rule(p):
 
 """Math operations"""
 #definition of math operation
-def p_expression_rule(p):
-    '''expression: expression PLUS expression
-                  | expression MINUS expression
-                  | expression STAR expression
-                  | expression SLASH expression
-                
-    '''
-    #Sum 
-    if p[2] == '+':
-        p[0] =  p[1]+ p[3]
-    #Substr
-    elif p[2] == '-':
-        p[0] = p[1] - p[3]
-    #Multiplication
-    elif p[2] == '*':
-        p[0] =  p[1], p[3]
-    #Division
-    elif p[2] == '/':
-        p[0] = p[1] / p[3]
-
+# def p_expression_rule(p):
+#     '''expression: expression PLUS expression
+#                   | expression MINUS expression
+#                   | expression STAR expression
+#                   | expression SLASH expression
+#
+#     '''
+#     #Sum
+#     if p[2] == '+':
+#         p[0] =  p[1]+ p[3]
+#     #Substr
+#     elif p[2] == '-':
+#         p[0] = p[1] - p[3]
+#     #Multiplication
+#     elif p[2] == '*':
+#         p[0] =  p[1], p[3]
+#     #Division
+#     elif p[2] == '/':
+#         p[0] = p[1] / p[3]
+#
 #Definition of term as a number
 def p_expression_number(p):
     '''expression : INT
@@ -230,17 +230,17 @@ def p_condition_expression(p):
         p[0] = p[1] != p[3]
 
 #Def operator of condition
-def p_condition_op(p):
-    '''oper: value
-            | expression
-            
-    '''
-    if isinstance(p[1],int):
-        p[0] = p[1]
-    elif isinstance(p[1], list):
-        p[0] = p[1]
-    else:
-        errorList.append("Syntax error in procedure {0}, line {1}: Value cannot be bool. ".format(p[1].type,p.lineno(1)))
+# def p_condition_op(p):
+#     '''oper: value
+#             | expression
+#
+#     '''
+#     if isinstance(p[1],int):
+#         p[0] = p[1]
+#     elif isinstance(p[1], list):
+#         p[0] = p[1]
+#     else:
+#         errorList.append("Syntax error in procedure {0}, line {1}: Value cannot be bool. ".format(p[1].type,p.lineno(1)))
 
 """Comments"""
 #Definition of comment
@@ -371,48 +371,58 @@ def p_instructions_rule(p):
 
 
 #Definition of production rule for instruction
-def p_instruction_rule(p):
-    '''instruction: sentence
-                  | expression
-                  | reservedkey
-                  | procedure
-    '''
-    #If its only one element
-    if len(p)==2:
-        p[0]= [p[1]]
-    else:
-        #if more than one instruction, concatenate them
-        p[0]= p[1] + [p[2]]
+# def p_instruction_rule(p):
+#     '''instruction: sentence
+#                   | expression
+#                   | reservedkey
+#                   | procedure
+#     '''
+#     #If its only one element
+#     if len(p)==2:
+#         p[0]= [p[1]]
+#     else:
+#         #if more than one instruction, concatenate them
+#         p[0]= p[1] + [p[2]]
 
 #Definition for CASE statement -SIMPLE
-def p_case_rule(p):
-    ''' reservedkey: CASE when_rule then_rule else_rule
-                   | CASE when_rule then_rule
-    '''
-    if len(p) == 4:
-        p[0] = (p[1], p[2], p[3], p[4])
-    else:
-        p[0] = (p[1], p[2], p[3])
+# def p_case_rule(p):
+#     ''' reservedkey: CASE when_rule then_rule else_rule
+#                    | CASE when_rule then_rule
+#     '''
+#     if len(p) == 4:
+#         p[0] = (p[1], p[2], p[3], p[4])
+#     else:
+#         p[0] = (p[1], p[2], p[3])
 
 #Rule for WHEN statement
-def p_when_rule(p):
-    ''' reservedkey: WHEN LP condition_expression RP
-
-    '''
-
-    p[0] = (p[1],p[3])
+# def p_when_rule(p):
+#     ''' reservedkey: WHEN LP condition_expression RP
+#
+#     '''
+#
+#     p[0] = (p[1],p[3])
 
 #Rule for THEN statement
-def p_then_rule(p):
-    '''reservedkey: THEN LP instructions RP
-    '''
-
-    p[0] = (p[1],p[3])
+# def p_then_rule(p):
+#     '''reservedkey: THEN LP instructions RP
+#     '''
+#
+#     p[0] = (p[1],p[3])
 
 #Rule for ELSE statement
-def p_else_rule(p):
-    ''' reservedkey: LSB ELSE LP instructions RP RSB SEMICOLON
-    '''
+# def p_else_rule(p):
+#     ''' reservedkey: LSB ELSE LP instructions RP RSB SEMICOLON
+#     '''
+#
+#     p[0] = (p[1],p[3])
+#
 
-    p[0] = (p[1],p[3])
 
+
+parser = yacc.yacc()
+
+
+
+with open('input.txt', 'r') as archivo:
+    insumo = archivo.read()
+    res = parser.parse(insumo)

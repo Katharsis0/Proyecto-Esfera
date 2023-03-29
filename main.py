@@ -1,5 +1,5 @@
 import lexer
-import parse 
+import parsing
 
 
 #Test
