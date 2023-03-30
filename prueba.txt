@@ -1,0 +1,1 @@
+Def(@variable1,int,0)
