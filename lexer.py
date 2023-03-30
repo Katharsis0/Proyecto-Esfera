@@ -1,5 +1,5 @@
 import PLY.lex as lex
-import re
+from PLY.lex import TOKEN
 
 #list of reserved words
 reserved = {
@@ -19,7 +19,7 @@ reserved = {
     'Else' : 'ELSE',
     'True' : 'TRUE',
     'False' : 'FALSE',
-    '@Principal' : 'MAIN'}
+    'MAIN' : 'MAIN'}
 
 #list of tokens
 tokens = ['LP',
@@ -62,7 +62,6 @@ t_GTE=r'>='
 t_LTE=r'<='
 t_COMMA=r','
 t_SEMICOLON=r';'
-t_PRINT=r'=>'
 t_DIR=r'ATR|ADL|ADE|AIZ|IZQ|DER|DDE|DIZ'
 
 
@@ -89,10 +88,14 @@ def t_PROCNAME(token):
         token.type = reserved[token.value]
     return token
 
+#Define rule to validate int
 def t_INT(token):
-    r'[0-9]+'
-    token.value = int(token.value)
+    r'\d+'
+    if token.value in reserved:
+        token.type = reserved[token.value]
+    token.value= int(token.value)
     return token
+
 #Define rule for string in order to print correctly
 def t_STRING(token):
     r'^[A-Za-z0-9!@#$%^&*()_+{}\[\]:;<>,.?\/|\\\'\"\-=\s]+$'
@@ -102,17 +105,18 @@ def t_STRING(token):
 #Defines comment rule
 def t_COMMENT(token):
     r'--.*'
-    pass#No return value. Token discarded
+    return token
 
 #Defines print rule
-#def t_PRINT(token):
-    #pass
+def t_PRINT(token):
+    r'=>'
+    return token
 
 
 #Defines rule to validate value 
 def t_BOOL(token):
     r'(true|false)'
-    if token.value.isdigit():
+    if token != True or False:
         error = "Invalid value '{0}' on line {1} not bool".format(token.value, token.lineno)
     elif token.value == 'true':
         token.value = True
@@ -124,14 +128,10 @@ def t_TYPE(token):
     r'(int|bool)'
     return token
 
-def t_MAIN(token):
-    r'@Principal'
-    return token
 
 def t_nl(token):
     r'\n+'
-    token.lexer.lineno += token.value.count("\n")
-    return token
+    token.lexer.lineno += len(token.value)
 
 def t_error(token):
     print("Invalid character '{0} on line {1}'".format(token.value[0], token.lineno))    
@@ -142,21 +142,4 @@ def t_eof(token):
 
 
 
-#Construye el lexer 
-#lexer=lex.lex()
-
-
-#Input extraido del IDE
-#lexer.input("""true""")
-
-
-
-#Testing, this should be sent to the IDEs terminal
-# while True:
-#     token=lexer.token()
-
-#     if not token:
-#         break
-
-#     print("En la linea " + str(token.lineno) + " se encontró el token: "
-#             + '(' + str(token.type) + ', ' + str(token.value) + ')')
+lexer = lex.lex()
