@@ -8,7 +8,7 @@ from lexer import reserved
 #list of local variables
 localVars={}
 
-#list of global variables
+ #list of global variables
 globalVars={}
 
 #list of Procs
@@ -172,24 +172,24 @@ def p_mover_rule(p):
 
 """Math operations"""
 # #definition of math operation
-# def p_expression_rule(p):
-#     '''expression: expression PLUS expression
-#                   | expression MINUS expression
-#                   | expression STAR expression
-#                   | expression SLASH expression
-#     '''
-#     #Sum 
-#     if p[2] == '+':
-#         p[0] =  p[1]+ p[3]
-#     #Substr
-#     elif p[2] == '-':
-#         p[0] = p[1] - p[3]
-#     #Multiplication
-#     elif p[2] == '*':
-#         p[0] =  p[1], p[3]
-#     #Division
-#     elif p[2] == '/':
-#         p[0] = p[1] / p[3]
+def p_expression_op(p):
+    '''expression: expression PLUS expression
+                   | expression MINUS expression
+                   | expression STAR expression
+                   | expression SLASH expression
+    '''
+    #Sum
+    if p[2] == '+':
+        p[0] =  p[1] + p[3]
+    #Substr
+    elif p[2] == '-':
+        p[0] = p[1] - p[3]
+    #Multiplication
+    elif p[2] == '*':
+        p[0] =  p[1] * p[3]
+    #Division
+    else:
+        p[0] = p[1] / p[3]
 
 #Definition of term as a number
 def p_expression_number(p):
@@ -357,6 +357,18 @@ def p_procedure_call(p):
     else:
         p[0]=p[1]
 
+#definition of Case rule
+def p_case_rule(p):
+    '''
+    reservedkey : CASE functions SEMICOLON
+                | CASE ID functions SEMICOLON
+    '''
+    if len(p) == 3:
+        p[0] = (p[1],p[2])
+    else:
+        p[0] = (p[1], p[2], p[3])
+
+
 
 #Definition of instructions to handle one or more inst
 def p_instructions_rule(p):
@@ -369,20 +381,67 @@ def p_instructions_rule(p):
         p[1].append(p[2])
         p[0]=p[1]
 
-#Definition of production rule for instruction
-# def p_instruction_rule(p):
-#     '''instruction: sentence
-#                   | expression
-#                   | reservedkey
-#                   | procedure
-#     '''
-#     #If its only one element
-#     if len(p)==2:
-#         p[0]= [p[1]]
-#     else:
-#         #if more than one instruction, concatenate them
-#         p[0]= p[1] + [p[2]]
+#Definition of instruction rule
+def p_instruction_rule(p):
+    '''instruction: sentence
+                  | expression
+                  | reservedkey
+                  | procedure
+                  | procecall
+    '''
+    p[0] = p[1]
+    #If its only one element
+    # if len(p)==2:
+    #     p[0]= [p[1]]
+    # else:
+    #     #if more than one instruction, concatenate them
+    #     p[0]= p[1] + [p[2]]
 
+
+#Rule for WHEN statement
+def p_when_rule(p):
+    ''' function: WHEN LP condition_expression RP
+    '''
+    p[0] = (p[1],p[3])
+
+#Rule for THEN statement
+def p_then_rule(p):
+    ''' function: THEN LP instructions RP
+    '''
+    p[0] = (p[1],p[3])
+
+#Rule for ELSE statement
+def p_else_rule(p):
+    ''' function: LSB ELSE LP instructions RP RSB SEMICOLON
+    '''
+    p[0] = (p[1],p[3])
+
+#TODO: ERROR STATEMENTS
+
+
+#Definition of functions to handle recursive calls
+def p_functions_rule(p):
+    ''' functions : functions function
+                     | function
+    '''
+    if len(p)==2:
+        p[0]=[p[1]]
+    else:
+        p[1].append(p[2])
+        p[0]=p[1]
+
+#Definition of function rule
+def p_function_rule(p):
+    '''instruction: when then
+                  | else
+    '''
+    p[0] = p[1]
+    #If its only one element
+    # if len(p)==2:
+    #     p[0]= [p[1]]
+    # else:
+    #     #if more than one instruction, concatenate them
+    #     p[0]= p[1] + [p[2]]
 
 
 ###########Parser###########

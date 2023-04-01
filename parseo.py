@@ -4,6 +4,7 @@ from lexer import tokens
 from lexer import reserved
 
 
+
 #Nota: este archivo sustituye a 'parsing.py'. 
 #TODO: al finalizar este modulo se debe eliminar 'parsing.py'
 
@@ -18,7 +19,7 @@ globalVars={}
 
 #list of Procs
 procedures = {}
-proceduresList=[]
+proceduresList=[] #Check is two procedures have the same name
 
 #list of errorsw
 errorList=[]
@@ -45,29 +46,48 @@ precedence = (('left','PLUS','MINUS'),
 
 #***PRODUCTION RULES***#
 
-def p_sentence(p): #TODO: revisar la concatenacion de sentencias
-    '''sentence : sentence
-                | sentence sentence
-                | reservedkey
-                | comment
-    '''   
+def p_sentences(p): #TODO: revisar la concatenacion de sentencias
+    '''sentences : sentences sentence
+                | sentence
+    '''
+
     if len(p)==2:
         p[0]=[p[1]]
     else:
         p[0]=p[1]+[p[2]]
 
-def p_reservedkey(p):
-    '''reservedkey: def
-                |alter
-                |not
-                |istrue
-                |iterative
-                |case
-                |call
+def p_sentence(p):
+    ''' sentence : def
+                | call
+                | alter
+                | not
+                | condFunction
+                | print
     '''
+
+    p[0] = p[1]
+
+def p_keyword(p):
+    ''' keyword : procedure
+            | procedure procedure
+            | main
+    '''
+
+    p[0] = p[1]
+
+def p_body(p): # iterative -> while and until
+    ''' body: iterative
+            | case
+            | def
+            | mover
+            | aleatorio
+            | sentence
+            | repeat
+    '''
+
     p[0]=p[1]
 
-####****ReservedKeys****####
+####****Body****####
 def p_def(p):
     '''def: DEF LP ID COMMA TYPE RP SEMICOLON
         | DEF LP ID COMMA TYPE COMMA value SEMICOLON
@@ -155,7 +175,6 @@ def p_call(p):
         errorList.append("Error: Procedure {0} should be defined before usage in line {1}.".format(p[3].type, p.lineno(1)))
     if p[3] in proceduresList:
         p[0]=(p[1],p[3])
-    
 
 
 def p_functions(p):
@@ -205,7 +224,8 @@ def p_instructions(p):
         p[0]=p[1]+[p[2]]
 
 def p_instruction(p):
-    '''instruction: sentence
+    '''instruction: sentences
+                  | body
                   |expression'''
     p[0]=p[1]
 
@@ -244,10 +264,16 @@ def p_factor(p):
         p[0]=-p[2]
     
     if len(p)==3:
-        p[0]= -p[2]
+        p[0]= p[2]
     else:
         p[0]=p[1]
   
+def p_condFunction(p):
+    '''
+    condFunction : istrue
+    '''
+
+    p[0] = p[1]
 
 def p_condition(p):
     '''condition: oper GT oper  
@@ -255,7 +281,8 @@ def p_condition(p):
                 | oper EQ oper  
                 | oper DIF oper   
                 | oper GTE oper  
-                | oper LTE oper  
+                | oper LTE oper
+                | condFunction
     '''
     if p[2]=='>':
         if isinstance(p[1],int) and isinstance(p[3],int):
@@ -289,6 +316,8 @@ def p_condition(p):
             p[0]= p[1] <= p[3]
         else:
             errorList.append("Error: Invalid comparison. Comparison not valid for booleans in line {0}.".format(p.lineno(1)))
+    else:
+        p[0] = p[1]
 
 #Definition of operand
 #Used in expression
@@ -325,11 +354,7 @@ def p_procedure(p):
     if p[2] in procedures:
         errorList.append("Error: Procedure {0} has already been defined in line {1}.".format(p[2], p.lineno(1)))
 
-    
 
-
-
-    
 
             
 #######COMMENTS##############

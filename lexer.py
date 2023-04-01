@@ -24,6 +24,8 @@ reserved = {
 #list of tokens
 tokens = ['LP',
           'RP',
+          'LSB', #left square bracket '['
+          'RSB', #right square bracket ']'
           'INT',
           'ID',
           'COMMA',
@@ -54,6 +56,8 @@ t_STAR=r'\*'
 t_SLASH=r'/'
 t_LP=r'\('
 t_RP=r'\)'
+t_LSB=r'\['
+t_RSB=r'\]'
 t_EQUAL=r'=='
 t_DIF=r'><'
 t_GT=r'>'
