@@ -3,23 +3,24 @@ from PLY.lex import TOKEN
 
 #list of reserved words
 reserved = {
-    'Proc' : 'PROC',
-    'Def' : 'DEF',
-    'Call' : 'CALL',
-    'Not' : 'NOT',
-    'Alter' : 'ALTER',
-    'Mover' : 'MOVER',
-    'Aleatorio' : 'ALEATORIO',
-    'isTrue' : 'ISTRUE',
-    'Repeat' : 'REPEAT',
-    'Until' : 'UNTIL',
-    'While' : 'WHILE',
-    'Case' : 'CASE',
-    'When' : 'WHEN',
-    'Else' : 'ELSE',
-    'True' : 'TRUE',
-    'False' : 'FALSE',
-    'MAIN' : 'MAIN'}
+    'Proc': 'PROC',
+    'Def': 'DEF',
+    'Call': 'CALL',
+    'Not': 'NOT',
+    'Alter': 'ALTER',
+    'Mover': 'MOVER',
+    'Aleatorio': 'ALEATORIO',
+    'isTrue': 'ISTRUE',
+    'Repeat': 'REPEAT',
+    'Until': 'UNTIL',
+    'While': 'WHILE',
+    'Case': 'CASE',
+    'When': 'WHEN',
+    'Else': 'ELSE',
+    'True': 'TRUE',
+    'False': 'FALSE',
+    'main': 'MAIN',
+    'print': 'PRINT'}
 
 #list of tokens
 tokens = ['LP',
@@ -37,15 +38,36 @@ tokens = ['LP',
           'PLUS',
           'STRING',
           'MINUS',
+          'UMINUS',
           'TYPE',
           'BOOL',
           'STAR',#multiplication
           'SLASH',#division
           'GT',#greater than
           'LT',#less than
-          'PRINT',
           'DIR',#Direction
-            ] + list(reserved.values())
+          'PROC',
+          'DEF',
+          'CALL',
+          'NOT',
+          'ALTER',
+          'MOVER',
+          'ALEATORIO',
+          'ISTRUE',
+          'REPEAT',
+          'UNTIL',
+          'WHILE',
+          'CASE',
+          'THEN',
+          'WHEN',
+          'ELSE',
+          'TRUE',
+          'FALSE',
+          'MAIN',
+          'PRINT',
+          'COMMENT']
+
+#tokens = token + list(reserved.values())
 
 
 #regular expression rules for matching simple tokens

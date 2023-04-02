@@ -1,5 +1,5 @@
 import PLY.yacc as yacc
-
+#import ply.yacc as yacc
 from lexer import tokens
 from lexer import reserved
 
@@ -62,7 +62,7 @@ def p_sentence(p):
                 | alter
                 | not
                 | condFunction
-                | print
+                | PRINT
     '''
 
     p[0] = p[1]
@@ -70,26 +70,26 @@ def p_sentence(p):
 def p_keyword(p):
     ''' keyword : procedure
             | procedure procedure
-            | main
+            | MAIN
     '''
 
     p[0] = p[1]
 
 def p_body(p): # iterative -> while and until
-    ''' body: iterative
-            | case
-            | def
-            | mover
-            | aleatorio
+    ''' body : iterative
+            | CASE
+            | DEF
+            | MOVER
+            | ALEATORIO
             | sentence
-            | repeat
+            | REPEAT
     '''
 
     p[0]=p[1]
 
 ####****Body****####
 def p_def(p):
-    '''def: DEF LP ID COMMA TYPE RP SEMICOLON
+    '''def : DEF LP ID COMMA TYPE RP SEMICOLON
         | DEF LP ID COMMA TYPE COMMA value SEMICOLON
     '''
     global localVars
@@ -112,7 +112,7 @@ def p_def(p):
         p[0]=(p[1],p[3])
 
 def p_alter(p):
-    '''alter: ALTER LP ID COMMA value RP SEMICOLON
+    '''alter : ALTER LP ID COMMA value RP SEMICOLON
     '''
     if p[3] not in localVars:
         errorList.append("Error: Variable {0} has not been defined in line {1}.".format(p[3], p.lineno(1)))
@@ -124,7 +124,7 @@ def p_alter(p):
             p[0]=(p[1],p[3])
 
 def p_not(p):
-    '''not: NOT LP ID RP SEMICOLON
+    '''not : NOT LP ID RP SEMICOLON
     '''
     if p[3] not in localVars:
         errorList.append("Error: Variable {0} has not been defined in line {1}.".format(p[3], p.lineno(1)))
@@ -134,7 +134,7 @@ def p_not(p):
             p[0]=(p[1],p[3])
 
 def p_istrue(p):
-    '''istrue: ISTRUE LP ID RP SEMICOLON
+    '''istrue : ISTRUE LP ID RP SEMICOLON
     '''
     if p[3] not in localVars:
         errorList.append("Error: Variable {0} has not been defined in line {1}.".format(p[3], p.lineno(1)))
@@ -148,7 +148,7 @@ def p_istrue(p):
 
 #Iterative functions
 def p_iterative(p):
-    '''iterative: WHILE condition LP instructions RP SEMICOLON
+    '''iterative : WHILE condition LP instructions RP SEMICOLON
                 | UNTIL LP instructions RP condition SEMICOLON
     '''
     if p[1]=='While':
@@ -157,10 +157,10 @@ def p_iterative(p):
         p[0]=(p[1],p[3],p[5]) #(Until, instructions, condition)
 
 def p_case(p):
-    '''case: CASE functions SEMICOLON
+    '''case : CASE functions SEMICOLON
             | CASE ID functions SEMICOLON
     '''
-    if len(p)==4:
+    if len(p) == 4:
         if p[2] not in localVars.values():
             errorList.append("Error: Variable {0} should be defined before usage in line {1}.".format(p[2].type, p.lineno(1)))
         else:
@@ -169,7 +169,7 @@ def p_case(p):
         p[0]=[p[1],p[2]]
 
 def p_call(p):
-    '''call: CALL LP ID RP SEMICOLON
+    '''call : CALL LP ID RP SEMICOLON
     '''
     if p[3] not in proceduresList:
         errorList.append("Error: Procedure {0} should be defined before usage in line {1}.".format(p[3].type, p.lineno(1)))
@@ -178,7 +178,7 @@ def p_call(p):
 
 
 def p_functions(p):
-    '''functions: function
+    '''functions : function
                 | functions function
     '''
     if len(p)==2:
@@ -187,15 +187,15 @@ def p_functions(p):
         p[0]=p[1]+[p[2]]
 
 def p_function(p):#TODO: revisar la concatenacion de functions
-    '''function: when then
+    '''function : when then
                 | when then else'''
-    if len(p)==2:
-        p[0]=p[1] + [p[2]]
+    if len(p) == 2:
+        p[0] = p[1] + [p[2]]
     else:
         p[0]=p[1] + [p[2]] + [p[3]]
 
 def p_when(p):
-    '''when: WHEN LP condition RP
+    '''when : WHEN LP condition RP
             | WHEN value 
     '''
     if len(p)==2:
@@ -205,17 +205,17 @@ def p_when(p):
         p[0]=(p[1],p[3])
 
 def p_then(p):
-    '''then: THEN instructions
+    '''then : THEN instructions
     '''
     p[0]=(p[1],p[2])
 
 def p_else(p):
-    '''else: ELSE instructions
+    '''else : ELSE instructions
     '''
     p[0]=(p[1],p[2])
 
 def p_instructions(p):
-    '''instructions: instruction
+    '''instructions : instruction
                    | instructions instruction
     '''
     if len(p)==2:
@@ -224,13 +224,14 @@ def p_instructions(p):
         p[0]=p[1]+[p[2]]
 
 def p_instruction(p):
-    '''instruction: sentences
+    '''instruction : sentences
                   | body
-                  |expression'''
+                  | expression
+    '''
     p[0]=p[1]
 
 def p_expression(p):
-    '''expression: expression PLUS term
+    '''expression : expression PLUS term
                 | expression MINUS term
                 | term
     '''
@@ -243,7 +244,7 @@ def p_expression(p):
         p[0]=p[1]
 
 def p_term(p):
-    '''term: term STAR factor
+    '''term : term STAR factor
             | term SLASH factor
             | factor
     '''
@@ -256,7 +257,7 @@ def p_term(p):
         p[0]=p[1]
 
 def p_factor(p):
-    '''factor: LP expression RP
+    '''factor : LP expression RP
             | UMINUS factor
             | INT
     '''
@@ -276,9 +277,9 @@ def p_condFunction(p):
     p[0] = p[1]
 
 def p_condition(p):
-    '''condition: oper GT oper  
+    '''condition : oper GT oper
                 | oper LT oper 
-                | oper EQ oper  
+                | oper EQUAL oper
                 | oper DIF oper   
                 | oper GTE oper  
                 | oper LTE oper
@@ -322,7 +323,7 @@ def p_condition(p):
 #Definition of operand
 #Used in expression
 def p_oper(p):
-    '''oper: value
+    '''oper : value
             | expression
     '''
     p[0]=p[1]
@@ -330,7 +331,7 @@ def p_oper(p):
 #Definition of value 
 #Used in define, when, and value
 def p_value(p):
-    '''value: ID
+    '''value : ID
             | INT
             | BOOL
     '''
@@ -339,7 +340,7 @@ def p_value(p):
 
 #Definition of procedure
 def p_procedure(p):
-    '''procedure: PROC ID LP instructions RP SEMICOLON
+    '''procedure : PROC ID LP instructions RP SEMICOLON
     '''
     if p[2] in reserved.values():
         errorList.append("Error: Procedure name {0} cannot be a reserved word in line {1}.".format(p[2], p.lineno(1)))
@@ -361,7 +362,7 @@ def p_procedure(p):
 
 #Definition of comments
 def p_comments(p):
-    '''comments: COMMENT
+    '''comments : COMMENT
     '''
     global commentNumber
     commentNumber+=1
