@@ -17,10 +17,12 @@ reserved = {
     'Case': 'CASE',
     'When': 'WHEN',
     'Else': 'ELSE',
+    'Then': 'THEN',
     'True': 'TRUE',
     'False': 'FALSE',
     'main': 'MAIN',
-    'print': 'PRINT'}
+    'print': 'PRINT',
+    'comment': 'COMMENT'}
 
 #list of tokens
 tokens = ['LP',
@@ -45,29 +47,30 @@ tokens = ['LP',
           'SLASH',#division
           'GT',#greater than
           'LT',#less than
-          'DIR',#Direction
-          'PROC',
-          'DEF',
-          'CALL',
-          'NOT',
-          'ALTER',
-          'MOVER',
-          'ALEATORIO',
-          'ISTRUE',
-          'REPEAT',
-          'UNTIL',
-          'WHILE',
-          'CASE',
-          'THEN',
-          'WHEN',
-          'ELSE',
-          'TRUE',
-          'FALSE',
-          'MAIN',
-          'PRINT',
-          'COMMENT']
+           'DIR' #Direction
+          # 'PROC',
+          # 'DEF',
+          # 'CALL',
+          # 'NOT',
+          # 'ALTER',
+          # 'MOVER',
+          # 'ALEATORIO',
+          # 'ISTRUE',
+          # 'REPEAT',
+          # 'UNTIL',
+          # 'WHILE',
+          # 'CASE',
+          # 'THEN',
+          # 'WHEN',
+          # 'ELSE',
+          # 'TRUE',
+          # 'FALSE',
+          # 'MAIN',
+          # 'PRINT',
+          # 'COMMENT'
+          ]
 
-#tokens = token + list(reserved.values())
+tokens = tokens + list(reserved.values())
 
 
 #regular expression rules for matching simple tokens
