@@ -3,25 +3,25 @@ from PLY.lex import TOKEN
 
 #list of reserved words
 reserved = {
-    'Proc': 'PROC',
-    'Def': 'DEF',
-    'Call': 'CALL',
-    'Not': 'NOT',
-    'Alter': 'ALTER',
-    'Mover': 'MOVER',
-    'Aleatorio': 'ALEATORIO',
+    'proc': 'PROC',
+    'def': 'DEF',
+    'call': 'CALL',
+    'not': 'NOT',
+    'alter': 'ALTER',
+    'mover': 'MOVER',
+    'aleatorio': 'ALEATORIO',
     'isTrue': 'ISTRUE',
-    'Repeat': 'REPEAT',
-    'Until': 'UNTIL',
-    'While': 'WHILE',
-    'Case': 'CASE',
-    'When': 'WHEN',
-    'Else': 'ELSE',
-    'Then': 'THEN',
-    'True': 'TRUE',
-    'False': 'FALSE',
+    'repeat': 'REPEAT',
+    'until': 'UNTIL',
+    'while': 'WHILE',
+    'case': 'CASE',
+    'when': 'WHEN',
+    'else': 'ELSE',
+    'then': 'THEN',
+    'true': 'TRUE',
+    'false': 'FALSE',
     'main': 'MAIN',
-    'print': 'PRINT',
+    #'print': 'PRINT',
     'comment': 'COMMENT'}
 
 #list of tokens
@@ -47,7 +47,7 @@ tokens = ['LP',
           'SLASH',#division
           'GT',#greater than
           'LT',#less than
-           'DIR' #Direction
+          'DIR' #Direction
           # 'PROC',
           # 'DEF',
           # 'CALL',

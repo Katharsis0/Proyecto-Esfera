@@ -62,27 +62,26 @@ def p_sentence(p):
                 | alter
                 | not
                 | condFunction
-                | PRINT
+                | print
     '''
 
     p[0] = p[1]
 
 def p_keyword(p):
-    ''' keyword : procedure
-            | procedure procedure
-            | MAIN
+    ''' keyword : proc
+                | main
     '''
 
     p[0] = p[1]
 
 def p_body(p): # iterative -> while and until
     ''' body : iterative
-            | CASE
-            | DEF
-            | MOVER
-            | ALEATORIO
+            | case
+            | def
+            | mover
+            | aleatorio
             | sentence
-            | REPEAT
+            | repeat
     '''
 
     p[0]=p[1]
@@ -339,8 +338,8 @@ def p_value(p):
 
 
 #Definition of procedure
-def p_procedure(p):
-    '''procedure : PROC ID LP instructions RP SEMICOLON
+def p_proc(p):
+    '''proc : PROC ID LP body RP SEMICOLON
     '''
     if p[2] in reserved.values():
         errorList.append("Error: Procedure name {0} cannot be a reserved word in line {1}.".format(p[2], p.lineno(1)))

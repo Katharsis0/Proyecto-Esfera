@@ -2,9 +2,13 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
+    ALEATORIO
     DIR
     FALSE
     LSB
+    MAIN
+    MOVER
+    REPEAT
     RSB
     STRING
     TRUE
@@ -19,139 +23,142 @@ Rule 4     sentence -> call
 Rule 5     sentence -> alter
 Rule 6     sentence -> not
 Rule 7     sentence -> condFunction
-Rule 8     sentence -> PRINT
-Rule 9     keyword -> procedure
-Rule 10    keyword -> procedure procedure
-Rule 11    keyword -> MAIN
-Rule 12    body -> iterative
-Rule 13    body -> CASE
-Rule 14    body -> DEF
-Rule 15    body -> MOVER
-Rule 16    body -> ALEATORIO
-Rule 17    body -> sentence
-Rule 18    body -> REPEAT
-Rule 19    def -> DEF LP ID COMMA TYPE RP SEMICOLON
-Rule 20    def -> DEF LP ID COMMA TYPE COMMA value SEMICOLON
-Rule 21    alter -> ALTER LP ID COMMA value RP SEMICOLON
-Rule 22    not -> NOT LP ID RP SEMICOLON
-Rule 23    istrue -> ISTRUE LP ID RP SEMICOLON
-Rule 24    iterative -> WHILE condition LP instructions RP SEMICOLON
-Rule 25    iterative -> UNTIL LP instructions RP condition SEMICOLON
-Rule 26    case -> CASE functions SEMICOLON
-Rule 27    case -> CASE ID functions SEMICOLON
-Rule 28    call -> CALL LP ID RP SEMICOLON
-Rule 29    functions -> function
-Rule 30    functions -> functions function
-Rule 31    function -> when then
-Rule 32    function -> when then else
-Rule 33    when -> WHEN LP condition RP
-Rule 34    when -> WHEN value
-Rule 35    then -> THEN instructions
-Rule 36    else -> ELSE instructions
-Rule 37    instructions -> instruction
-Rule 38    instructions -> instructions instruction
-Rule 39    instruction -> sentences
-Rule 40    instruction -> body
-Rule 41    instruction -> expression
-Rule 42    expression -> expression PLUS term
-Rule 43    expression -> expression MINUS term
-Rule 44    expression -> term
-Rule 45    term -> term STAR factor
-Rule 46    term -> term SLASH factor
-Rule 47    term -> factor
-Rule 48    factor -> LP expression RP
-Rule 49    factor -> UMINUS factor
-Rule 50    factor -> INT
-Rule 51    condFunction -> istrue
-Rule 52    condition -> oper GT oper
-Rule 53    condition -> oper LT oper
-Rule 54    condition -> oper EQUAL oper
-Rule 55    condition -> oper DIF oper
-Rule 56    condition -> oper GTE oper
-Rule 57    condition -> oper LTE oper
-Rule 58    condition -> condFunction
-Rule 59    oper -> value
-Rule 60    oper -> expression
-Rule 61    value -> ID
-Rule 62    value -> INT
-Rule 63    value -> BOOL
-Rule 64    procedure -> PROC ID LP instructions RP SEMICOLON
-Rule 65    comments -> COMMENT
+Rule 8     sentence -> print
+Rule 9     keyword -> proc
+Rule 10    keyword -> main
+Rule 11    body -> iterative
+Rule 12    body -> case
+Rule 13    body -> def
+Rule 14    body -> mover
+Rule 15    body -> aleatorio
+Rule 16    body -> sentence
+Rule 17    body -> repeat
+Rule 18    def -> DEF LP ID COMMA TYPE RP SEMICOLON
+Rule 19    def -> DEF LP ID COMMA TYPE COMMA value SEMICOLON
+Rule 20    alter -> ALTER LP ID COMMA value RP SEMICOLON
+Rule 21    not -> NOT LP ID RP SEMICOLON
+Rule 22    istrue -> ISTRUE LP ID RP SEMICOLON
+Rule 23    iterative -> WHILE condition LP instructions RP SEMICOLON
+Rule 24    iterative -> UNTIL LP instructions RP condition SEMICOLON
+Rule 25    case -> CASE functions SEMICOLON
+Rule 26    case -> CASE ID functions SEMICOLON
+Rule 27    call -> CALL LP ID RP SEMICOLON
+Rule 28    functions -> function
+Rule 29    functions -> functions function
+Rule 30    function -> when then
+Rule 31    function -> when then else
+Rule 32    when -> WHEN LP condition RP
+Rule 33    when -> WHEN value
+Rule 34    then -> THEN instructions
+Rule 35    else -> ELSE instructions
+Rule 36    instructions -> instruction
+Rule 37    instructions -> instructions instruction
+Rule 38    instruction -> sentences
+Rule 39    instruction -> body
+Rule 40    instruction -> expression
+Rule 41    expression -> expression PLUS term
+Rule 42    expression -> expression MINUS term
+Rule 43    expression -> term
+Rule 44    term -> term STAR factor
+Rule 45    term -> term SLASH factor
+Rule 46    term -> factor
+Rule 47    factor -> LP expression RP
+Rule 48    factor -> UMINUS factor
+Rule 49    factor -> INT
+Rule 50    condFunction -> istrue
+Rule 51    condition -> oper GT oper
+Rule 52    condition -> oper LT oper
+Rule 53    condition -> oper EQUAL oper
+Rule 54    condition -> oper DIF oper
+Rule 55    condition -> oper GTE oper
+Rule 56    condition -> oper LTE oper
+Rule 57    condition -> condFunction
+Rule 58    oper -> value
+Rule 59    oper -> expression
+Rule 60    value -> ID
+Rule 61    value -> INT
+Rule 62    value -> BOOL
+Rule 63    proc -> PROC ID LP body RP SEMICOLON
+Rule 64    comments -> COMMENT
 
 Terminals, with rules where they appear
 
-ALEATORIO            : 16
-ALTER                : 21
-BOOL                 : 63
-CALL                 : 28
-CASE                 : 13 26 27
-COMMA                : 19 20 20 21
-DEF                  : 14 19 20
-DIF                  : 55
+ALEATORIO            : 
+ALTER                : 20
+BOOL                 : 62
+CALL                 : 27
+CASE                 : 25 26
+COMMA                : 18 19 19 20
+COMMENT              : 64
+DEF                  : 18 19
+DIF                  : 54
 DIR                  : 
-ELSE                 : 36
-EQUAL                : 54
+ELSE                 : 35
+EQUAL                : 53
 FALSE                : 
-GT                   : 52
-GTE                  : 56
-ID                   : 19 20 21 22 23 27 28 61 64
-INT                  : 50 62
-ISTRUE               : 23
-LP                   : 19 20 21 22 23 24 25 28 33 48 64
+GT                   : 51
+GTE                  : 55
+ID                   : 18 19 20 21 22 26 27 60 63
+INT                  : 49 61
+ISTRUE               : 22
+LP                   : 18 19 20 21 22 23 24 27 32 47 63
 LSB                  : 
-LT                   : 53
-LTE                  : 57
-MAIN                 : 11
-MINUS                : 43
-MOVER                : 15
-NOT                  : 22
-PLUS                 : 42
-PRINT                : 8
-PROC                 : 64
-REPEAT               : 18
-RP                   : 19 21 22 23 24 25 28 33 48 64
+LT                   : 52
+LTE                  : 56
+MAIN                 : 
+MINUS                : 42
+MOVER                : 
+NOT                  : 21
+PLUS                 : 41
+PROC                 : 63
+REPEAT               : 
+RP                   : 18 20 21 22 23 24 27 32 47 63
 RSB                  : 
-SEMICOLON            : 19 20 21 22 23 24 25 26 27 28 64
-SLASH                : 46
-STAR                 : 45
+SEMICOLON            : 18 19 20 21 22 23 24 25 26 27 63
+SLASH                : 45
+STAR                 : 44
 STRING               : 
+THEN                 : 34
 TRUE                 : 
-TYPE                 : 19 20
-UMINUS               : 49
-UNTIL                : 25
-WHEN                 : 33 34
-WHILE                : 24
+TYPE                 : 18 19
+UMINUS               : 48
+UNTIL                : 24
+WHEN                 : 32 33
+WHILE                : 23
 error                : 
 
 Nonterminals, with rules where they appear
 
-COMMENT              : 65
-THEN                 : 35
+aleatorio            : 15
 alter                : 5
-body                 : 40
+body                 : 39 63
 call                 : 4
-case                 : 
+case                 : 12
 comments             : 
-condFunction         : 7 58
-condition            : 24 25 33
-def                  : 3
-else                 : 32
-expression           : 41 42 43 48 60
-factor               : 45 46 47 49
-function             : 29 30
-functions            : 26 27 30
-instruction          : 37 38
-instructions         : 24 25 35 36 38 64
-istrue               : 51
-iterative            : 12
+condFunction         : 7 57
+condition            : 23 24 32
+def                  : 3 13
+else                 : 31
+expression           : 40 41 42 47 59
+factor               : 44 45 46 48
+function             : 28 29
+functions            : 25 26 29
+instruction          : 36 37
+instructions         : 23 24 34 35 37
+istrue               : 50
+iterative            : 11
 keyword              : 
+main                 : 10
+mover                : 14
 not                  : 6
-oper                 : 52 52 53 53 54 54 55 55 56 56 57 57
-procedure            : 9 10 10
-sentence             : 1 2 17
-sentences            : 1 39 0
-term                 : 42 43 44 45 46
-then                 : 31 32
-value                : 20 21 34 59
-when                 : 31 32
+oper                 : 51 51 52 52 53 53 54 54 55 55 56 56
+print                : 8
+proc                 : 9
+repeat               : 17
+sentence             : 1 2 16
+sentences            : 1 38 0
+term                 : 41 42 43 44 45
+then                 : 30 31
+value                : 19 20 33 58
+when                 : 30 31
 
