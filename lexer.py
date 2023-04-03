@@ -47,27 +47,11 @@ tokens = ['LP',
           'SLASH',#division
           'GT',#greater than
           'LT',#less than
-          'DIR' #Direction
-          # 'PROC',
-          # 'DEF',
-          # 'CALL',
-          # 'NOT',
-          # 'ALTER',
-          # 'MOVER',
-          # 'ALEATORIO',
-          # 'ISTRUE',
-          # 'REPEAT',
-          # 'UNTIL',
-          # 'WHILE',
-          # 'CASE',
-          # 'THEN',
-          # 'WHEN',
-          # 'ELSE',
-          # 'TRUE',
-          # 'FALSE',
-          # 'MAIN',
-          # 'PRINT',
-          # 'COMMENT'
+          'DIR', #Direction
+          
+          #Datos para el print
+          'ARROW',
+          'WORD' #Revisar si se puede usar el token STRING
           ]
 
 tokens = tokens + list(reserved.values())
@@ -92,6 +76,9 @@ t_LTE=r'<='
 t_COMMA=r','
 t_SEMICOLON=r';'
 t_DIR=r'ATR|ADL|ADE|AIZ|IZQ|DER|DDE|DIZ'
+
+t_ARROW = r'=>'
+t_WORD = r'\w+'
 
 
 

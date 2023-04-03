@@ -43,6 +43,23 @@ precedence = (('left','PLUS','MINUS'),
             ('left','STAR','SLASH'),
             ('right','UMINUS'))
 
+# Initial symbol
+def p_start(p):
+    """
+    start : initial
+    """
+    p[0] = p[1]
+
+# Here stars the analysis to every grammatics known
+def p_initial(p): # Si es necesario -> imports...
+    """
+    initial : sentence
+            | keyword
+            | comment
+
+    """
+    p[0] = p[1]
+
 
 #***PRODUCTION RULES***#
 
@@ -355,13 +372,22 @@ def p_proc(p):
         errorList.append("Error: Procedure {0} has already been defined in line {1}.".format(p[2], p.lineno(1)))
 
 
+#Definition of print function
+def p_print(p):
+    '''
+    print : WORD ARROW
+    '''
+
+    #print_after_arrow(p[2])
+    print_after_arrow('')
+
 
             
 #######COMMENTS##############
 
 #Definition of comments
-def p_comments(p):
-    '''comments : COMMENT
+def p_comment(p):
+    '''comment : COMMENT
     '''
     global commentNumber
     commentNumber+=1
@@ -369,8 +395,12 @@ def p_comments(p):
     p[0]=p[1]
 
 
+############Funciones############
 
-
+def print_after_arrow(data):
+    data = data.strip()
+    if data:
+        print(data)
 
 
 ###########Parser###########
