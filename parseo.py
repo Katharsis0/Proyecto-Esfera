@@ -2,6 +2,7 @@ import PLY.yacc as yacc
 #import ply.yacc as yacc
 from lexer import tokens
 from lexer import reserved
+from functions import *
 
 
 
@@ -395,12 +396,18 @@ def p_comment(p):
     p[0]=p[1]
 
 
-############Funciones############
+#Definition of main procedure
+def p_main(p):
+    ''' main : MAIN LP instructions RP SEMICOLON
+    '''
+    global main
+    if main !=0:
+        errorList.append("Error: The main procedure cannot be defined on line {0} because it can only be declared once.".format(p.lineno(1)))
+    else:
+        main+=1
+        p[0]= (p[1],p[3])
 
-def print_after_arrow(data):
-    data = data.strip()
-    if data:
-        print(data)
+
 
 
 ###########Parser###########

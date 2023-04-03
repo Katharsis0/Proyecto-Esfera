@@ -6,7 +6,6 @@ Unused terminals:
     DIR
     FALSE
     LSB
-    MAIN
     MOVER
     REPEAT
     RSB
@@ -85,6 +84,7 @@ Rule 66    value -> BOOL
 Rule 67    proc -> PROC ID LP body RP SEMICOLON
 Rule 68    print -> WORD ARROW
 Rule 69    comment -> COMMENT
+Rule 70    main -> MAIN LP instructions RP SEMICOLON
 
 Terminals, with rules where they appear
 
@@ -107,20 +107,20 @@ GTE                  : 59
 ID                   : 22 23 24 25 26 30 31 64 67
 INT                  : 53 65
 ISTRUE               : 26
-LP                   : 22 23 24 25 26 27 28 31 36 51 67
+LP                   : 22 23 24 25 26 27 28 31 36 51 67 70
 LSB                  : 
 LT                   : 56
 LTE                  : 60
-MAIN                 : 
+MAIN                 : 70
 MINUS                : 46
 MOVER                : 
 NOT                  : 25
 PLUS                 : 45
 PROC                 : 67
 REPEAT               : 
-RP                   : 22 24 25 26 27 28 31 36 51 67
+RP                   : 22 24 25 26 27 28 31 36 51 67 70
 RSB                  : 
-SEMICOLON            : 22 23 24 25 26 27 28 29 30 31 67
+SEMICOLON            : 22 23 24 25 26 27 28 29 30 31 67 70
 SLASH                : 49
 STAR                 : 48
 STRING               : 
@@ -152,7 +152,7 @@ function             : 32 33
 functions            : 29 30 33
 initial              : 1
 instruction          : 40 41
-instructions         : 27 28 38 39 41
+instructions         : 27 28 38 39 41 70
 istrue               : 54
 iterative            : 15
 keyword              : 3
