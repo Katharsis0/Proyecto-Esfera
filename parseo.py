@@ -3,6 +3,7 @@ import PLY.yacc as yacc
 from lexer import tokens
 from lexer import reserved
 from functions import *
+import random
 
 
 
@@ -372,6 +373,27 @@ def p_proc(p):
     if p[2] in procedures:
         errorList.append("Error: Procedure {0} has already been defined in line {1}.".format(p[2], p.lineno(1)))
 
+
+#Definition of Mover(A)
+def p_mover(p):
+    '''mover : MOVER LP DIR RP'''
+    
+    p[0]= (p[1],p[3])
+    mover(p[3])
+
+#Definition of Aleatorio()
+def p_aleatorio(p):
+    '''aleatorio : ALEATORIO LP RP'''
+    listDir=['ATR','ADL','ADE','AIZ','IZQ','DER','DDE','DIZ']      
+    
+    p[0]= p[1]
+    for i in range (0,9):
+        mover(random.choice(listDir))
+
+#Definition of repeat
+def p_repeat(p):
+    '''repeat : REPEAT LP instructions RP'''
+    p[0]= (p[1],p[3])
 
 #Definition of print function
 def p_print(p):

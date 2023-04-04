@@ -48,7 +48,6 @@ tokens = ['LP',
           'GT',#greater than
           'LT',#less than
           'DIR', #Direction
-          
           #Datos para el print
           'ARROW',
           'WORD' #Revisar si se puede usar el token STRING
