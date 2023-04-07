@@ -1,6 +1,4 @@
-import PLY.yacc as yacc
-#import ply.yacc as yacc
-from lexer import tokens
+import ply.yacc as yacc
 from lexer import reserved
 from functions import *
 import random
@@ -54,34 +52,32 @@ def p_start(p):
 
 # Here stars the analysis to every grammatics known
 def p_initial(p): # Si es necesario -> imports...
-    """
+    '''
     initial : sentence
-            | keyword
-            | comment
+   '''
 
-    """
     p[0] = p[1]
 
 
 #***PRODUCTION RULES***#
 
-def p_sentences(p): #TODO: revisar la concatenacion de sentencias
-    '''sentences : sentences sentence
-                | sentence
-    '''
+# def p_sentences(p): #TODO: revisar la concatenacion de sentencias
+#     '''sentences : sentence
+#     '''
 
-    if len(p)==2:
-        p[0]=[p[1]]
-    else:
-        p[0]=p[1]+[p[2]]
+#     if len(p)==2:
+#         p[0]=[p[1]]
+#     else:
+#         p[0]=p[1]+[p[2]]
 
 def p_sentence(p):
-    ''' sentence : def
-                | call
+    ''' sentence : call
                 | alter
                 | not
                 | condFunction
                 | print
+                | comment
+                | def
     '''
 
     p[0] = p[1]
@@ -96,21 +92,22 @@ def p_keyword(p):
 def p_body(p): # iterative -> while and until
     ''' body : iterative
             | case
-            | def
             | mover
             | aleatorio
             | sentence
             | repeat
+            | def
     '''
 
     p[0]=p[1]
 
 ####****Body****####
 def p_def(p):
-    '''def : DEF LP ID COMMA TYPE RP SEMICOLON
-        | DEF LP ID COMMA TYPE COMMA value SEMICOLON
+    '''def : DEF ID COMMA TYPE COMMA value SEMICOLON
     '''
     global localVars
+    p[0]=(p[1],p[2])
+
     #if a reserved word is used as an ID
     if p[3] in reserved.values():
         errorList.append("Error: Variable {0} cannot be a reserved word in line {1}.".format(p[1].type, p.lineno(1)))
@@ -242,7 +239,7 @@ def p_instructions(p):
         p[0]=p[1]+[p[2]]
 
 def p_instruction(p):
-    '''instruction : sentences
+    '''instruction : sentence
                   | body
                   | expression
     '''

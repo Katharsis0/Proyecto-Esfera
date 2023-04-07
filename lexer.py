@@ -1,5 +1,4 @@
-import PLY.lex as lex
-from PLY.lex import TOKEN
+import ply.lex as lex
 
 #list of reserved words
 reserved = {
@@ -38,7 +37,6 @@ tokens = ['LP',
           'GTE',#>= - greater or equal
           'DIF', #>< - different
           'PLUS',
-          'STRING',
           'MINUS',
           'UMINUS',
           'TYPE',
@@ -50,10 +48,10 @@ tokens = ['LP',
           'DIR', #Direction
           #Datos para el print
           'ARROW',
-          'WORD' #Revisar si se puede usar el token STRING
-          ]
-
-tokens = tokens + list(reserved.values())
+          'WORD'
+        #  'DEF'
+            #Revisar si se puede usar el token STRING
+          ] + list(reserved.values())
 
 
 #regular expression rules for matching simple tokens
@@ -62,7 +60,7 @@ t_PLUS=r'\+'
 t_MINUS=r'\-'
 t_STAR=r'\*'
 t_SLASH=r'/'
-t_LP=r'\('
+t_LP=r'\?'
 t_RP=r'\)'
 t_LSB=r'\['
 t_RSB=r'\]'
@@ -75,6 +73,7 @@ t_LTE=r'<='
 t_COMMA=r','
 t_SEMICOLON=r';'
 t_DIR=r'ATR|ADL|ADE|AIZ|IZQ|DER|DDE|DIZ'
+#t_DEF=r'Def'
 
 t_ARROW = r'=>'
 t_WORD = r'\w+'
@@ -111,11 +110,11 @@ def t_INT(token):
     token.value= int(token.value)
     return token
 
-#Define rule for string in order to print correctly
-def t_STRING(token):
-    r'^[A-Za-z0-9!@#$%^&*()_+{}\[\]:;<>,.?\/|\\\'\"\-=\s]+$'
-    token.value= str(token.value)
-    return token
+# #Define rule for string in order to print correctly
+# def t_STRING(token):
+#     r'^[A-Za-z0-9!@#$%^&*()_+{}\[\]:;<>,.?\/|\\\'\"\-=\s]+$'
+#     token.value= str(token.value)
+#     return token
 
 #Defines comment rule
 def t_COMMENT(token):
@@ -157,4 +156,4 @@ def t_eof(token):
 
 
 
-lexer = lex.lex()
+lexer = lex.lex(debug=1)

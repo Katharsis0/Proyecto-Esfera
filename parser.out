@@ -1,1 +1,66 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    INTEGER
+
+Grammar
+
+Rule 0     S' -> init
+Rule 1     init -> comment code
+Rule 2     init -> comment
+Rule 3     code -> procedimientos main
+Rule 4     code -> main procedimientos
+Rule 5     code -> procedimientos main procedimientos
+Rule 6     procedimientos -> procedimiento procedimientos
+Rule 7     procedimientos -> procedimiento
+Rule 8     procedimiento -> proc
+Rule 9     id -> ID
+Rule 10    instrucciones -> instruccion instrucciones
+Rule 11    instrucciones -> instruccion
+Rule 12    instruccion -> def
+Rule 13    def -> DEF LP ID RP
+Rule 14    expression -> expression PLUS term
+Rule 15    expression -> expression MINUS term
+Rule 16    expression -> term
+Rule 17    term -> term STAR factor
+Rule 18    term -> term SLASH factor
+Rule 19    term -> factor
+Rule 20    factor -> NUMBER
+Rule 21    factor -> LP expression RP
+Rule 22    proc -> PROC LP RP
+Rule 23    comment -> COMMENT
+
+Terminals, with rules where they appear
+
+DEF                  : 13
+ID                   : 9 13
+INTEGER              : 
+LP                   : 13 21 22
+MINUS                : 15
+PLUS                 : 14
+PROC                 : 22
+RP                   : 13 21 22
+SLASH                : 18
+STAR                 : 17
+error                : 
+
+Nonterminals, with rules where they appear
+
+COMMENT              : 23
+NUMBER               : 20
+code                 : 1
+comment              : 1 2
+def                  : 12
+expression           : 14 15 21
+factor               : 17 18 19
+id                   : 
+init                 : 0
+instruccion          : 10 11
+instrucciones        : 10
+main                 : 3 4 5
+proc                 : 8
+procedimiento        : 6 7
+procedimientos       : 3 4 5 5 6
+term                 : 14 15 16 17 18
+
