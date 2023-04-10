@@ -2,163 +2,184 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    BOOL
-    DIF
-    ELSE
-    EQUAL
+    CHANGE
     FALSE
-    GT
-    GTE
     LSB
-    LT
-    LTE
     RSB
-    THEN
     TRUE
-    TYPE
     UMINUS
-    WHEN
+    VALUE
 
 Grammar
 
 Rule 0     S' -> init
-Rule 1     init -> func
-Rule 2     second -> comment code
-Rule 3     second -> comment
-Rule 4     func -> DEF ID
-Rule 5     code -> procedimientos main
-Rule 6     code -> main procedimientos
-Rule 7     code -> procedimientos main procedimientos
-Rule 8     code -> main
-Rule 9     procedimientos -> procedimiento procedimientos
-Rule 10    procedimientos -> procedimiento
-Rule 11    procedimiento -> proc
-Rule 12    proc -> PROC ID LP factor RP SEMICOLON
-Rule 13    main -> MAIN LP instrucciones RP SEMICOLON
-Rule 14    main -> MAIN SEMICOLON
-Rule 15    id -> ID
-Rule 16    instrucciones -> instruccion instrucciones
-Rule 17    instrucciones -> instruccion
-Rule 18    instruccion -> def
-Rule 19    instruccion -> call
-Rule 20    instruccion -> alter
-Rule 21    instruccion -> not
-Rule 22    instruccion -> print
-Rule 23    instruccion -> iterative
-Rule 24    instruccion -> case
-Rule 25    instruccion -> mover
-Rule 26    instruccion -> aleatorio
-Rule 27    instruccion -> repeat
-Rule 28    def -> DEF LP factor RP
-Rule 29    call -> CALL LP id RP SEMICOLON
-Rule 30    alter -> ALTER LP id COMMA factor RP SEMICOLON
-Rule 31    not -> NOT LP id RP SEMICOLON
-Rule 32    istrue -> ISTRUE LP id RP SEMICOLON
-Rule 33    print -> PRINT LP RP SEMICOLON
-Rule 34    iterative -> WHILE LP instrucciones SEMICOLON
-Rule 35    iterative -> UNTIL LP RP instrucciones SEMICOLON
-Rule 36    case -> CASE instrucciones SEMICOLON
-Rule 37    case -> CASE ID instrucciones SEMICOLON
-Rule 38    mover -> MOVER LP DIR RP SEMICOLON
-Rule 39    aleatorio -> ALEATORIO LP RP SEMICOLON
-Rule 40    repeat -> REPEAT LP instrucciones RP
-Rule 41    expression -> expression PLUS term
-Rule 42    expression -> expression MINUS term
-Rule 43    expression -> term
-Rule 44    term -> term STAR factor
-Rule 45    term -> term SLASH factor
-Rule 46    term -> factor
-Rule 47    factor -> INTEGER
-Rule 48    factor -> LP expression RP
-Rule 49    comment -> COMMENT
+Rule 1     init -> comment code
+Rule 2     init -> comment
+Rule 3     code -> procedimientos main
+Rule 4     code -> main procedimientos
+Rule 5     code -> procedimientos main procedimientos
+Rule 6     code -> main
+Rule 7     procedimientos -> procedimiento procedimientos
+Rule 8     procedimientos -> procedimiento
+Rule 9     procedimiento -> proc
+Rule 10    proc -> PROC ID LP instrucciones RP SEMICOLON
+Rule 11    main -> MAIN LP instrucciones RP SEMICOLON
+Rule 12    main -> MAIN LP RP SEMICOLON
+Rule 13    instrucciones -> instruccion instrucciones
+Rule 14    instrucciones -> instruccion
+Rule 15    instruccion -> def
+Rule 16    instruccion -> call
+Rule 17    instruccion -> alter
+Rule 18    instruccion -> not
+Rule 19    instruccion -> print
+Rule 20    instruccion -> iterative
+Rule 21    instruccion -> case
+Rule 22    instruccion -> mover
+Rule 23    instruccion -> aleatorio
+Rule 24    instruccion -> istrue
+Rule 25    instruccion -> repeat
+Rule 26    instruccion -> change
+Rule 27    def -> DEF LP ID COMMA TYPE COMMA value RP SEMICOLON
+Rule 28    def -> DEF LP ID COMMA TYPE RP SEMICOLON
+Rule 29    call -> CALL LP ID RP SEMICOLON
+Rule 30    alter -> ALTER LP ID COMMA INTEGER RP SEMICOLON
+Rule 31    alter -> ALTER LP ID COMMA ID RP SEMICOLON
+Rule 32    not -> NOT LP ID RP SEMICOLON
+Rule 33    istrue -> ISTRUE LP ID RP SEMICOLON
+Rule 34    print -> PRINT LP RP SEMICOLON
+Rule 35    iterative -> WHILE condicion LP instrucciones RP SEMICOLON
+Rule 36    iterative -> UNTIL LP instrucciones RP condicion SEMICOLON
+Rule 37    case -> CASE funciones SEMICOLON
+Rule 38    case -> CASE ID funciones SEMICOLON
+Rule 39    mover -> MOVER LP DIR RP SEMICOLON
+Rule 40    aleatorio -> ALEATORIO LP RP SEMICOLON
+Rule 41    repeat -> REPEAT LP instrucciones RP SEMICOLON
+Rule 42    value -> INTEGER
+Rule 43    value -> BOOL
+Rule 44    funciones -> funcion
+Rule 45    funciones -> funciones funcion
+Rule 46    funcion -> when then
+Rule 47    funcion -> when then else
+Rule 48    when -> WHEN LP condicion RP
+Rule 49    when -> WHEN value
+Rule 50    then -> THEN LP instrucciones RP
+Rule 51    else -> ELSE LP instrucciones RP
+Rule 52    condicion -> oper GT oper
+Rule 53    condicion -> oper LT oper
+Rule 54    condicion -> oper EQUAL oper
+Rule 55    condicion -> oper DIF oper
+Rule 56    condicion -> oper GTE oper
+Rule 57    condicion -> oper LTE oper
+Rule 58    condicion -> istrue
+Rule 59    oper -> value
+Rule 60    oper -> expression
+Rule 61    change -> ID LP value RP SEMICOLON
+Rule 62    expression -> expression PLUS term
+Rule 63    expression -> expression MINUS term
+Rule 64    expression -> term
+Rule 65    term -> term STAR factor
+Rule 66    term -> term SLASH factor
+Rule 67    term -> factor
+Rule 68    factor -> INTEGER
+Rule 69    factor -> LP expression RP
+Rule 70    comment -> COMMENT
 
 Terminals, with rules where they appear
 
-ALEATORIO            : 39
-ALTER                : 30
-BOOL                 : 
+ALEATORIO            : 40
+ALTER                : 30 31
+BOOL                 : 43
 CALL                 : 29
-CASE                 : 36 37
-COMMA                : 30
-COMMENT              : 49
-DEF                  : 4 28
-DIF                  : 
-DIR                  : 38
-ELSE                 : 
-EQUAL                : 
+CASE                 : 37 38
+CHANGE               : 
+COMMA                : 27 27 28 30 31
+COMMENT              : 70
+DEF                  : 27 28
+DIF                  : 55
+DIR                  : 39
+ELSE                 : 51
+EQUAL                : 54
 FALSE                : 
-GT                   : 
-GTE                  : 
-ID                   : 4 12 15 37
-INTEGER              : 47
-ISTRUE               : 32
-LP                   : 12 13 28 29 30 31 32 33 34 35 38 39 40 48
+GT                   : 52
+GTE                  : 56
+ID                   : 10 27 28 29 30 31 31 32 33 38 61
+INTEGER              : 30 42 68
+ISTRUE               : 33
+LP                   : 10 11 12 27 28 29 30 31 32 33 34 35 36 39 40 41 48 50 51 61 69
 LSB                  : 
-LT                   : 
-LTE                  : 
-MAIN                 : 13 14
-MINUS                : 42
-MOVER                : 38
-NOT                  : 31
-PLUS                 : 41
-PRINT                : 33
-PROC                 : 12
-REPEAT               : 40
-RP                   : 12 13 28 29 30 31 32 33 35 38 39 40 48
+LT                   : 53
+LTE                  : 57
+MAIN                 : 11 12
+MINUS                : 63
+MOVER                : 39
+NOT                  : 32
+PLUS                 : 62
+PRINT                : 34
+PROC                 : 10
+REPEAT               : 41
+RP                   : 10 11 12 27 28 29 30 31 32 33 34 35 36 39 40 41 48 50 51 61 69
 RSB                  : 
-SEMICOLON            : 12 13 14 29 30 31 32 33 34 35 36 37 38 39
-SLASH                : 45
-STAR                 : 44
-THEN                 : 
+SEMICOLON            : 10 11 12 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 61
+SLASH                : 66
+STAR                 : 65
+THEN                 : 50
 TRUE                 : 
-TYPE                 : 
+TYPE                 : 27 28
 UMINUS               : 
-UNTIL                : 35
-WHEN                 : 
-WHILE                : 34
+UNTIL                : 36
+VALUE                : 
+WHEN                 : 48 49
+WHILE                : 35
 error                : 
 
 Nonterminals, with rules where they appear
 
-aleatorio            : 26
-alter                : 20
-call                 : 19
-case                 : 24
-code                 : 2
-comment              : 2 3
-def                  : 18
-expression           : 41 42 48
-factor               : 12 28 30 44 45 46
-func                 : 1
-id                   : 29 30 31 32
+aleatorio            : 23
+alter                : 17
+call                 : 16
+case                 : 21
+change               : 26
+code                 : 1
+comment              : 1 2
+condicion            : 35 36 48
+def                  : 15
+else                 : 47
+expression           : 60 62 63 69
+factor               : 65 66 67
+funcion              : 44 45
+funciones            : 37 38 45
 init                 : 0
-instruccion          : 16 17
-instrucciones        : 13 16 34 35 36 37 40
-istrue               : 
-iterative            : 23
-main                 : 5 6 7 8
-mover                : 25
-not                  : 21
-print                : 22
-proc                 : 11
-procedimiento        : 9 10
-procedimientos       : 5 6 7 7 9
-repeat               : 27
-second               : 
-term                 : 41 42 43 44 45
+instruccion          : 13 14
+instrucciones        : 10 11 13 35 36 41 50 51
+istrue               : 24 58
+iterative            : 20
+main                 : 3 4 5 6
+mover                : 22
+not                  : 18
+oper                 : 52 52 53 53 54 54 55 55 56 56 57 57
+print                : 19
+proc                 : 9
+procedimiento        : 7 8
+procedimientos       : 3 4 5 5 7
+repeat               : 25
+term                 : 62 63 64 65 66
+then                 : 46 47
+value                : 27 49 59 61
+when                 : 46 47
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . init
-    (1) init -> . func
-    (4) func -> . DEF ID
+    (1) init -> . comment code
+    (2) init -> . comment
+    (70) comment -> . COMMENT
 
-    DEF             shift and go to state 3
+    COMMENT         shift and go to state 3
 
     init                           shift and go to state 1
-    func                           shift and go to state 2
+    comment                        shift and go to state 2
 
 state 1
 
@@ -168,21 +189,2552 @@ state 1
 
 state 2
 
-    (1) init -> func .
+    (1) init -> comment . code
+    (2) init -> comment .
+    (3) code -> . procedimientos main
+    (4) code -> . main procedimientos
+    (5) code -> . procedimientos main procedimientos
+    (6) code -> . main
+    (7) procedimientos -> . procedimiento procedimientos
+    (8) procedimientos -> . procedimiento
+    (11) main -> . MAIN LP instrucciones RP SEMICOLON
+    (12) main -> . MAIN LP RP SEMICOLON
+    (9) procedimiento -> . proc
+    (10) proc -> . PROC ID LP instrucciones RP SEMICOLON
 
-    $end            reduce using rule 1 (init -> func .)
+    $end            reduce using rule 2 (init -> comment .)
+    MAIN            shift and go to state 8
+    PROC            shift and go to state 10
 
+    code                           shift and go to state 4
+    procedimientos                 shift and go to state 5
+    main                           shift and go to state 6
+    procedimiento                  shift and go to state 7
+    proc                           shift and go to state 9
 
 state 3
 
-    (4) func -> DEF . ID
+    (70) comment -> COMMENT .
 
-    ID              shift and go to state 4
+    MAIN            reduce using rule 70 (comment -> COMMENT .)
+    PROC            reduce using rule 70 (comment -> COMMENT .)
+    $end            reduce using rule 70 (comment -> COMMENT .)
 
 
 state 4
 
-    (4) func -> DEF ID .
+    (1) init -> comment code .
 
-    $end            reduce using rule 4 (func -> DEF ID .)
+    $end            reduce using rule 1 (init -> comment code .)
 
+
+state 5
+
+    (3) code -> procedimientos . main
+    (5) code -> procedimientos . main procedimientos
+    (11) main -> . MAIN LP instrucciones RP SEMICOLON
+    (12) main -> . MAIN LP RP SEMICOLON
+
+    MAIN            shift and go to state 8
+
+    main                           shift and go to state 11
+
+state 6
+
+    (4) code -> main . procedimientos
+    (6) code -> main .
+    (7) procedimientos -> . procedimiento procedimientos
+    (8) procedimientos -> . procedimiento
+    (9) procedimiento -> . proc
+    (10) proc -> . PROC ID LP instrucciones RP SEMICOLON
+
+    $end            reduce using rule 6 (code -> main .)
+    PROC            shift and go to state 10
+
+    procedimientos                 shift and go to state 12
+    procedimiento                  shift and go to state 7
+    proc                           shift and go to state 9
+
+state 7
+
+    (7) procedimientos -> procedimiento . procedimientos
+    (8) procedimientos -> procedimiento .
+    (7) procedimientos -> . procedimiento procedimientos
+    (8) procedimientos -> . procedimiento
+    (9) procedimiento -> . proc
+    (10) proc -> . PROC ID LP instrucciones RP SEMICOLON
+
+    MAIN            reduce using rule 8 (procedimientos -> procedimiento .)
+    $end            reduce using rule 8 (procedimientos -> procedimiento .)
+    PROC            shift and go to state 10
+
+    procedimiento                  shift and go to state 7
+    procedimientos                 shift and go to state 13
+    proc                           shift and go to state 9
+
+state 8
+
+    (11) main -> MAIN . LP instrucciones RP SEMICOLON
+    (12) main -> MAIN . LP RP SEMICOLON
+
+    LP              shift and go to state 14
+
+
+state 9
+
+    (9) procedimiento -> proc .
+
+    PROC            reduce using rule 9 (procedimiento -> proc .)
+    MAIN            reduce using rule 9 (procedimiento -> proc .)
+    $end            reduce using rule 9 (procedimiento -> proc .)
+
+
+state 10
+
+    (10) proc -> PROC . ID LP instrucciones RP SEMICOLON
+
+    ID              shift and go to state 15
+
+
+state 11
+
+    (3) code -> procedimientos main .
+    (5) code -> procedimientos main . procedimientos
+    (7) procedimientos -> . procedimiento procedimientos
+    (8) procedimientos -> . procedimiento
+    (9) procedimiento -> . proc
+    (10) proc -> . PROC ID LP instrucciones RP SEMICOLON
+
+    $end            reduce using rule 3 (code -> procedimientos main .)
+    PROC            shift and go to state 10
+
+    procedimientos                 shift and go to state 16
+    procedimiento                  shift and go to state 7
+    proc                           shift and go to state 9
+
+state 12
+
+    (4) code -> main procedimientos .
+
+    $end            reduce using rule 4 (code -> main procedimientos .)
+
+
+state 13
+
+    (7) procedimientos -> procedimiento procedimientos .
+
+    MAIN            reduce using rule 7 (procedimientos -> procedimiento procedimientos .)
+    $end            reduce using rule 7 (procedimientos -> procedimiento procedimientos .)
+
+
+state 14
+
+    (11) main -> MAIN LP . instrucciones RP SEMICOLON
+    (12) main -> MAIN LP . RP SEMICOLON
+    (13) instrucciones -> . instruccion instrucciones
+    (14) instrucciones -> . instruccion
+    (15) instruccion -> . def
+    (16) instruccion -> . call
+    (17) instruccion -> . alter
+    (18) instruccion -> . not
+    (19) instruccion -> . print
+    (20) instruccion -> . iterative
+    (21) instruccion -> . case
+    (22) instruccion -> . mover
+    (23) instruccion -> . aleatorio
+    (24) instruccion -> . istrue
+    (25) instruccion -> . repeat
+    (26) instruccion -> . change
+    (27) def -> . DEF LP ID COMMA TYPE COMMA value RP SEMICOLON
+    (28) def -> . DEF LP ID COMMA TYPE RP SEMICOLON
+    (29) call -> . CALL LP ID RP SEMICOLON
+    (30) alter -> . ALTER LP ID COMMA INTEGER RP SEMICOLON
+    (31) alter -> . ALTER LP ID COMMA ID RP SEMICOLON
+    (32) not -> . NOT LP ID RP SEMICOLON
+    (34) print -> . PRINT LP RP SEMICOLON
+    (35) iterative -> . WHILE condicion LP instrucciones RP SEMICOLON
+    (36) iterative -> . UNTIL LP instrucciones RP condicion SEMICOLON
+    (37) case -> . CASE funciones SEMICOLON
+    (38) case -> . CASE ID funciones SEMICOLON
+    (39) mover -> . MOVER LP DIR RP SEMICOLON
+    (40) aleatorio -> . ALEATORIO LP RP SEMICOLON
+    (33) istrue -> . ISTRUE LP ID RP SEMICOLON
+    (41) repeat -> . REPEAT LP instrucciones RP SEMICOLON
+    (61) change -> . ID LP value RP SEMICOLON
+
+    RP              shift and go to state 18
+    DEF             shift and go to state 32
+    CALL            shift and go to state 34
+    ALTER           shift and go to state 35
+    NOT             shift and go to state 36
+    PRINT           shift and go to state 37
+    WHILE           shift and go to state 38
+    UNTIL           shift and go to state 39
+    CASE            shift and go to state 40
+    MOVER           shift and go to state 41
+    ALEATORIO       shift and go to state 42
+    ISTRUE          shift and go to state 43
+    REPEAT          shift and go to state 44
+    ID              shift and go to state 33
+
+    instrucciones                  shift and go to state 17
+    instruccion                    shift and go to state 19
+    def                            shift and go to state 20
+    call                           shift and go to state 21
+    alter                          shift and go to state 22
+    not                            shift and go to state 23
+    print                          shift and go to state 24
+    iterative                      shift and go to state 25
+    case                           shift and go to state 26
+    mover                          shift and go to state 27
+    aleatorio                      shift and go to state 28
+    istrue                         shift and go to state 29
+    repeat                         shift and go to state 30
+    change                         shift and go to state 31
+
+state 15
+
+    (10) proc -> PROC ID . LP instrucciones RP SEMICOLON
+
+    LP              shift and go to state 45
+
+
+state 16
+
+    (5) code -> procedimientos main procedimientos .
+
+    $end            reduce using rule 5 (code -> procedimientos main procedimientos .)
+
+
+state 17
+
+    (11) main -> MAIN LP instrucciones . RP SEMICOLON
+
+    RP              shift and go to state 46
+
+
+state 18
+
+    (12) main -> MAIN LP RP . SEMICOLON
+
+    SEMICOLON       shift and go to state 47
+
+
+state 19
+
+    (13) instrucciones -> instruccion . instrucciones
+    (14) instrucciones -> instruccion .
+    (13) instrucciones -> . instruccion instrucciones
+    (14) instrucciones -> . instruccion
+    (15) instruccion -> . def
+    (16) instruccion -> . call
+    (17) instruccion -> . alter
+    (18) instruccion -> . not
+    (19) instruccion -> . print
+    (20) instruccion -> . iterative
+    (21) instruccion -> . case
+    (22) instruccion -> . mover
+    (23) instruccion -> . aleatorio
+    (24) instruccion -> . istrue
+    (25) instruccion -> . repeat
+    (26) instruccion -> . change
+    (27) def -> . DEF LP ID COMMA TYPE COMMA value RP SEMICOLON
+    (28) def -> . DEF LP ID COMMA TYPE RP SEMICOLON
+    (29) call -> . CALL LP ID RP SEMICOLON
+    (30) alter -> . ALTER LP ID COMMA INTEGER RP SEMICOLON
+    (31) alter -> . ALTER LP ID COMMA ID RP SEMICOLON
+    (32) not -> . NOT LP ID RP SEMICOLON
+    (34) print -> . PRINT LP RP SEMICOLON
+    (35) iterative -> . WHILE condicion LP instrucciones RP SEMICOLON
+    (36) iterative -> . UNTIL LP instrucciones RP condicion SEMICOLON
+    (37) case -> . CASE funciones SEMICOLON
+    (38) case -> . CASE ID funciones SEMICOLON
+    (39) mover -> . MOVER LP DIR RP SEMICOLON
+    (40) aleatorio -> . ALEATORIO LP RP SEMICOLON
+    (33) istrue -> . ISTRUE LP ID RP SEMICOLON
+    (41) repeat -> . REPEAT LP instrucciones RP SEMICOLON
+    (61) change -> . ID LP value RP SEMICOLON
+
+    RP              reduce using rule 14 (instrucciones -> instruccion .)
+    DEF             shift and go to state 32
+    CALL            shift and go to state 34
+    ALTER           shift and go to state 35
+    NOT             shift and go to state 36
+    PRINT           shift and go to state 37
+    WHILE           shift and go to state 38
+    UNTIL           shift and go to state 39
+    CASE            shift and go to state 40
+    MOVER           shift and go to state 41
+    ALEATORIO       shift and go to state 42
+    ISTRUE          shift and go to state 43
+    REPEAT          shift and go to state 44
+    ID              shift and go to state 33
+
+    instruccion                    shift and go to state 19
+    instrucciones                  shift and go to state 48
+    def                            shift and go to state 20
+    call                           shift and go to state 21
+    alter                          shift and go to state 22
+    not                            shift and go to state 23
+    print                          shift and go to state 24
+    iterative                      shift and go to state 25
+    case                           shift and go to state 26
+    mover                          shift and go to state 27
+    aleatorio                      shift and go to state 28
+    istrue                         shift and go to state 29
+    repeat                         shift and go to state 30
+    change                         shift and go to state 31
+
+state 20
+
+    (15) instruccion -> def .
+
+    DEF             reduce using rule 15 (instruccion -> def .)
+    CALL            reduce using rule 15 (instruccion -> def .)
+    ALTER           reduce using rule 15 (instruccion -> def .)
+    NOT             reduce using rule 15 (instruccion -> def .)
+    PRINT           reduce using rule 15 (instruccion -> def .)
+    WHILE           reduce using rule 15 (instruccion -> def .)
+    UNTIL           reduce using rule 15 (instruccion -> def .)
+    CASE            reduce using rule 15 (instruccion -> def .)
+    MOVER           reduce using rule 15 (instruccion -> def .)
+    ALEATORIO       reduce using rule 15 (instruccion -> def .)
+    ISTRUE          reduce using rule 15 (instruccion -> def .)
+    REPEAT          reduce using rule 15 (instruccion -> def .)
+    ID              reduce using rule 15 (instruccion -> def .)
+    RP              reduce using rule 15 (instruccion -> def .)
+
+
+state 21
+
+    (16) instruccion -> call .
+
+    DEF             reduce using rule 16 (instruccion -> call .)
+    CALL            reduce using rule 16 (instruccion -> call .)
+    ALTER           reduce using rule 16 (instruccion -> call .)
+    NOT             reduce using rule 16 (instruccion -> call .)
+    PRINT           reduce using rule 16 (instruccion -> call .)
+    WHILE           reduce using rule 16 (instruccion -> call .)
+    UNTIL           reduce using rule 16 (instruccion -> call .)
+    CASE            reduce using rule 16 (instruccion -> call .)
+    MOVER           reduce using rule 16 (instruccion -> call .)
+    ALEATORIO       reduce using rule 16 (instruccion -> call .)
+    ISTRUE          reduce using rule 16 (instruccion -> call .)
+    REPEAT          reduce using rule 16 (instruccion -> call .)
+    ID              reduce using rule 16 (instruccion -> call .)
+    RP              reduce using rule 16 (instruccion -> call .)
+
+
+state 22
+
+    (17) instruccion -> alter .
+
+    DEF             reduce using rule 17 (instruccion -> alter .)
+    CALL            reduce using rule 17 (instruccion -> alter .)
+    ALTER           reduce using rule 17 (instruccion -> alter .)
+    NOT             reduce using rule 17 (instruccion -> alter .)
+    PRINT           reduce using rule 17 (instruccion -> alter .)
+    WHILE           reduce using rule 17 (instruccion -> alter .)
+    UNTIL           reduce using rule 17 (instruccion -> alter .)
+    CASE            reduce using rule 17 (instruccion -> alter .)
+    MOVER           reduce using rule 17 (instruccion -> alter .)
+    ALEATORIO       reduce using rule 17 (instruccion -> alter .)
+    ISTRUE          reduce using rule 17 (instruccion -> alter .)
+    REPEAT          reduce using rule 17 (instruccion -> alter .)
+    ID              reduce using rule 17 (instruccion -> alter .)
+    RP              reduce using rule 17 (instruccion -> alter .)
+
+
+state 23
+
+    (18) instruccion -> not .
+
+    DEF             reduce using rule 18 (instruccion -> not .)
+    CALL            reduce using rule 18 (instruccion -> not .)
+    ALTER           reduce using rule 18 (instruccion -> not .)
+    NOT             reduce using rule 18 (instruccion -> not .)
+    PRINT           reduce using rule 18 (instruccion -> not .)
+    WHILE           reduce using rule 18 (instruccion -> not .)
+    UNTIL           reduce using rule 18 (instruccion -> not .)
+    CASE            reduce using rule 18 (instruccion -> not .)
+    MOVER           reduce using rule 18 (instruccion -> not .)
+    ALEATORIO       reduce using rule 18 (instruccion -> not .)
+    ISTRUE          reduce using rule 18 (instruccion -> not .)
+    REPEAT          reduce using rule 18 (instruccion -> not .)
+    ID              reduce using rule 18 (instruccion -> not .)
+    RP              reduce using rule 18 (instruccion -> not .)
+
+
+state 24
+
+    (19) instruccion -> print .
+
+    DEF             reduce using rule 19 (instruccion -> print .)
+    CALL            reduce using rule 19 (instruccion -> print .)
+    ALTER           reduce using rule 19 (instruccion -> print .)
+    NOT             reduce using rule 19 (instruccion -> print .)
+    PRINT           reduce using rule 19 (instruccion -> print .)
+    WHILE           reduce using rule 19 (instruccion -> print .)
+    UNTIL           reduce using rule 19 (instruccion -> print .)
+    CASE            reduce using rule 19 (instruccion -> print .)
+    MOVER           reduce using rule 19 (instruccion -> print .)
+    ALEATORIO       reduce using rule 19 (instruccion -> print .)
+    ISTRUE          reduce using rule 19 (instruccion -> print .)
+    REPEAT          reduce using rule 19 (instruccion -> print .)
+    ID              reduce using rule 19 (instruccion -> print .)
+    RP              reduce using rule 19 (instruccion -> print .)
+
+
+state 25
+
+    (20) instruccion -> iterative .
+
+    DEF             reduce using rule 20 (instruccion -> iterative .)
+    CALL            reduce using rule 20 (instruccion -> iterative .)
+    ALTER           reduce using rule 20 (instruccion -> iterative .)
+    NOT             reduce using rule 20 (instruccion -> iterative .)
+    PRINT           reduce using rule 20 (instruccion -> iterative .)
+    WHILE           reduce using rule 20 (instruccion -> iterative .)
+    UNTIL           reduce using rule 20 (instruccion -> iterative .)
+    CASE            reduce using rule 20 (instruccion -> iterative .)
+    MOVER           reduce using rule 20 (instruccion -> iterative .)
+    ALEATORIO       reduce using rule 20 (instruccion -> iterative .)
+    ISTRUE          reduce using rule 20 (instruccion -> iterative .)
+    REPEAT          reduce using rule 20 (instruccion -> iterative .)
+    ID              reduce using rule 20 (instruccion -> iterative .)
+    RP              reduce using rule 20 (instruccion -> iterative .)
+
+
+state 26
+
+    (21) instruccion -> case .
+
+    DEF             reduce using rule 21 (instruccion -> case .)
+    CALL            reduce using rule 21 (instruccion -> case .)
+    ALTER           reduce using rule 21 (instruccion -> case .)
+    NOT             reduce using rule 21 (instruccion -> case .)
+    PRINT           reduce using rule 21 (instruccion -> case .)
+    WHILE           reduce using rule 21 (instruccion -> case .)
+    UNTIL           reduce using rule 21 (instruccion -> case .)
+    CASE            reduce using rule 21 (instruccion -> case .)
+    MOVER           reduce using rule 21 (instruccion -> case .)
+    ALEATORIO       reduce using rule 21 (instruccion -> case .)
+    ISTRUE          reduce using rule 21 (instruccion -> case .)
+    REPEAT          reduce using rule 21 (instruccion -> case .)
+    ID              reduce using rule 21 (instruccion -> case .)
+    RP              reduce using rule 21 (instruccion -> case .)
+
+
+state 27
+
+    (22) instruccion -> mover .
+
+    DEF             reduce using rule 22 (instruccion -> mover .)
+    CALL            reduce using rule 22 (instruccion -> mover .)
+    ALTER           reduce using rule 22 (instruccion -> mover .)
+    NOT             reduce using rule 22 (instruccion -> mover .)
+    PRINT           reduce using rule 22 (instruccion -> mover .)
+    WHILE           reduce using rule 22 (instruccion -> mover .)
+    UNTIL           reduce using rule 22 (instruccion -> mover .)
+    CASE            reduce using rule 22 (instruccion -> mover .)
+    MOVER           reduce using rule 22 (instruccion -> mover .)
+    ALEATORIO       reduce using rule 22 (instruccion -> mover .)
+    ISTRUE          reduce using rule 22 (instruccion -> mover .)
+    REPEAT          reduce using rule 22 (instruccion -> mover .)
+    ID              reduce using rule 22 (instruccion -> mover .)
+    RP              reduce using rule 22 (instruccion -> mover .)
+
+
+state 28
+
+    (23) instruccion -> aleatorio .
+
+    DEF             reduce using rule 23 (instruccion -> aleatorio .)
+    CALL            reduce using rule 23 (instruccion -> aleatorio .)
+    ALTER           reduce using rule 23 (instruccion -> aleatorio .)
+    NOT             reduce using rule 23 (instruccion -> aleatorio .)
+    PRINT           reduce using rule 23 (instruccion -> aleatorio .)
+    WHILE           reduce using rule 23 (instruccion -> aleatorio .)
+    UNTIL           reduce using rule 23 (instruccion -> aleatorio .)
+    CASE            reduce using rule 23 (instruccion -> aleatorio .)
+    MOVER           reduce using rule 23 (instruccion -> aleatorio .)
+    ALEATORIO       reduce using rule 23 (instruccion -> aleatorio .)
+    ISTRUE          reduce using rule 23 (instruccion -> aleatorio .)
+    REPEAT          reduce using rule 23 (instruccion -> aleatorio .)
+    ID              reduce using rule 23 (instruccion -> aleatorio .)
+    RP              reduce using rule 23 (instruccion -> aleatorio .)
+
+
+state 29
+
+    (24) instruccion -> istrue .
+
+    DEF             reduce using rule 24 (instruccion -> istrue .)
+    CALL            reduce using rule 24 (instruccion -> istrue .)
+    ALTER           reduce using rule 24 (instruccion -> istrue .)
+    NOT             reduce using rule 24 (instruccion -> istrue .)
+    PRINT           reduce using rule 24 (instruccion -> istrue .)
+    WHILE           reduce using rule 24 (instruccion -> istrue .)
+    UNTIL           reduce using rule 24 (instruccion -> istrue .)
+    CASE            reduce using rule 24 (instruccion -> istrue .)
+    MOVER           reduce using rule 24 (instruccion -> istrue .)
+    ALEATORIO       reduce using rule 24 (instruccion -> istrue .)
+    ISTRUE          reduce using rule 24 (instruccion -> istrue .)
+    REPEAT          reduce using rule 24 (instruccion -> istrue .)
+    ID              reduce using rule 24 (instruccion -> istrue .)
+    RP              reduce using rule 24 (instruccion -> istrue .)
+
+
+state 30
+
+    (25) instruccion -> repeat .
+
+    DEF             reduce using rule 25 (instruccion -> repeat .)
+    CALL            reduce using rule 25 (instruccion -> repeat .)
+    ALTER           reduce using rule 25 (instruccion -> repeat .)
+    NOT             reduce using rule 25 (instruccion -> repeat .)
+    PRINT           reduce using rule 25 (instruccion -> repeat .)
+    WHILE           reduce using rule 25 (instruccion -> repeat .)
+    UNTIL           reduce using rule 25 (instruccion -> repeat .)
+    CASE            reduce using rule 25 (instruccion -> repeat .)
+    MOVER           reduce using rule 25 (instruccion -> repeat .)
+    ALEATORIO       reduce using rule 25 (instruccion -> repeat .)
+    ISTRUE          reduce using rule 25 (instruccion -> repeat .)
+    REPEAT          reduce using rule 25 (instruccion -> repeat .)
+    ID              reduce using rule 25 (instruccion -> repeat .)
+    RP              reduce using rule 25 (instruccion -> repeat .)
+
+
+state 31
+
+    (26) instruccion -> change .
+
+    DEF             reduce using rule 26 (instruccion -> change .)
+    CALL            reduce using rule 26 (instruccion -> change .)
+    ALTER           reduce using rule 26 (instruccion -> change .)
+    NOT             reduce using rule 26 (instruccion -> change .)
+    PRINT           reduce using rule 26 (instruccion -> change .)
+    WHILE           reduce using rule 26 (instruccion -> change .)
+    UNTIL           reduce using rule 26 (instruccion -> change .)
+    CASE            reduce using rule 26 (instruccion -> change .)
+    MOVER           reduce using rule 26 (instruccion -> change .)
+    ALEATORIO       reduce using rule 26 (instruccion -> change .)
+    ISTRUE          reduce using rule 26 (instruccion -> change .)
+    REPEAT          reduce using rule 26 (instruccion -> change .)
+    ID              reduce using rule 26 (instruccion -> change .)
+    RP              reduce using rule 26 (instruccion -> change .)
+
+
+state 32
+
+    (27) def -> DEF . LP ID COMMA TYPE COMMA value RP SEMICOLON
+    (28) def -> DEF . LP ID COMMA TYPE RP SEMICOLON
+
+    LP              shift and go to state 49
+
+
+state 33
+
+    (61) change -> ID . LP value RP SEMICOLON
+
+    LP              shift and go to state 50
+
+
+state 34
+
+    (29) call -> CALL . LP ID RP SEMICOLON
+
+    LP              shift and go to state 51
+
+
+state 35
+
+    (30) alter -> ALTER . LP ID COMMA INTEGER RP SEMICOLON
+    (31) alter -> ALTER . LP ID COMMA ID RP SEMICOLON
+
+    LP              shift and go to state 52
+
+
+state 36
+
+    (32) not -> NOT . LP ID RP SEMICOLON
+
+    LP              shift and go to state 53
+
+
+state 37
+
+    (34) print -> PRINT . LP RP SEMICOLON
+
+    LP              shift and go to state 54
+
+
+state 38
+
+    (35) iterative -> WHILE . condicion LP instrucciones RP SEMICOLON
+    (52) condicion -> . oper GT oper
+    (53) condicion -> . oper LT oper
+    (54) condicion -> . oper EQUAL oper
+    (55) condicion -> . oper DIF oper
+    (56) condicion -> . oper GTE oper
+    (57) condicion -> . oper LTE oper
+    (58) condicion -> . istrue
+    (59) oper -> . value
+    (60) oper -> . expression
+    (33) istrue -> . ISTRUE LP ID RP SEMICOLON
+    (42) value -> . INTEGER
+    (43) value -> . BOOL
+    (62) expression -> . expression PLUS term
+    (63) expression -> . expression MINUS term
+    (64) expression -> . term
+    (65) term -> . term STAR factor
+    (66) term -> . term SLASH factor
+    (67) term -> . factor
+    (68) factor -> . INTEGER
+    (69) factor -> . LP expression RP
+
+    ISTRUE          shift and go to state 43
+    INTEGER         shift and go to state 61
+    BOOL            shift and go to state 62
+    LP              shift and go to state 56
+
+    condicion                      shift and go to state 55
+    oper                           shift and go to state 57
+    istrue                         shift and go to state 58
+    value                          shift and go to state 59
+    expression                     shift and go to state 60
+    term                           shift and go to state 63
+    factor                         shift and go to state 64
+
+state 39
+
+    (36) iterative -> UNTIL . LP instrucciones RP condicion SEMICOLON
+
+    LP              shift and go to state 65
+
+
+state 40
+
+    (37) case -> CASE . funciones SEMICOLON
+    (38) case -> CASE . ID funciones SEMICOLON
+    (44) funciones -> . funcion
+    (45) funciones -> . funciones funcion
+    (46) funcion -> . when then
+    (47) funcion -> . when then else
+    (48) when -> . WHEN LP condicion RP
+    (49) when -> . WHEN value
+
+    ID              shift and go to state 67
+    WHEN            shift and go to state 70
+
+    funciones                      shift and go to state 66
+    funcion                        shift and go to state 68
+    when                           shift and go to state 69
+
+state 41
+
+    (39) mover -> MOVER . LP DIR RP SEMICOLON
+
+    LP              shift and go to state 71
+
+
+state 42
+
+    (40) aleatorio -> ALEATORIO . LP RP SEMICOLON
+
+    LP              shift and go to state 72
+
+
+state 43
+
+    (33) istrue -> ISTRUE . LP ID RP SEMICOLON
+
+    LP              shift and go to state 73
+
+
+state 44
+
+    (41) repeat -> REPEAT . LP instrucciones RP SEMICOLON
+
+    LP              shift and go to state 74
+
+
+state 45
+
+    (10) proc -> PROC ID LP . instrucciones RP SEMICOLON
+    (13) instrucciones -> . instruccion instrucciones
+    (14) instrucciones -> . instruccion
+    (15) instruccion -> . def
+    (16) instruccion -> . call
+    (17) instruccion -> . alter
+    (18) instruccion -> . not
+    (19) instruccion -> . print
+    (20) instruccion -> . iterative
+    (21) instruccion -> . case
+    (22) instruccion -> . mover
+    (23) instruccion -> . aleatorio
+    (24) instruccion -> . istrue
+    (25) instruccion -> . repeat
+    (26) instruccion -> . change
+    (27) def -> . DEF LP ID COMMA TYPE COMMA value RP SEMICOLON
+    (28) def -> . DEF LP ID COMMA TYPE RP SEMICOLON
+    (29) call -> . CALL LP ID RP SEMICOLON
+    (30) alter -> . ALTER LP ID COMMA INTEGER RP SEMICOLON
+    (31) alter -> . ALTER LP ID COMMA ID RP SEMICOLON
+    (32) not -> . NOT LP ID RP SEMICOLON
+    (34) print -> . PRINT LP RP SEMICOLON
+    (35) iterative -> . WHILE condicion LP instrucciones RP SEMICOLON
+    (36) iterative -> . UNTIL LP instrucciones RP condicion SEMICOLON
+    (37) case -> . CASE funciones SEMICOLON
+    (38) case -> . CASE ID funciones SEMICOLON
+    (39) mover -> . MOVER LP DIR RP SEMICOLON
+    (40) aleatorio -> . ALEATORIO LP RP SEMICOLON
+    (33) istrue -> . ISTRUE LP ID RP SEMICOLON
+    (41) repeat -> . REPEAT LP instrucciones RP SEMICOLON
+    (61) change -> . ID LP value RP SEMICOLON
+
+    DEF             shift and go to state 32
+    CALL            shift and go to state 34
+    ALTER           shift and go to state 35
+    NOT             shift and go to state 36
+    PRINT           shift and go to state 37
+    WHILE           shift and go to state 38
+    UNTIL           shift and go to state 39
+    CASE            shift and go to state 40
+    MOVER           shift and go to state 41
+    ALEATORIO       shift and go to state 42
+    ISTRUE          shift and go to state 43
+    REPEAT          shift and go to state 44
+    ID              shift and go to state 33
+
+    instrucciones                  shift and go to state 75
+    instruccion                    shift and go to state 19
+    def                            shift and go to state 20
+    call                           shift and go to state 21
+    alter                          shift and go to state 22
+    not                            shift and go to state 23
+    print                          shift and go to state 24
+    iterative                      shift and go to state 25
+    case                           shift and go to state 26
+    mover                          shift and go to state 27
+    aleatorio                      shift and go to state 28
+    istrue                         shift and go to state 29
+    repeat                         shift and go to state 30
+    change                         shift and go to state 31
+
+state 46
+
+    (11) main -> MAIN LP instrucciones RP . SEMICOLON
+
+    SEMICOLON       shift and go to state 76
+
+
+state 47
+
+    (12) main -> MAIN LP RP SEMICOLON .
+
+    PROC            reduce using rule 12 (main -> MAIN LP RP SEMICOLON .)
+    $end            reduce using rule 12 (main -> MAIN LP RP SEMICOLON .)
+
+
+state 48
+
+    (13) instrucciones -> instruccion instrucciones .
+
+    RP              reduce using rule 13 (instrucciones -> instruccion instrucciones .)
+
+
+state 49
+
+    (27) def -> DEF LP . ID COMMA TYPE COMMA value RP SEMICOLON
+    (28) def -> DEF LP . ID COMMA TYPE RP SEMICOLON
+
+    ID              shift and go to state 77
+
+
+state 50
+
+    (61) change -> ID LP . value RP SEMICOLON
+    (42) value -> . INTEGER
+    (43) value -> . BOOL
+
+    INTEGER         shift and go to state 79
+    BOOL            shift and go to state 62
+
+    value                          shift and go to state 78
+
+state 51
+
+    (29) call -> CALL LP . ID RP SEMICOLON
+
+    ID              shift and go to state 80
+
+
+state 52
+
+    (30) alter -> ALTER LP . ID COMMA INTEGER RP SEMICOLON
+    (31) alter -> ALTER LP . ID COMMA ID RP SEMICOLON
+
+    ID              shift and go to state 81
+
+
+state 53
+
+    (32) not -> NOT LP . ID RP SEMICOLON
+
+    ID              shift and go to state 82
+
+
+state 54
+
+    (34) print -> PRINT LP . RP SEMICOLON
+
+    RP              shift and go to state 83
+
+
+state 55
+
+    (35) iterative -> WHILE condicion . LP instrucciones RP SEMICOLON
+
+    LP              shift and go to state 84
+
+
+state 56
+
+    (69) factor -> LP . expression RP
+    (62) expression -> . expression PLUS term
+    (63) expression -> . expression MINUS term
+    (64) expression -> . term
+    (65) term -> . term STAR factor
+    (66) term -> . term SLASH factor
+    (67) term -> . factor
+    (68) factor -> . INTEGER
+    (69) factor -> . LP expression RP
+
+    INTEGER         shift and go to state 86
+    LP              shift and go to state 56
+
+    expression                     shift and go to state 85
+    term                           shift and go to state 63
+    factor                         shift and go to state 64
+
+state 57
+
+    (52) condicion -> oper . GT oper
+    (53) condicion -> oper . LT oper
+    (54) condicion -> oper . EQUAL oper
+    (55) condicion -> oper . DIF oper
+    (56) condicion -> oper . GTE oper
+    (57) condicion -> oper . LTE oper
+
+    GT              shift and go to state 87
+    LT              shift and go to state 88
+    EQUAL           shift and go to state 89
+    DIF             shift and go to state 90
+    GTE             shift and go to state 91
+    LTE             shift and go to state 92
+
+
+state 58
+
+    (58) condicion -> istrue .
+
+    LP              reduce using rule 58 (condicion -> istrue .)
+    RP              reduce using rule 58 (condicion -> istrue .)
+    SEMICOLON       reduce using rule 58 (condicion -> istrue .)
+
+
+state 59
+
+    (59) oper -> value .
+
+    GT              reduce using rule 59 (oper -> value .)
+    LT              reduce using rule 59 (oper -> value .)
+    EQUAL           reduce using rule 59 (oper -> value .)
+    DIF             reduce using rule 59 (oper -> value .)
+    GTE             reduce using rule 59 (oper -> value .)
+    LTE             reduce using rule 59 (oper -> value .)
+    LP              reduce using rule 59 (oper -> value .)
+    RP              reduce using rule 59 (oper -> value .)
+    SEMICOLON       reduce using rule 59 (oper -> value .)
+
+
+state 60
+
+    (60) oper -> expression .
+    (62) expression -> expression . PLUS term
+    (63) expression -> expression . MINUS term
+
+    GT              reduce using rule 60 (oper -> expression .)
+    LT              reduce using rule 60 (oper -> expression .)
+    EQUAL           reduce using rule 60 (oper -> expression .)
+    DIF             reduce using rule 60 (oper -> expression .)
+    GTE             reduce using rule 60 (oper -> expression .)
+    LTE             reduce using rule 60 (oper -> expression .)
+    LP              reduce using rule 60 (oper -> expression .)
+    RP              reduce using rule 60 (oper -> expression .)
+    SEMICOLON       reduce using rule 60 (oper -> expression .)
+    PLUS            shift and go to state 93
+    MINUS           shift and go to state 94
+
+
+state 61
+
+    (42) value -> INTEGER .
+    (68) factor -> INTEGER .
+
+  ! reduce/reduce conflict for GT resolved using rule 42 (value -> INTEGER .)
+  ! reduce/reduce conflict for LT resolved using rule 42 (value -> INTEGER .)
+  ! reduce/reduce conflict for EQUAL resolved using rule 42 (value -> INTEGER .)
+  ! reduce/reduce conflict for DIF resolved using rule 42 (value -> INTEGER .)
+  ! reduce/reduce conflict for GTE resolved using rule 42 (value -> INTEGER .)
+  ! reduce/reduce conflict for LTE resolved using rule 42 (value -> INTEGER .)
+  ! reduce/reduce conflict for LP resolved using rule 42 (value -> INTEGER .)
+  ! reduce/reduce conflict for RP resolved using rule 42 (value -> INTEGER .)
+  ! reduce/reduce conflict for SEMICOLON resolved using rule 42 (value -> INTEGER .)
+    GT              reduce using rule 42 (value -> INTEGER .)
+    LT              reduce using rule 42 (value -> INTEGER .)
+    EQUAL           reduce using rule 42 (value -> INTEGER .)
+    DIF             reduce using rule 42 (value -> INTEGER .)
+    GTE             reduce using rule 42 (value -> INTEGER .)
+    LTE             reduce using rule 42 (value -> INTEGER .)
+    LP              reduce using rule 42 (value -> INTEGER .)
+    RP              reduce using rule 42 (value -> INTEGER .)
+    SEMICOLON       reduce using rule 42 (value -> INTEGER .)
+    STAR            reduce using rule 68 (factor -> INTEGER .)
+    SLASH           reduce using rule 68 (factor -> INTEGER .)
+    PLUS            reduce using rule 68 (factor -> INTEGER .)
+    MINUS           reduce using rule 68 (factor -> INTEGER .)
+
+  ! GT              [ reduce using rule 68 (factor -> INTEGER .) ]
+  ! LT              [ reduce using rule 68 (factor -> INTEGER .) ]
+  ! EQUAL           [ reduce using rule 68 (factor -> INTEGER .) ]
+  ! DIF             [ reduce using rule 68 (factor -> INTEGER .) ]
+  ! GTE             [ reduce using rule 68 (factor -> INTEGER .) ]
+  ! LTE             [ reduce using rule 68 (factor -> INTEGER .) ]
+  ! LP              [ reduce using rule 68 (factor -> INTEGER .) ]
+  ! RP              [ reduce using rule 68 (factor -> INTEGER .) ]
+  ! SEMICOLON       [ reduce using rule 68 (factor -> INTEGER .) ]
+
+
+state 62
+
+    (43) value -> BOOL .
+
+    GT              reduce using rule 43 (value -> BOOL .)
+    LT              reduce using rule 43 (value -> BOOL .)
+    EQUAL           reduce using rule 43 (value -> BOOL .)
+    DIF             reduce using rule 43 (value -> BOOL .)
+    GTE             reduce using rule 43 (value -> BOOL .)
+    LTE             reduce using rule 43 (value -> BOOL .)
+    RP              reduce using rule 43 (value -> BOOL .)
+    THEN            reduce using rule 43 (value -> BOOL .)
+    LP              reduce using rule 43 (value -> BOOL .)
+    SEMICOLON       reduce using rule 43 (value -> BOOL .)
+
+
+state 63
+
+    (64) expression -> term .
+    (65) term -> term . STAR factor
+    (66) term -> term . SLASH factor
+
+    PLUS            reduce using rule 64 (expression -> term .)
+    MINUS           reduce using rule 64 (expression -> term .)
+    GT              reduce using rule 64 (expression -> term .)
+    LT              reduce using rule 64 (expression -> term .)
+    EQUAL           reduce using rule 64 (expression -> term .)
+    DIF             reduce using rule 64 (expression -> term .)
+    GTE             reduce using rule 64 (expression -> term .)
+    LTE             reduce using rule 64 (expression -> term .)
+    RP              reduce using rule 64 (expression -> term .)
+    LP              reduce using rule 64 (expression -> term .)
+    SEMICOLON       reduce using rule 64 (expression -> term .)
+    STAR            shift and go to state 95
+    SLASH           shift and go to state 96
+
+
+state 64
+
+    (67) term -> factor .
+
+    STAR            reduce using rule 67 (term -> factor .)
+    SLASH           reduce using rule 67 (term -> factor .)
+    PLUS            reduce using rule 67 (term -> factor .)
+    MINUS           reduce using rule 67 (term -> factor .)
+    GT              reduce using rule 67 (term -> factor .)
+    LT              reduce using rule 67 (term -> factor .)
+    EQUAL           reduce using rule 67 (term -> factor .)
+    DIF             reduce using rule 67 (term -> factor .)
+    GTE             reduce using rule 67 (term -> factor .)
+    LTE             reduce using rule 67 (term -> factor .)
+    RP              reduce using rule 67 (term -> factor .)
+    LP              reduce using rule 67 (term -> factor .)
+    SEMICOLON       reduce using rule 67 (term -> factor .)
+
+
+state 65
+
+    (36) iterative -> UNTIL LP . instrucciones RP condicion SEMICOLON
+    (13) instrucciones -> . instruccion instrucciones
+    (14) instrucciones -> . instruccion
+    (15) instruccion -> . def
+    (16) instruccion -> . call
+    (17) instruccion -> . alter
+    (18) instruccion -> . not
+    (19) instruccion -> . print
+    (20) instruccion -> . iterative
+    (21) instruccion -> . case
+    (22) instruccion -> . mover
+    (23) instruccion -> . aleatorio
+    (24) instruccion -> . istrue
+    (25) instruccion -> . repeat
+    (26) instruccion -> . change
+    (27) def -> . DEF LP ID COMMA TYPE COMMA value RP SEMICOLON
+    (28) def -> . DEF LP ID COMMA TYPE RP SEMICOLON
+    (29) call -> . CALL LP ID RP SEMICOLON
+    (30) alter -> . ALTER LP ID COMMA INTEGER RP SEMICOLON
+    (31) alter -> . ALTER LP ID COMMA ID RP SEMICOLON
+    (32) not -> . NOT LP ID RP SEMICOLON
+    (34) print -> . PRINT LP RP SEMICOLON
+    (35) iterative -> . WHILE condicion LP instrucciones RP SEMICOLON
+    (36) iterative -> . UNTIL LP instrucciones RP condicion SEMICOLON
+    (37) case -> . CASE funciones SEMICOLON
+    (38) case -> . CASE ID funciones SEMICOLON
+    (39) mover -> . MOVER LP DIR RP SEMICOLON
+    (40) aleatorio -> . ALEATORIO LP RP SEMICOLON
+    (33) istrue -> . ISTRUE LP ID RP SEMICOLON
+    (41) repeat -> . REPEAT LP instrucciones RP SEMICOLON
+    (61) change -> . ID LP value RP SEMICOLON
+
+    DEF             shift and go to state 32
+    CALL            shift and go to state 34
+    ALTER           shift and go to state 35
+    NOT             shift and go to state 36
+    PRINT           shift and go to state 37
+    WHILE           shift and go to state 38
+    UNTIL           shift and go to state 39
+    CASE            shift and go to state 40
+    MOVER           shift and go to state 41
+    ALEATORIO       shift and go to state 42
+    ISTRUE          shift and go to state 43
+    REPEAT          shift and go to state 44
+    ID              shift and go to state 33
+
+    instrucciones                  shift and go to state 97
+    instruccion                    shift and go to state 19
+    def                            shift and go to state 20
+    call                           shift and go to state 21
+    alter                          shift and go to state 22
+    not                            shift and go to state 23
+    print                          shift and go to state 24
+    iterative                      shift and go to state 25
+    case                           shift and go to state 26
+    mover                          shift and go to state 27
+    aleatorio                      shift and go to state 28
+    istrue                         shift and go to state 29
+    repeat                         shift and go to state 30
+    change                         shift and go to state 31
+
+state 66
+
+    (37) case -> CASE funciones . SEMICOLON
+    (45) funciones -> funciones . funcion
+    (46) funcion -> . when then
+    (47) funcion -> . when then else
+    (48) when -> . WHEN LP condicion RP
+    (49) when -> . WHEN value
+
+    SEMICOLON       shift and go to state 98
+    WHEN            shift and go to state 70
+
+    funcion                        shift and go to state 99
+    when                           shift and go to state 69
+
+state 67
+
+    (38) case -> CASE ID . funciones SEMICOLON
+    (44) funciones -> . funcion
+    (45) funciones -> . funciones funcion
+    (46) funcion -> . when then
+    (47) funcion -> . when then else
+    (48) when -> . WHEN LP condicion RP
+    (49) when -> . WHEN value
+
+    WHEN            shift and go to state 70
+
+    funciones                      shift and go to state 100
+    funcion                        shift and go to state 68
+    when                           shift and go to state 69
+
+state 68
+
+    (44) funciones -> funcion .
+
+    SEMICOLON       reduce using rule 44 (funciones -> funcion .)
+    WHEN            reduce using rule 44 (funciones -> funcion .)
+
+
+state 69
+
+    (46) funcion -> when . then
+    (47) funcion -> when . then else
+    (50) then -> . THEN LP instrucciones RP
+
+    THEN            shift and go to state 102
+
+    then                           shift and go to state 101
+
+state 70
+
+    (48) when -> WHEN . LP condicion RP
+    (49) when -> WHEN . value
+    (42) value -> . INTEGER
+    (43) value -> . BOOL
+
+    LP              shift and go to state 103
+    INTEGER         shift and go to state 79
+    BOOL            shift and go to state 62
+
+    value                          shift and go to state 104
+
+state 71
+
+    (39) mover -> MOVER LP . DIR RP SEMICOLON
+
+    DIR             shift and go to state 105
+
+
+state 72
+
+    (40) aleatorio -> ALEATORIO LP . RP SEMICOLON
+
+    RP              shift and go to state 106
+
+
+state 73
+
+    (33) istrue -> ISTRUE LP . ID RP SEMICOLON
+
+    ID              shift and go to state 107
+
+
+state 74
+
+    (41) repeat -> REPEAT LP . instrucciones RP SEMICOLON
+    (13) instrucciones -> . instruccion instrucciones
+    (14) instrucciones -> . instruccion
+    (15) instruccion -> . def
+    (16) instruccion -> . call
+    (17) instruccion -> . alter
+    (18) instruccion -> . not
+    (19) instruccion -> . print
+    (20) instruccion -> . iterative
+    (21) instruccion -> . case
+    (22) instruccion -> . mover
+    (23) instruccion -> . aleatorio
+    (24) instruccion -> . istrue
+    (25) instruccion -> . repeat
+    (26) instruccion -> . change
+    (27) def -> . DEF LP ID COMMA TYPE COMMA value RP SEMICOLON
+    (28) def -> . DEF LP ID COMMA TYPE RP SEMICOLON
+    (29) call -> . CALL LP ID RP SEMICOLON
+    (30) alter -> . ALTER LP ID COMMA INTEGER RP SEMICOLON
+    (31) alter -> . ALTER LP ID COMMA ID RP SEMICOLON
+    (32) not -> . NOT LP ID RP SEMICOLON
+    (34) print -> . PRINT LP RP SEMICOLON
+    (35) iterative -> . WHILE condicion LP instrucciones RP SEMICOLON
+    (36) iterative -> . UNTIL LP instrucciones RP condicion SEMICOLON
+    (37) case -> . CASE funciones SEMICOLON
+    (38) case -> . CASE ID funciones SEMICOLON
+    (39) mover -> . MOVER LP DIR RP SEMICOLON
+    (40) aleatorio -> . ALEATORIO LP RP SEMICOLON
+    (33) istrue -> . ISTRUE LP ID RP SEMICOLON
+    (41) repeat -> . REPEAT LP instrucciones RP SEMICOLON
+    (61) change -> . ID LP value RP SEMICOLON
+
+    DEF             shift and go to state 32
+    CALL            shift and go to state 34
+    ALTER           shift and go to state 35
+    NOT             shift and go to state 36
+    PRINT           shift and go to state 37
+    WHILE           shift and go to state 38
+    UNTIL           shift and go to state 39
+    CASE            shift and go to state 40
+    MOVER           shift and go to state 41
+    ALEATORIO       shift and go to state 42
+    ISTRUE          shift and go to state 43
+    REPEAT          shift and go to state 44
+    ID              shift and go to state 33
+
+    instrucciones                  shift and go to state 108
+    instruccion                    shift and go to state 19
+    def                            shift and go to state 20
+    call                           shift and go to state 21
+    alter                          shift and go to state 22
+    not                            shift and go to state 23
+    print                          shift and go to state 24
+    iterative                      shift and go to state 25
+    case                           shift and go to state 26
+    mover                          shift and go to state 27
+    aleatorio                      shift and go to state 28
+    istrue                         shift and go to state 29
+    repeat                         shift and go to state 30
+    change                         shift and go to state 31
+
+state 75
+
+    (10) proc -> PROC ID LP instrucciones . RP SEMICOLON
+
+    RP              shift and go to state 109
+
+
+state 76
+
+    (11) main -> MAIN LP instrucciones RP SEMICOLON .
+
+    PROC            reduce using rule 11 (main -> MAIN LP instrucciones RP SEMICOLON .)
+    $end            reduce using rule 11 (main -> MAIN LP instrucciones RP SEMICOLON .)
+
+
+state 77
+
+    (27) def -> DEF LP ID . COMMA TYPE COMMA value RP SEMICOLON
+    (28) def -> DEF LP ID . COMMA TYPE RP SEMICOLON
+
+    COMMA           shift and go to state 110
+
+
+state 78
+
+    (61) change -> ID LP value . RP SEMICOLON
+
+    RP              shift and go to state 111
+
+
+state 79
+
+    (42) value -> INTEGER .
+
+    RP              reduce using rule 42 (value -> INTEGER .)
+    THEN            reduce using rule 42 (value -> INTEGER .)
+
+
+state 80
+
+    (29) call -> CALL LP ID . RP SEMICOLON
+
+    RP              shift and go to state 112
+
+
+state 81
+
+    (30) alter -> ALTER LP ID . COMMA INTEGER RP SEMICOLON
+    (31) alter -> ALTER LP ID . COMMA ID RP SEMICOLON
+
+    COMMA           shift and go to state 113
+
+
+state 82
+
+    (32) not -> NOT LP ID . RP SEMICOLON
+
+    RP              shift and go to state 114
+
+
+state 83
+
+    (34) print -> PRINT LP RP . SEMICOLON
+
+    SEMICOLON       shift and go to state 115
+
+
+state 84
+
+    (35) iterative -> WHILE condicion LP . instrucciones RP SEMICOLON
+    (13) instrucciones -> . instruccion instrucciones
+    (14) instrucciones -> . instruccion
+    (15) instruccion -> . def
+    (16) instruccion -> . call
+    (17) instruccion -> . alter
+    (18) instruccion -> . not
+    (19) instruccion -> . print
+    (20) instruccion -> . iterative
+    (21) instruccion -> . case
+    (22) instruccion -> . mover
+    (23) instruccion -> . aleatorio
+    (24) instruccion -> . istrue
+    (25) instruccion -> . repeat
+    (26) instruccion -> . change
+    (27) def -> . DEF LP ID COMMA TYPE COMMA value RP SEMICOLON
+    (28) def -> . DEF LP ID COMMA TYPE RP SEMICOLON
+    (29) call -> . CALL LP ID RP SEMICOLON
+    (30) alter -> . ALTER LP ID COMMA INTEGER RP SEMICOLON
+    (31) alter -> . ALTER LP ID COMMA ID RP SEMICOLON
+    (32) not -> . NOT LP ID RP SEMICOLON
+    (34) print -> . PRINT LP RP SEMICOLON
+    (35) iterative -> . WHILE condicion LP instrucciones RP SEMICOLON
+    (36) iterative -> . UNTIL LP instrucciones RP condicion SEMICOLON
+    (37) case -> . CASE funciones SEMICOLON
+    (38) case -> . CASE ID funciones SEMICOLON
+    (39) mover -> . MOVER LP DIR RP SEMICOLON
+    (40) aleatorio -> . ALEATORIO LP RP SEMICOLON
+    (33) istrue -> . ISTRUE LP ID RP SEMICOLON
+    (41) repeat -> . REPEAT LP instrucciones RP SEMICOLON
+    (61) change -> . ID LP value RP SEMICOLON
+
+    DEF             shift and go to state 32
+    CALL            shift and go to state 34
+    ALTER           shift and go to state 35
+    NOT             shift and go to state 36
+    PRINT           shift and go to state 37
+    WHILE           shift and go to state 38
+    UNTIL           shift and go to state 39
+    CASE            shift and go to state 40
+    MOVER           shift and go to state 41
+    ALEATORIO       shift and go to state 42
+    ISTRUE          shift and go to state 43
+    REPEAT          shift and go to state 44
+    ID              shift and go to state 33
+
+    instrucciones                  shift and go to state 116
+    instruccion                    shift and go to state 19
+    def                            shift and go to state 20
+    call                           shift and go to state 21
+    alter                          shift and go to state 22
+    not                            shift and go to state 23
+    print                          shift and go to state 24
+    iterative                      shift and go to state 25
+    case                           shift and go to state 26
+    mover                          shift and go to state 27
+    aleatorio                      shift and go to state 28
+    istrue                         shift and go to state 29
+    repeat                         shift and go to state 30
+    change                         shift and go to state 31
+
+state 85
+
+    (69) factor -> LP expression . RP
+    (62) expression -> expression . PLUS term
+    (63) expression -> expression . MINUS term
+
+    RP              shift and go to state 117
+    PLUS            shift and go to state 93
+    MINUS           shift and go to state 94
+
+
+state 86
+
+    (68) factor -> INTEGER .
+
+    STAR            reduce using rule 68 (factor -> INTEGER .)
+    SLASH           reduce using rule 68 (factor -> INTEGER .)
+    RP              reduce using rule 68 (factor -> INTEGER .)
+    PLUS            reduce using rule 68 (factor -> INTEGER .)
+    MINUS           reduce using rule 68 (factor -> INTEGER .)
+    GT              reduce using rule 68 (factor -> INTEGER .)
+    LT              reduce using rule 68 (factor -> INTEGER .)
+    EQUAL           reduce using rule 68 (factor -> INTEGER .)
+    DIF             reduce using rule 68 (factor -> INTEGER .)
+    GTE             reduce using rule 68 (factor -> INTEGER .)
+    LTE             reduce using rule 68 (factor -> INTEGER .)
+    LP              reduce using rule 68 (factor -> INTEGER .)
+    SEMICOLON       reduce using rule 68 (factor -> INTEGER .)
+
+
+state 87
+
+    (52) condicion -> oper GT . oper
+    (59) oper -> . value
+    (60) oper -> . expression
+    (42) value -> . INTEGER
+    (43) value -> . BOOL
+    (62) expression -> . expression PLUS term
+    (63) expression -> . expression MINUS term
+    (64) expression -> . term
+    (65) term -> . term STAR factor
+    (66) term -> . term SLASH factor
+    (67) term -> . factor
+    (68) factor -> . INTEGER
+    (69) factor -> . LP expression RP
+
+    INTEGER         shift and go to state 61
+    BOOL            shift and go to state 62
+    LP              shift and go to state 56
+
+    oper                           shift and go to state 118
+    value                          shift and go to state 59
+    expression                     shift and go to state 60
+    term                           shift and go to state 63
+    factor                         shift and go to state 64
+
+state 88
+
+    (53) condicion -> oper LT . oper
+    (59) oper -> . value
+    (60) oper -> . expression
+    (42) value -> . INTEGER
+    (43) value -> . BOOL
+    (62) expression -> . expression PLUS term
+    (63) expression -> . expression MINUS term
+    (64) expression -> . term
+    (65) term -> . term STAR factor
+    (66) term -> . term SLASH factor
+    (67) term -> . factor
+    (68) factor -> . INTEGER
+    (69) factor -> . LP expression RP
+
+    INTEGER         shift and go to state 61
+    BOOL            shift and go to state 62
+    LP              shift and go to state 56
+
+    oper                           shift and go to state 119
+    value                          shift and go to state 59
+    expression                     shift and go to state 60
+    term                           shift and go to state 63
+    factor                         shift and go to state 64
+
+state 89
+
+    (54) condicion -> oper EQUAL . oper
+    (59) oper -> . value
+    (60) oper -> . expression
+    (42) value -> . INTEGER
+    (43) value -> . BOOL
+    (62) expression -> . expression PLUS term
+    (63) expression -> . expression MINUS term
+    (64) expression -> . term
+    (65) term -> . term STAR factor
+    (66) term -> . term SLASH factor
+    (67) term -> . factor
+    (68) factor -> . INTEGER
+    (69) factor -> . LP expression RP
+
+    INTEGER         shift and go to state 61
+    BOOL            shift and go to state 62
+    LP              shift and go to state 56
+
+    oper                           shift and go to state 120
+    value                          shift and go to state 59
+    expression                     shift and go to state 60
+    term                           shift and go to state 63
+    factor                         shift and go to state 64
+
+state 90
+
+    (55) condicion -> oper DIF . oper
+    (59) oper -> . value
+    (60) oper -> . expression
+    (42) value -> . INTEGER
+    (43) value -> . BOOL
+    (62) expression -> . expression PLUS term
+    (63) expression -> . expression MINUS term
+    (64) expression -> . term
+    (65) term -> . term STAR factor
+    (66) term -> . term SLASH factor
+    (67) term -> . factor
+    (68) factor -> . INTEGER
+    (69) factor -> . LP expression RP
+
+    INTEGER         shift and go to state 61
+    BOOL            shift and go to state 62
+    LP              shift and go to state 56
+
+    oper                           shift and go to state 121
+    value                          shift and go to state 59
+    expression                     shift and go to state 60
+    term                           shift and go to state 63
+    factor                         shift and go to state 64
+
+state 91
+
+    (56) condicion -> oper GTE . oper
+    (59) oper -> . value
+    (60) oper -> . expression
+    (42) value -> . INTEGER
+    (43) value -> . BOOL
+    (62) expression -> . expression PLUS term
+    (63) expression -> . expression MINUS term
+    (64) expression -> . term
+    (65) term -> . term STAR factor
+    (66) term -> . term SLASH factor
+    (67) term -> . factor
+    (68) factor -> . INTEGER
+    (69) factor -> . LP expression RP
+
+    INTEGER         shift and go to state 61
+    BOOL            shift and go to state 62
+    LP              shift and go to state 56
+
+    oper                           shift and go to state 122
+    value                          shift and go to state 59
+    expression                     shift and go to state 60
+    term                           shift and go to state 63
+    factor                         shift and go to state 64
+
+state 92
+
+    (57) condicion -> oper LTE . oper
+    (59) oper -> . value
+    (60) oper -> . expression
+    (42) value -> . INTEGER
+    (43) value -> . BOOL
+    (62) expression -> . expression PLUS term
+    (63) expression -> . expression MINUS term
+    (64) expression -> . term
+    (65) term -> . term STAR factor
+    (66) term -> . term SLASH factor
+    (67) term -> . factor
+    (68) factor -> . INTEGER
+    (69) factor -> . LP expression RP
+
+    INTEGER         shift and go to state 61
+    BOOL            shift and go to state 62
+    LP              shift and go to state 56
+
+    oper                           shift and go to state 123
+    value                          shift and go to state 59
+    expression                     shift and go to state 60
+    term                           shift and go to state 63
+    factor                         shift and go to state 64
+
+state 93
+
+    (62) expression -> expression PLUS . term
+    (65) term -> . term STAR factor
+    (66) term -> . term SLASH factor
+    (67) term -> . factor
+    (68) factor -> . INTEGER
+    (69) factor -> . LP expression RP
+
+    INTEGER         shift and go to state 86
+    LP              shift and go to state 56
+
+    term                           shift and go to state 124
+    factor                         shift and go to state 64
+
+state 94
+
+    (63) expression -> expression MINUS . term
+    (65) term -> . term STAR factor
+    (66) term -> . term SLASH factor
+    (67) term -> . factor
+    (68) factor -> . INTEGER
+    (69) factor -> . LP expression RP
+
+    INTEGER         shift and go to state 86
+    LP              shift and go to state 56
+
+    term                           shift and go to state 125
+    factor                         shift and go to state 64
+
+state 95
+
+    (65) term -> term STAR . factor
+    (68) factor -> . INTEGER
+    (69) factor -> . LP expression RP
+
+    INTEGER         shift and go to state 86
+    LP              shift and go to state 56
+
+    factor                         shift and go to state 126
+
+state 96
+
+    (66) term -> term SLASH . factor
+    (68) factor -> . INTEGER
+    (69) factor -> . LP expression RP
+
+    INTEGER         shift and go to state 86
+    LP              shift and go to state 56
+
+    factor                         shift and go to state 127
+
+state 97
+
+    (36) iterative -> UNTIL LP instrucciones . RP condicion SEMICOLON
+
+    RP              shift and go to state 128
+
+
+state 98
+
+    (37) case -> CASE funciones SEMICOLON .
+
+    DEF             reduce using rule 37 (case -> CASE funciones SEMICOLON .)
+    CALL            reduce using rule 37 (case -> CASE funciones SEMICOLON .)
+    ALTER           reduce using rule 37 (case -> CASE funciones SEMICOLON .)
+    NOT             reduce using rule 37 (case -> CASE funciones SEMICOLON .)
+    PRINT           reduce using rule 37 (case -> CASE funciones SEMICOLON .)
+    WHILE           reduce using rule 37 (case -> CASE funciones SEMICOLON .)
+    UNTIL           reduce using rule 37 (case -> CASE funciones SEMICOLON .)
+    CASE            reduce using rule 37 (case -> CASE funciones SEMICOLON .)
+    MOVER           reduce using rule 37 (case -> CASE funciones SEMICOLON .)
+    ALEATORIO       reduce using rule 37 (case -> CASE funciones SEMICOLON .)
+    ISTRUE          reduce using rule 37 (case -> CASE funciones SEMICOLON .)
+    REPEAT          reduce using rule 37 (case -> CASE funciones SEMICOLON .)
+    ID              reduce using rule 37 (case -> CASE funciones SEMICOLON .)
+    RP              reduce using rule 37 (case -> CASE funciones SEMICOLON .)
+
+
+state 99
+
+    (45) funciones -> funciones funcion .
+
+    SEMICOLON       reduce using rule 45 (funciones -> funciones funcion .)
+    WHEN            reduce using rule 45 (funciones -> funciones funcion .)
+
+
+state 100
+
+    (38) case -> CASE ID funciones . SEMICOLON
+    (45) funciones -> funciones . funcion
+    (46) funcion -> . when then
+    (47) funcion -> . when then else
+    (48) when -> . WHEN LP condicion RP
+    (49) when -> . WHEN value
+
+    SEMICOLON       shift and go to state 129
+    WHEN            shift and go to state 70
+
+    funcion                        shift and go to state 99
+    when                           shift and go to state 69
+
+state 101
+
+    (46) funcion -> when then .
+    (47) funcion -> when then . else
+    (51) else -> . ELSE LP instrucciones RP
+
+    SEMICOLON       reduce using rule 46 (funcion -> when then .)
+    WHEN            reduce using rule 46 (funcion -> when then .)
+    ELSE            shift and go to state 131
+
+    else                           shift and go to state 130
+
+state 102
+
+    (50) then -> THEN . LP instrucciones RP
+
+    LP              shift and go to state 132
+
+
+state 103
+
+    (48) when -> WHEN LP . condicion RP
+    (52) condicion -> . oper GT oper
+    (53) condicion -> . oper LT oper
+    (54) condicion -> . oper EQUAL oper
+    (55) condicion -> . oper DIF oper
+    (56) condicion -> . oper GTE oper
+    (57) condicion -> . oper LTE oper
+    (58) condicion -> . istrue
+    (59) oper -> . value
+    (60) oper -> . expression
+    (33) istrue -> . ISTRUE LP ID RP SEMICOLON
+    (42) value -> . INTEGER
+    (43) value -> . BOOL
+    (62) expression -> . expression PLUS term
+    (63) expression -> . expression MINUS term
+    (64) expression -> . term
+    (65) term -> . term STAR factor
+    (66) term -> . term SLASH factor
+    (67) term -> . factor
+    (68) factor -> . INTEGER
+    (69) factor -> . LP expression RP
+
+    ISTRUE          shift and go to state 43
+    INTEGER         shift and go to state 61
+    BOOL            shift and go to state 62
+    LP              shift and go to state 56
+
+    condicion                      shift and go to state 133
+    oper                           shift and go to state 57
+    istrue                         shift and go to state 58
+    value                          shift and go to state 59
+    expression                     shift and go to state 60
+    term                           shift and go to state 63
+    factor                         shift and go to state 64
+
+state 104
+
+    (49) when -> WHEN value .
+
+    THEN            reduce using rule 49 (when -> WHEN value .)
+
+
+state 105
+
+    (39) mover -> MOVER LP DIR . RP SEMICOLON
+
+    RP              shift and go to state 134
+
+
+state 106
+
+    (40) aleatorio -> ALEATORIO LP RP . SEMICOLON
+
+    SEMICOLON       shift and go to state 135
+
+
+state 107
+
+    (33) istrue -> ISTRUE LP ID . RP SEMICOLON
+
+    RP              shift and go to state 136
+
+
+state 108
+
+    (41) repeat -> REPEAT LP instrucciones . RP SEMICOLON
+
+    RP              shift and go to state 137
+
+
+state 109
+
+    (10) proc -> PROC ID LP instrucciones RP . SEMICOLON
+
+    SEMICOLON       shift and go to state 138
+
+
+state 110
+
+    (27) def -> DEF LP ID COMMA . TYPE COMMA value RP SEMICOLON
+    (28) def -> DEF LP ID COMMA . TYPE RP SEMICOLON
+
+    TYPE            shift and go to state 139
+
+
+state 111
+
+    (61) change -> ID LP value RP . SEMICOLON
+
+    SEMICOLON       shift and go to state 140
+
+
+state 112
+
+    (29) call -> CALL LP ID RP . SEMICOLON
+
+    SEMICOLON       shift and go to state 141
+
+
+state 113
+
+    (30) alter -> ALTER LP ID COMMA . INTEGER RP SEMICOLON
+    (31) alter -> ALTER LP ID COMMA . ID RP SEMICOLON
+
+    INTEGER         shift and go to state 143
+    ID              shift and go to state 142
+
+
+state 114
+
+    (32) not -> NOT LP ID RP . SEMICOLON
+
+    SEMICOLON       shift and go to state 144
+
+
+state 115
+
+    (34) print -> PRINT LP RP SEMICOLON .
+
+    DEF             reduce using rule 34 (print -> PRINT LP RP SEMICOLON .)
+    CALL            reduce using rule 34 (print -> PRINT LP RP SEMICOLON .)
+    ALTER           reduce using rule 34 (print -> PRINT LP RP SEMICOLON .)
+    NOT             reduce using rule 34 (print -> PRINT LP RP SEMICOLON .)
+    PRINT           reduce using rule 34 (print -> PRINT LP RP SEMICOLON .)
+    WHILE           reduce using rule 34 (print -> PRINT LP RP SEMICOLON .)
+    UNTIL           reduce using rule 34 (print -> PRINT LP RP SEMICOLON .)
+    CASE            reduce using rule 34 (print -> PRINT LP RP SEMICOLON .)
+    MOVER           reduce using rule 34 (print -> PRINT LP RP SEMICOLON .)
+    ALEATORIO       reduce using rule 34 (print -> PRINT LP RP SEMICOLON .)
+    ISTRUE          reduce using rule 34 (print -> PRINT LP RP SEMICOLON .)
+    REPEAT          reduce using rule 34 (print -> PRINT LP RP SEMICOLON .)
+    ID              reduce using rule 34 (print -> PRINT LP RP SEMICOLON .)
+    RP              reduce using rule 34 (print -> PRINT LP RP SEMICOLON .)
+
+
+state 116
+
+    (35) iterative -> WHILE condicion LP instrucciones . RP SEMICOLON
+
+    RP              shift and go to state 145
+
+
+state 117
+
+    (69) factor -> LP expression RP .
+
+    STAR            reduce using rule 69 (factor -> LP expression RP .)
+    SLASH           reduce using rule 69 (factor -> LP expression RP .)
+    PLUS            reduce using rule 69 (factor -> LP expression RP .)
+    MINUS           reduce using rule 69 (factor -> LP expression RP .)
+    GT              reduce using rule 69 (factor -> LP expression RP .)
+    LT              reduce using rule 69 (factor -> LP expression RP .)
+    EQUAL           reduce using rule 69 (factor -> LP expression RP .)
+    DIF             reduce using rule 69 (factor -> LP expression RP .)
+    GTE             reduce using rule 69 (factor -> LP expression RP .)
+    LTE             reduce using rule 69 (factor -> LP expression RP .)
+    RP              reduce using rule 69 (factor -> LP expression RP .)
+    LP              reduce using rule 69 (factor -> LP expression RP .)
+    SEMICOLON       reduce using rule 69 (factor -> LP expression RP .)
+
+
+state 118
+
+    (52) condicion -> oper GT oper .
+
+    LP              reduce using rule 52 (condicion -> oper GT oper .)
+    RP              reduce using rule 52 (condicion -> oper GT oper .)
+    SEMICOLON       reduce using rule 52 (condicion -> oper GT oper .)
+
+
+state 119
+
+    (53) condicion -> oper LT oper .
+
+    LP              reduce using rule 53 (condicion -> oper LT oper .)
+    RP              reduce using rule 53 (condicion -> oper LT oper .)
+    SEMICOLON       reduce using rule 53 (condicion -> oper LT oper .)
+
+
+state 120
+
+    (54) condicion -> oper EQUAL oper .
+
+    LP              reduce using rule 54 (condicion -> oper EQUAL oper .)
+    RP              reduce using rule 54 (condicion -> oper EQUAL oper .)
+    SEMICOLON       reduce using rule 54 (condicion -> oper EQUAL oper .)
+
+
+state 121
+
+    (55) condicion -> oper DIF oper .
+
+    LP              reduce using rule 55 (condicion -> oper DIF oper .)
+    RP              reduce using rule 55 (condicion -> oper DIF oper .)
+    SEMICOLON       reduce using rule 55 (condicion -> oper DIF oper .)
+
+
+state 122
+
+    (56) condicion -> oper GTE oper .
+
+    LP              reduce using rule 56 (condicion -> oper GTE oper .)
+    RP              reduce using rule 56 (condicion -> oper GTE oper .)
+    SEMICOLON       reduce using rule 56 (condicion -> oper GTE oper .)
+
+
+state 123
+
+    (57) condicion -> oper LTE oper .
+
+    LP              reduce using rule 57 (condicion -> oper LTE oper .)
+    RP              reduce using rule 57 (condicion -> oper LTE oper .)
+    SEMICOLON       reduce using rule 57 (condicion -> oper LTE oper .)
+
+
+state 124
+
+    (62) expression -> expression PLUS term .
+    (65) term -> term . STAR factor
+    (66) term -> term . SLASH factor
+
+    PLUS            reduce using rule 62 (expression -> expression PLUS term .)
+    MINUS           reduce using rule 62 (expression -> expression PLUS term .)
+    GT              reduce using rule 62 (expression -> expression PLUS term .)
+    LT              reduce using rule 62 (expression -> expression PLUS term .)
+    EQUAL           reduce using rule 62 (expression -> expression PLUS term .)
+    DIF             reduce using rule 62 (expression -> expression PLUS term .)
+    GTE             reduce using rule 62 (expression -> expression PLUS term .)
+    LTE             reduce using rule 62 (expression -> expression PLUS term .)
+    RP              reduce using rule 62 (expression -> expression PLUS term .)
+    LP              reduce using rule 62 (expression -> expression PLUS term .)
+    SEMICOLON       reduce using rule 62 (expression -> expression PLUS term .)
+    STAR            shift and go to state 95
+    SLASH           shift and go to state 96
+
+
+state 125
+
+    (63) expression -> expression MINUS term .
+    (65) term -> term . STAR factor
+    (66) term -> term . SLASH factor
+
+    PLUS            reduce using rule 63 (expression -> expression MINUS term .)
+    MINUS           reduce using rule 63 (expression -> expression MINUS term .)
+    GT              reduce using rule 63 (expression -> expression MINUS term .)
+    LT              reduce using rule 63 (expression -> expression MINUS term .)
+    EQUAL           reduce using rule 63 (expression -> expression MINUS term .)
+    DIF             reduce using rule 63 (expression -> expression MINUS term .)
+    GTE             reduce using rule 63 (expression -> expression MINUS term .)
+    LTE             reduce using rule 63 (expression -> expression MINUS term .)
+    RP              reduce using rule 63 (expression -> expression MINUS term .)
+    LP              reduce using rule 63 (expression -> expression MINUS term .)
+    SEMICOLON       reduce using rule 63 (expression -> expression MINUS term .)
+    STAR            shift and go to state 95
+    SLASH           shift and go to state 96
+
+
+state 126
+
+    (65) term -> term STAR factor .
+
+    STAR            reduce using rule 65 (term -> term STAR factor .)
+    SLASH           reduce using rule 65 (term -> term STAR factor .)
+    PLUS            reduce using rule 65 (term -> term STAR factor .)
+    MINUS           reduce using rule 65 (term -> term STAR factor .)
+    GT              reduce using rule 65 (term -> term STAR factor .)
+    LT              reduce using rule 65 (term -> term STAR factor .)
+    EQUAL           reduce using rule 65 (term -> term STAR factor .)
+    DIF             reduce using rule 65 (term -> term STAR factor .)
+    GTE             reduce using rule 65 (term -> term STAR factor .)
+    LTE             reduce using rule 65 (term -> term STAR factor .)
+    RP              reduce using rule 65 (term -> term STAR factor .)
+    LP              reduce using rule 65 (term -> term STAR factor .)
+    SEMICOLON       reduce using rule 65 (term -> term STAR factor .)
+
+
+state 127
+
+    (66) term -> term SLASH factor .
+
+    STAR            reduce using rule 66 (term -> term SLASH factor .)
+    SLASH           reduce using rule 66 (term -> term SLASH factor .)
+    PLUS            reduce using rule 66 (term -> term SLASH factor .)
+    MINUS           reduce using rule 66 (term -> term SLASH factor .)
+    GT              reduce using rule 66 (term -> term SLASH factor .)
+    LT              reduce using rule 66 (term -> term SLASH factor .)
+    EQUAL           reduce using rule 66 (term -> term SLASH factor .)
+    DIF             reduce using rule 66 (term -> term SLASH factor .)
+    GTE             reduce using rule 66 (term -> term SLASH factor .)
+    LTE             reduce using rule 66 (term -> term SLASH factor .)
+    RP              reduce using rule 66 (term -> term SLASH factor .)
+    LP              reduce using rule 66 (term -> term SLASH factor .)
+    SEMICOLON       reduce using rule 66 (term -> term SLASH factor .)
+
+
+state 128
+
+    (36) iterative -> UNTIL LP instrucciones RP . condicion SEMICOLON
+    (52) condicion -> . oper GT oper
+    (53) condicion -> . oper LT oper
+    (54) condicion -> . oper EQUAL oper
+    (55) condicion -> . oper DIF oper
+    (56) condicion -> . oper GTE oper
+    (57) condicion -> . oper LTE oper
+    (58) condicion -> . istrue
+    (59) oper -> . value
+    (60) oper -> . expression
+    (33) istrue -> . ISTRUE LP ID RP SEMICOLON
+    (42) value -> . INTEGER
+    (43) value -> . BOOL
+    (62) expression -> . expression PLUS term
+    (63) expression -> . expression MINUS term
+    (64) expression -> . term
+    (65) term -> . term STAR factor
+    (66) term -> . term SLASH factor
+    (67) term -> . factor
+    (68) factor -> . INTEGER
+    (69) factor -> . LP expression RP
+
+    ISTRUE          shift and go to state 43
+    INTEGER         shift and go to state 61
+    BOOL            shift and go to state 62
+    LP              shift and go to state 56
+
+    condicion                      shift and go to state 146
+    oper                           shift and go to state 57
+    istrue                         shift and go to state 58
+    value                          shift and go to state 59
+    expression                     shift and go to state 60
+    term                           shift and go to state 63
+    factor                         shift and go to state 64
+
+state 129
+
+    (38) case -> CASE ID funciones SEMICOLON .
+
+    DEF             reduce using rule 38 (case -> CASE ID funciones SEMICOLON .)
+    CALL            reduce using rule 38 (case -> CASE ID funciones SEMICOLON .)
+    ALTER           reduce using rule 38 (case -> CASE ID funciones SEMICOLON .)
+    NOT             reduce using rule 38 (case -> CASE ID funciones SEMICOLON .)
+    PRINT           reduce using rule 38 (case -> CASE ID funciones SEMICOLON .)
+    WHILE           reduce using rule 38 (case -> CASE ID funciones SEMICOLON .)
+    UNTIL           reduce using rule 38 (case -> CASE ID funciones SEMICOLON .)
+    CASE            reduce using rule 38 (case -> CASE ID funciones SEMICOLON .)
+    MOVER           reduce using rule 38 (case -> CASE ID funciones SEMICOLON .)
+    ALEATORIO       reduce using rule 38 (case -> CASE ID funciones SEMICOLON .)
+    ISTRUE          reduce using rule 38 (case -> CASE ID funciones SEMICOLON .)
+    REPEAT          reduce using rule 38 (case -> CASE ID funciones SEMICOLON .)
+    ID              reduce using rule 38 (case -> CASE ID funciones SEMICOLON .)
+    RP              reduce using rule 38 (case -> CASE ID funciones SEMICOLON .)
+
+
+state 130
+
+    (47) funcion -> when then else .
+
+    SEMICOLON       reduce using rule 47 (funcion -> when then else .)
+    WHEN            reduce using rule 47 (funcion -> when then else .)
+
+
+state 131
+
+    (51) else -> ELSE . LP instrucciones RP
+
+    LP              shift and go to state 147
+
+
+state 132
+
+    (50) then -> THEN LP . instrucciones RP
+    (13) instrucciones -> . instruccion instrucciones
+    (14) instrucciones -> . instruccion
+    (15) instruccion -> . def
+    (16) instruccion -> . call
+    (17) instruccion -> . alter
+    (18) instruccion -> . not
+    (19) instruccion -> . print
+    (20) instruccion -> . iterative
+    (21) instruccion -> . case
+    (22) instruccion -> . mover
+    (23) instruccion -> . aleatorio
+    (24) instruccion -> . istrue
+    (25) instruccion -> . repeat
+    (26) instruccion -> . change
+    (27) def -> . DEF LP ID COMMA TYPE COMMA value RP SEMICOLON
+    (28) def -> . DEF LP ID COMMA TYPE RP SEMICOLON
+    (29) call -> . CALL LP ID RP SEMICOLON
+    (30) alter -> . ALTER LP ID COMMA INTEGER RP SEMICOLON
+    (31) alter -> . ALTER LP ID COMMA ID RP SEMICOLON
+    (32) not -> . NOT LP ID RP SEMICOLON
+    (34) print -> . PRINT LP RP SEMICOLON
+    (35) iterative -> . WHILE condicion LP instrucciones RP SEMICOLON
+    (36) iterative -> . UNTIL LP instrucciones RP condicion SEMICOLON
+    (37) case -> . CASE funciones SEMICOLON
+    (38) case -> . CASE ID funciones SEMICOLON
+    (39) mover -> . MOVER LP DIR RP SEMICOLON
+    (40) aleatorio -> . ALEATORIO LP RP SEMICOLON
+    (33) istrue -> . ISTRUE LP ID RP SEMICOLON
+    (41) repeat -> . REPEAT LP instrucciones RP SEMICOLON
+    (61) change -> . ID LP value RP SEMICOLON
+
+    DEF             shift and go to state 32
+    CALL            shift and go to state 34
+    ALTER           shift and go to state 35
+    NOT             shift and go to state 36
+    PRINT           shift and go to state 37
+    WHILE           shift and go to state 38
+    UNTIL           shift and go to state 39
+    CASE            shift and go to state 40
+    MOVER           shift and go to state 41
+    ALEATORIO       shift and go to state 42
+    ISTRUE          shift and go to state 43
+    REPEAT          shift and go to state 44
+    ID              shift and go to state 33
+
+    instrucciones                  shift and go to state 148
+    instruccion                    shift and go to state 19
+    def                            shift and go to state 20
+    call                           shift and go to state 21
+    alter                          shift and go to state 22
+    not                            shift and go to state 23
+    print                          shift and go to state 24
+    iterative                      shift and go to state 25
+    case                           shift and go to state 26
+    mover                          shift and go to state 27
+    aleatorio                      shift and go to state 28
+    istrue                         shift and go to state 29
+    repeat                         shift and go to state 30
+    change                         shift and go to state 31
+
+state 133
+
+    (48) when -> WHEN LP condicion . RP
+
+    RP              shift and go to state 149
+
+
+state 134
+
+    (39) mover -> MOVER LP DIR RP . SEMICOLON
+
+    SEMICOLON       shift and go to state 150
+
+
+state 135
+
+    (40) aleatorio -> ALEATORIO LP RP SEMICOLON .
+
+    DEF             reduce using rule 40 (aleatorio -> ALEATORIO LP RP SEMICOLON .)
+    CALL            reduce using rule 40 (aleatorio -> ALEATORIO LP RP SEMICOLON .)
+    ALTER           reduce using rule 40 (aleatorio -> ALEATORIO LP RP SEMICOLON .)
+    NOT             reduce using rule 40 (aleatorio -> ALEATORIO LP RP SEMICOLON .)
+    PRINT           reduce using rule 40 (aleatorio -> ALEATORIO LP RP SEMICOLON .)
+    WHILE           reduce using rule 40 (aleatorio -> ALEATORIO LP RP SEMICOLON .)
+    UNTIL           reduce using rule 40 (aleatorio -> ALEATORIO LP RP SEMICOLON .)
+    CASE            reduce using rule 40 (aleatorio -> ALEATORIO LP RP SEMICOLON .)
+    MOVER           reduce using rule 40 (aleatorio -> ALEATORIO LP RP SEMICOLON .)
+    ALEATORIO       reduce using rule 40 (aleatorio -> ALEATORIO LP RP SEMICOLON .)
+    ISTRUE          reduce using rule 40 (aleatorio -> ALEATORIO LP RP SEMICOLON .)
+    REPEAT          reduce using rule 40 (aleatorio -> ALEATORIO LP RP SEMICOLON .)
+    ID              reduce using rule 40 (aleatorio -> ALEATORIO LP RP SEMICOLON .)
+    RP              reduce using rule 40 (aleatorio -> ALEATORIO LP RP SEMICOLON .)
+
+
+state 136
+
+    (33) istrue -> ISTRUE LP ID RP . SEMICOLON
+
+    SEMICOLON       shift and go to state 151
+
+
+state 137
+
+    (41) repeat -> REPEAT LP instrucciones RP . SEMICOLON
+
+    SEMICOLON       shift and go to state 152
+
+
+state 138
+
+    (10) proc -> PROC ID LP instrucciones RP SEMICOLON .
+
+    PROC            reduce using rule 10 (proc -> PROC ID LP instrucciones RP SEMICOLON .)
+    MAIN            reduce using rule 10 (proc -> PROC ID LP instrucciones RP SEMICOLON .)
+    $end            reduce using rule 10 (proc -> PROC ID LP instrucciones RP SEMICOLON .)
+
+
+state 139
+
+    (27) def -> DEF LP ID COMMA TYPE . COMMA value RP SEMICOLON
+    (28) def -> DEF LP ID COMMA TYPE . RP SEMICOLON
+
+    COMMA           shift and go to state 153
+    RP              shift and go to state 154
+
+
+state 140
+
+    (61) change -> ID LP value RP SEMICOLON .
+
+    DEF             reduce using rule 61 (change -> ID LP value RP SEMICOLON .)
+    CALL            reduce using rule 61 (change -> ID LP value RP SEMICOLON .)
+    ALTER           reduce using rule 61 (change -> ID LP value RP SEMICOLON .)
+    NOT             reduce using rule 61 (change -> ID LP value RP SEMICOLON .)
+    PRINT           reduce using rule 61 (change -> ID LP value RP SEMICOLON .)
+    WHILE           reduce using rule 61 (change -> ID LP value RP SEMICOLON .)
+    UNTIL           reduce using rule 61 (change -> ID LP value RP SEMICOLON .)
+    CASE            reduce using rule 61 (change -> ID LP value RP SEMICOLON .)
+    MOVER           reduce using rule 61 (change -> ID LP value RP SEMICOLON .)
+    ALEATORIO       reduce using rule 61 (change -> ID LP value RP SEMICOLON .)
+    ISTRUE          reduce using rule 61 (change -> ID LP value RP SEMICOLON .)
+    REPEAT          reduce using rule 61 (change -> ID LP value RP SEMICOLON .)
+    ID              reduce using rule 61 (change -> ID LP value RP SEMICOLON .)
+    RP              reduce using rule 61 (change -> ID LP value RP SEMICOLON .)
+
+
+state 141
+
+    (29) call -> CALL LP ID RP SEMICOLON .
+
+    DEF             reduce using rule 29 (call -> CALL LP ID RP SEMICOLON .)
+    CALL            reduce using rule 29 (call -> CALL LP ID RP SEMICOLON .)
+    ALTER           reduce using rule 29 (call -> CALL LP ID RP SEMICOLON .)
+    NOT             reduce using rule 29 (call -> CALL LP ID RP SEMICOLON .)
+    PRINT           reduce using rule 29 (call -> CALL LP ID RP SEMICOLON .)
+    WHILE           reduce using rule 29 (call -> CALL LP ID RP SEMICOLON .)
+    UNTIL           reduce using rule 29 (call -> CALL LP ID RP SEMICOLON .)
+    CASE            reduce using rule 29 (call -> CALL LP ID RP SEMICOLON .)
+    MOVER           reduce using rule 29 (call -> CALL LP ID RP SEMICOLON .)
+    ALEATORIO       reduce using rule 29 (call -> CALL LP ID RP SEMICOLON .)
+    ISTRUE          reduce using rule 29 (call -> CALL LP ID RP SEMICOLON .)
+    REPEAT          reduce using rule 29 (call -> CALL LP ID RP SEMICOLON .)
+    ID              reduce using rule 29 (call -> CALL LP ID RP SEMICOLON .)
+    RP              reduce using rule 29 (call -> CALL LP ID RP SEMICOLON .)
+
+
+state 142
+
+    (31) alter -> ALTER LP ID COMMA ID . RP SEMICOLON
+
+    RP              shift and go to state 155
+
+
+state 143
+
+    (30) alter -> ALTER LP ID COMMA INTEGER . RP SEMICOLON
+
+    RP              shift and go to state 156
+
+
+state 144
+
+    (32) not -> NOT LP ID RP SEMICOLON .
+
+    DEF             reduce using rule 32 (not -> NOT LP ID RP SEMICOLON .)
+    CALL            reduce using rule 32 (not -> NOT LP ID RP SEMICOLON .)
+    ALTER           reduce using rule 32 (not -> NOT LP ID RP SEMICOLON .)
+    NOT             reduce using rule 32 (not -> NOT LP ID RP SEMICOLON .)
+    PRINT           reduce using rule 32 (not -> NOT LP ID RP SEMICOLON .)
+    WHILE           reduce using rule 32 (not -> NOT LP ID RP SEMICOLON .)
+    UNTIL           reduce using rule 32 (not -> NOT LP ID RP SEMICOLON .)
+    CASE            reduce using rule 32 (not -> NOT LP ID RP SEMICOLON .)
+    MOVER           reduce using rule 32 (not -> NOT LP ID RP SEMICOLON .)
+    ALEATORIO       reduce using rule 32 (not -> NOT LP ID RP SEMICOLON .)
+    ISTRUE          reduce using rule 32 (not -> NOT LP ID RP SEMICOLON .)
+    REPEAT          reduce using rule 32 (not -> NOT LP ID RP SEMICOLON .)
+    ID              reduce using rule 32 (not -> NOT LP ID RP SEMICOLON .)
+    RP              reduce using rule 32 (not -> NOT LP ID RP SEMICOLON .)
+
+
+state 145
+
+    (35) iterative -> WHILE condicion LP instrucciones RP . SEMICOLON
+
+    SEMICOLON       shift and go to state 157
+
+
+state 146
+
+    (36) iterative -> UNTIL LP instrucciones RP condicion . SEMICOLON
+
+    SEMICOLON       shift and go to state 158
+
+
+state 147
+
+    (51) else -> ELSE LP . instrucciones RP
+    (13) instrucciones -> . instruccion instrucciones
+    (14) instrucciones -> . instruccion
+    (15) instruccion -> . def
+    (16) instruccion -> . call
+    (17) instruccion -> . alter
+    (18) instruccion -> . not
+    (19) instruccion -> . print
+    (20) instruccion -> . iterative
+    (21) instruccion -> . case
+    (22) instruccion -> . mover
+    (23) instruccion -> . aleatorio
+    (24) instruccion -> . istrue
+    (25) instruccion -> . repeat
+    (26) instruccion -> . change
+    (27) def -> . DEF LP ID COMMA TYPE COMMA value RP SEMICOLON
+    (28) def -> . DEF LP ID COMMA TYPE RP SEMICOLON
+    (29) call -> . CALL LP ID RP SEMICOLON
+    (30) alter -> . ALTER LP ID COMMA INTEGER RP SEMICOLON
+    (31) alter -> . ALTER LP ID COMMA ID RP SEMICOLON
+    (32) not -> . NOT LP ID RP SEMICOLON
+    (34) print -> . PRINT LP RP SEMICOLON
+    (35) iterative -> . WHILE condicion LP instrucciones RP SEMICOLON
+    (36) iterative -> . UNTIL LP instrucciones RP condicion SEMICOLON
+    (37) case -> . CASE funciones SEMICOLON
+    (38) case -> . CASE ID funciones SEMICOLON
+    (39) mover -> . MOVER LP DIR RP SEMICOLON
+    (40) aleatorio -> . ALEATORIO LP RP SEMICOLON
+    (33) istrue -> . ISTRUE LP ID RP SEMICOLON
+    (41) repeat -> . REPEAT LP instrucciones RP SEMICOLON
+    (61) change -> . ID LP value RP SEMICOLON
+
+    DEF             shift and go to state 32
+    CALL            shift and go to state 34
+    ALTER           shift and go to state 35
+    NOT             shift and go to state 36
+    PRINT           shift and go to state 37
+    WHILE           shift and go to state 38
+    UNTIL           shift and go to state 39
+    CASE            shift and go to state 40
+    MOVER           shift and go to state 41
+    ALEATORIO       shift and go to state 42
+    ISTRUE          shift and go to state 43
+    REPEAT          shift and go to state 44
+    ID              shift and go to state 33
+
+    instrucciones                  shift and go to state 159
+    instruccion                    shift and go to state 19
+    def                            shift and go to state 20
+    call                           shift and go to state 21
+    alter                          shift and go to state 22
+    not                            shift and go to state 23
+    print                          shift and go to state 24
+    iterative                      shift and go to state 25
+    case                           shift and go to state 26
+    mover                          shift and go to state 27
+    aleatorio                      shift and go to state 28
+    istrue                         shift and go to state 29
+    repeat                         shift and go to state 30
+    change                         shift and go to state 31
+
+state 148
+
+    (50) then -> THEN LP instrucciones . RP
+
+    RP              shift and go to state 160
+
+
+state 149
+
+    (48) when -> WHEN LP condicion RP .
+
+    THEN            reduce using rule 48 (when -> WHEN LP condicion RP .)
+
+
+state 150
+
+    (39) mover -> MOVER LP DIR RP SEMICOLON .
+
+    DEF             reduce using rule 39 (mover -> MOVER LP DIR RP SEMICOLON .)
+    CALL            reduce using rule 39 (mover -> MOVER LP DIR RP SEMICOLON .)
+    ALTER           reduce using rule 39 (mover -> MOVER LP DIR RP SEMICOLON .)
+    NOT             reduce using rule 39 (mover -> MOVER LP DIR RP SEMICOLON .)
+    PRINT           reduce using rule 39 (mover -> MOVER LP DIR RP SEMICOLON .)
+    WHILE           reduce using rule 39 (mover -> MOVER LP DIR RP SEMICOLON .)
+    UNTIL           reduce using rule 39 (mover -> MOVER LP DIR RP SEMICOLON .)
+    CASE            reduce using rule 39 (mover -> MOVER LP DIR RP SEMICOLON .)
+    MOVER           reduce using rule 39 (mover -> MOVER LP DIR RP SEMICOLON .)
+    ALEATORIO       reduce using rule 39 (mover -> MOVER LP DIR RP SEMICOLON .)
+    ISTRUE          reduce using rule 39 (mover -> MOVER LP DIR RP SEMICOLON .)
+    REPEAT          reduce using rule 39 (mover -> MOVER LP DIR RP SEMICOLON .)
+    ID              reduce using rule 39 (mover -> MOVER LP DIR RP SEMICOLON .)
+    RP              reduce using rule 39 (mover -> MOVER LP DIR RP SEMICOLON .)
+
+
+state 151
+
+    (33) istrue -> ISTRUE LP ID RP SEMICOLON .
+
+    DEF             reduce using rule 33 (istrue -> ISTRUE LP ID RP SEMICOLON .)
+    CALL            reduce using rule 33 (istrue -> ISTRUE LP ID RP SEMICOLON .)
+    ALTER           reduce using rule 33 (istrue -> ISTRUE LP ID RP SEMICOLON .)
+    NOT             reduce using rule 33 (istrue -> ISTRUE LP ID RP SEMICOLON .)
+    PRINT           reduce using rule 33 (istrue -> ISTRUE LP ID RP SEMICOLON .)
+    WHILE           reduce using rule 33 (istrue -> ISTRUE LP ID RP SEMICOLON .)
+    UNTIL           reduce using rule 33 (istrue -> ISTRUE LP ID RP SEMICOLON .)
+    CASE            reduce using rule 33 (istrue -> ISTRUE LP ID RP SEMICOLON .)
+    MOVER           reduce using rule 33 (istrue -> ISTRUE LP ID RP SEMICOLON .)
+    ALEATORIO       reduce using rule 33 (istrue -> ISTRUE LP ID RP SEMICOLON .)
+    ISTRUE          reduce using rule 33 (istrue -> ISTRUE LP ID RP SEMICOLON .)
+    REPEAT          reduce using rule 33 (istrue -> ISTRUE LP ID RP SEMICOLON .)
+    ID              reduce using rule 33 (istrue -> ISTRUE LP ID RP SEMICOLON .)
+    RP              reduce using rule 33 (istrue -> ISTRUE LP ID RP SEMICOLON .)
+    LP              reduce using rule 33 (istrue -> ISTRUE LP ID RP SEMICOLON .)
+    SEMICOLON       reduce using rule 33 (istrue -> ISTRUE LP ID RP SEMICOLON .)
+
+
+state 152
+
+    (41) repeat -> REPEAT LP instrucciones RP SEMICOLON .
+
+    DEF             reduce using rule 41 (repeat -> REPEAT LP instrucciones RP SEMICOLON .)
+    CALL            reduce using rule 41 (repeat -> REPEAT LP instrucciones RP SEMICOLON .)
+    ALTER           reduce using rule 41 (repeat -> REPEAT LP instrucciones RP SEMICOLON .)
+    NOT             reduce using rule 41 (repeat -> REPEAT LP instrucciones RP SEMICOLON .)
+    PRINT           reduce using rule 41 (repeat -> REPEAT LP instrucciones RP SEMICOLON .)
+    WHILE           reduce using rule 41 (repeat -> REPEAT LP instrucciones RP SEMICOLON .)
+    UNTIL           reduce using rule 41 (repeat -> REPEAT LP instrucciones RP SEMICOLON .)
+    CASE            reduce using rule 41 (repeat -> REPEAT LP instrucciones RP SEMICOLON .)
+    MOVER           reduce using rule 41 (repeat -> REPEAT LP instrucciones RP SEMICOLON .)
+    ALEATORIO       reduce using rule 41 (repeat -> REPEAT LP instrucciones RP SEMICOLON .)
+    ISTRUE          reduce using rule 41 (repeat -> REPEAT LP instrucciones RP SEMICOLON .)
+    REPEAT          reduce using rule 41 (repeat -> REPEAT LP instrucciones RP SEMICOLON .)
+    ID              reduce using rule 41 (repeat -> REPEAT LP instrucciones RP SEMICOLON .)
+    RP              reduce using rule 41 (repeat -> REPEAT LP instrucciones RP SEMICOLON .)
+
+
+state 153
+
+    (27) def -> DEF LP ID COMMA TYPE COMMA . value RP SEMICOLON
+    (42) value -> . INTEGER
+    (43) value -> . BOOL
+
+    INTEGER         shift and go to state 79
+    BOOL            shift and go to state 62
+
+    value                          shift and go to state 161
+
+state 154
+
+    (28) def -> DEF LP ID COMMA TYPE RP . SEMICOLON
+
+    SEMICOLON       shift and go to state 162
+
+
+state 155
+
+    (31) alter -> ALTER LP ID COMMA ID RP . SEMICOLON
+
+    SEMICOLON       shift and go to state 163
+
+
+state 156
+
+    (30) alter -> ALTER LP ID COMMA INTEGER RP . SEMICOLON
+
+    SEMICOLON       shift and go to state 164
+
+
+state 157
+
+    (35) iterative -> WHILE condicion LP instrucciones RP SEMICOLON .
+
+    DEF             reduce using rule 35 (iterative -> WHILE condicion LP instrucciones RP SEMICOLON .)
+    CALL            reduce using rule 35 (iterative -> WHILE condicion LP instrucciones RP SEMICOLON .)
+    ALTER           reduce using rule 35 (iterative -> WHILE condicion LP instrucciones RP SEMICOLON .)
+    NOT             reduce using rule 35 (iterative -> WHILE condicion LP instrucciones RP SEMICOLON .)
+    PRINT           reduce using rule 35 (iterative -> WHILE condicion LP instrucciones RP SEMICOLON .)
+    WHILE           reduce using rule 35 (iterative -> WHILE condicion LP instrucciones RP SEMICOLON .)
+    UNTIL           reduce using rule 35 (iterative -> WHILE condicion LP instrucciones RP SEMICOLON .)
+    CASE            reduce using rule 35 (iterative -> WHILE condicion LP instrucciones RP SEMICOLON .)
+    MOVER           reduce using rule 35 (iterative -> WHILE condicion LP instrucciones RP SEMICOLON .)
+    ALEATORIO       reduce using rule 35 (iterative -> WHILE condicion LP instrucciones RP SEMICOLON .)
+    ISTRUE          reduce using rule 35 (iterative -> WHILE condicion LP instrucciones RP SEMICOLON .)
+    REPEAT          reduce using rule 35 (iterative -> WHILE condicion LP instrucciones RP SEMICOLON .)
+    ID              reduce using rule 35 (iterative -> WHILE condicion LP instrucciones RP SEMICOLON .)
+    RP              reduce using rule 35 (iterative -> WHILE condicion LP instrucciones RP SEMICOLON .)
+
+
+state 158
+
+    (36) iterative -> UNTIL LP instrucciones RP condicion SEMICOLON .
+
+    DEF             reduce using rule 36 (iterative -> UNTIL LP instrucciones RP condicion SEMICOLON .)
+    CALL            reduce using rule 36 (iterative -> UNTIL LP instrucciones RP condicion SEMICOLON .)
+    ALTER           reduce using rule 36 (iterative -> UNTIL LP instrucciones RP condicion SEMICOLON .)
+    NOT             reduce using rule 36 (iterative -> UNTIL LP instrucciones RP condicion SEMICOLON .)
+    PRINT           reduce using rule 36 (iterative -> UNTIL LP instrucciones RP condicion SEMICOLON .)
+    WHILE           reduce using rule 36 (iterative -> UNTIL LP instrucciones RP condicion SEMICOLON .)
+    UNTIL           reduce using rule 36 (iterative -> UNTIL LP instrucciones RP condicion SEMICOLON .)
+    CASE            reduce using rule 36 (iterative -> UNTIL LP instrucciones RP condicion SEMICOLON .)
+    MOVER           reduce using rule 36 (iterative -> UNTIL LP instrucciones RP condicion SEMICOLON .)
+    ALEATORIO       reduce using rule 36 (iterative -> UNTIL LP instrucciones RP condicion SEMICOLON .)
+    ISTRUE          reduce using rule 36 (iterative -> UNTIL LP instrucciones RP condicion SEMICOLON .)
+    REPEAT          reduce using rule 36 (iterative -> UNTIL LP instrucciones RP condicion SEMICOLON .)
+    ID              reduce using rule 36 (iterative -> UNTIL LP instrucciones RP condicion SEMICOLON .)
+    RP              reduce using rule 36 (iterative -> UNTIL LP instrucciones RP condicion SEMICOLON .)
+
+
+state 159
+
+    (51) else -> ELSE LP instrucciones . RP
+
+    RP              shift and go to state 165
+
+
+state 160
+
+    (50) then -> THEN LP instrucciones RP .
+
+    ELSE            reduce using rule 50 (then -> THEN LP instrucciones RP .)
+    SEMICOLON       reduce using rule 50 (then -> THEN LP instrucciones RP .)
+    WHEN            reduce using rule 50 (then -> THEN LP instrucciones RP .)
+
+
+state 161
+
+    (27) def -> DEF LP ID COMMA TYPE COMMA value . RP SEMICOLON
+
+    RP              shift and go to state 166
+
+
+state 162
+
+    (28) def -> DEF LP ID COMMA TYPE RP SEMICOLON .
+
+    DEF             reduce using rule 28 (def -> DEF LP ID COMMA TYPE RP SEMICOLON .)
+    CALL            reduce using rule 28 (def -> DEF LP ID COMMA TYPE RP SEMICOLON .)
+    ALTER           reduce using rule 28 (def -> DEF LP ID COMMA TYPE RP SEMICOLON .)
+    NOT             reduce using rule 28 (def -> DEF LP ID COMMA TYPE RP SEMICOLON .)
+    PRINT           reduce using rule 28 (def -> DEF LP ID COMMA TYPE RP SEMICOLON .)
+    WHILE           reduce using rule 28 (def -> DEF LP ID COMMA TYPE RP SEMICOLON .)
+    UNTIL           reduce using rule 28 (def -> DEF LP ID COMMA TYPE RP SEMICOLON .)
+    CASE            reduce using rule 28 (def -> DEF LP ID COMMA TYPE RP SEMICOLON .)
+    MOVER           reduce using rule 28 (def -> DEF LP ID COMMA TYPE RP SEMICOLON .)
+    ALEATORIO       reduce using rule 28 (def -> DEF LP ID COMMA TYPE RP SEMICOLON .)
+    ISTRUE          reduce using rule 28 (def -> DEF LP ID COMMA TYPE RP SEMICOLON .)
+    REPEAT          reduce using rule 28 (def -> DEF LP ID COMMA TYPE RP SEMICOLON .)
+    ID              reduce using rule 28 (def -> DEF LP ID COMMA TYPE RP SEMICOLON .)
+    RP              reduce using rule 28 (def -> DEF LP ID COMMA TYPE RP SEMICOLON .)
+
+
+state 163
+
+    (31) alter -> ALTER LP ID COMMA ID RP SEMICOLON .
+
+    DEF             reduce using rule 31 (alter -> ALTER LP ID COMMA ID RP SEMICOLON .)
+    CALL            reduce using rule 31 (alter -> ALTER LP ID COMMA ID RP SEMICOLON .)
+    ALTER           reduce using rule 31 (alter -> ALTER LP ID COMMA ID RP SEMICOLON .)
+    NOT             reduce using rule 31 (alter -> ALTER LP ID COMMA ID RP SEMICOLON .)
+    PRINT           reduce using rule 31 (alter -> ALTER LP ID COMMA ID RP SEMICOLON .)
+    WHILE           reduce using rule 31 (alter -> ALTER LP ID COMMA ID RP SEMICOLON .)
+    UNTIL           reduce using rule 31 (alter -> ALTER LP ID COMMA ID RP SEMICOLON .)
+    CASE            reduce using rule 31 (alter -> ALTER LP ID COMMA ID RP SEMICOLON .)
+    MOVER           reduce using rule 31 (alter -> ALTER LP ID COMMA ID RP SEMICOLON .)
+    ALEATORIO       reduce using rule 31 (alter -> ALTER LP ID COMMA ID RP SEMICOLON .)
+    ISTRUE          reduce using rule 31 (alter -> ALTER LP ID COMMA ID RP SEMICOLON .)
+    REPEAT          reduce using rule 31 (alter -> ALTER LP ID COMMA ID RP SEMICOLON .)
+    ID              reduce using rule 31 (alter -> ALTER LP ID COMMA ID RP SEMICOLON .)
+    RP              reduce using rule 31 (alter -> ALTER LP ID COMMA ID RP SEMICOLON .)
+
+
+state 164
+
+    (30) alter -> ALTER LP ID COMMA INTEGER RP SEMICOLON .
+
+    DEF             reduce using rule 30 (alter -> ALTER LP ID COMMA INTEGER RP SEMICOLON .)
+    CALL            reduce using rule 30 (alter -> ALTER LP ID COMMA INTEGER RP SEMICOLON .)
+    ALTER           reduce using rule 30 (alter -> ALTER LP ID COMMA INTEGER RP SEMICOLON .)
+    NOT             reduce using rule 30 (alter -> ALTER LP ID COMMA INTEGER RP SEMICOLON .)
+    PRINT           reduce using rule 30 (alter -> ALTER LP ID COMMA INTEGER RP SEMICOLON .)
+    WHILE           reduce using rule 30 (alter -> ALTER LP ID COMMA INTEGER RP SEMICOLON .)
+    UNTIL           reduce using rule 30 (alter -> ALTER LP ID COMMA INTEGER RP SEMICOLON .)
+    CASE            reduce using rule 30 (alter -> ALTER LP ID COMMA INTEGER RP SEMICOLON .)
+    MOVER           reduce using rule 30 (alter -> ALTER LP ID COMMA INTEGER RP SEMICOLON .)
+    ALEATORIO       reduce using rule 30 (alter -> ALTER LP ID COMMA INTEGER RP SEMICOLON .)
+    ISTRUE          reduce using rule 30 (alter -> ALTER LP ID COMMA INTEGER RP SEMICOLON .)
+    REPEAT          reduce using rule 30 (alter -> ALTER LP ID COMMA INTEGER RP SEMICOLON .)
+    ID              reduce using rule 30 (alter -> ALTER LP ID COMMA INTEGER RP SEMICOLON .)
+    RP              reduce using rule 30 (alter -> ALTER LP ID COMMA INTEGER RP SEMICOLON .)
+
+
+state 165
+
+    (51) else -> ELSE LP instrucciones RP .
+
+    SEMICOLON       reduce using rule 51 (else -> ELSE LP instrucciones RP .)
+    WHEN            reduce using rule 51 (else -> ELSE LP instrucciones RP .)
+
+
+state 166
+
+    (27) def -> DEF LP ID COMMA TYPE COMMA value RP . SEMICOLON
+
+    SEMICOLON       shift and go to state 167
+
+
+state 167
+
+    (27) def -> DEF LP ID COMMA TYPE COMMA value RP SEMICOLON .
+
+    DEF             reduce using rule 27 (def -> DEF LP ID COMMA TYPE COMMA value RP SEMICOLON .)
+    CALL            reduce using rule 27 (def -> DEF LP ID COMMA TYPE COMMA value RP SEMICOLON .)
+    ALTER           reduce using rule 27 (def -> DEF LP ID COMMA TYPE COMMA value RP SEMICOLON .)
+    NOT             reduce using rule 27 (def -> DEF LP ID COMMA TYPE COMMA value RP SEMICOLON .)
+    PRINT           reduce using rule 27 (def -> DEF LP ID COMMA TYPE COMMA value RP SEMICOLON .)
+    WHILE           reduce using rule 27 (def -> DEF LP ID COMMA TYPE COMMA value RP SEMICOLON .)
+    UNTIL           reduce using rule 27 (def -> DEF LP ID COMMA TYPE COMMA value RP SEMICOLON .)
+    CASE            reduce using rule 27 (def -> DEF LP ID COMMA TYPE COMMA value RP SEMICOLON .)
+    MOVER           reduce using rule 27 (def -> DEF LP ID COMMA TYPE COMMA value RP SEMICOLON .)
+    ALEATORIO       reduce using rule 27 (def -> DEF LP ID COMMA TYPE COMMA value RP SEMICOLON .)
+    ISTRUE          reduce using rule 27 (def -> DEF LP ID COMMA TYPE COMMA value RP SEMICOLON .)
+    REPEAT          reduce using rule 27 (def -> DEF LP ID COMMA TYPE COMMA value RP SEMICOLON .)
+    ID              reduce using rule 27 (def -> DEF LP ID COMMA TYPE COMMA value RP SEMICOLON .)
+    RP              reduce using rule 27 (def -> DEF LP ID COMMA TYPE COMMA value RP SEMICOLON .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: reduce/reduce conflict in state 61 resolved using rule (value -> INTEGER)
+WARNING: rejected rule (factor -> INTEGER) in state 61

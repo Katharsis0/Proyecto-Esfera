@@ -47,6 +47,10 @@ tokens = [
    'GT',#greater than
    'LT',#less than
    'DIR', #Direction
+    'LTE',#<= - less or equal
+    'GTE',#>= - greater or equal
+    'DIF', #>< - different
+    'EQUAL',
 
     #Tokens Reserved
     'DEF',
@@ -67,7 +71,9 @@ tokens = [
    'THEN',
    'TRUE',
    'FALSE',
-   'PRINT'
+   'PRINT',
+    'VALUE',
+    'CHANGE'
 ]
 
 
@@ -85,6 +91,13 @@ t_RP = r'\)'
 t_COMMA = r'\,'
 t_DIR = r'ATR|ADL|ADE|AIZ|IZQ|DER|DDE|DIZ'
 t_SEMICOLON = r';'
+t_DIF=r'><'
+t_GT=r'>'
+t_LT=r'<'
+t_GTE=r'>='
+t_LTE=r'<='
+t_EQUAL = r'=='
+
 
 #Reserved
 t_DEF = r'Def'
@@ -95,7 +108,7 @@ t_NOT = r'Not'
 t_ALTER = r'Alter'
 t_MOVER = r'Mover'
 t_ALEATORIO = r'Aleatorio'
-t_ISTRUE = r'isTrue'
+t_ISTRUE = r'IsTrue'
 t_REPEAT = r'Repeat'
 t_UNTIL = r'Until'
 t_WHILE = r'While'
@@ -105,13 +118,14 @@ t_ELSE = r'Else'
 t_THEN = r'Then'
 t_TRUE = r'True'
 t_FALSE = r'False'
-t_PRINT = r'Print'
+t_PRINT = r'=>'
+t_CHANGE = r'Change'
 
 
 #Token int
 def t_INTEGER(t):
     r'\d+'
-    t.value = int(t.value)    
+    t.value = int(t.value)
     return t
 
 # Define a rule so we can track line numbers
@@ -123,27 +137,41 @@ def t_newline(t):
 #Token ID or reserved word. If its reserved word return its value.
 #TODO: Validar en el parser que si es un ID inicie con @.
 def t_ID(t):
-    #r'^@?\w[\w#@]*$'
-    #r'^[@\w#]{2,9}\w?$'
-    #r'^[@\w#]{2,9}\w?$'
-    #if t.value in reserved:
-        # token.type devuelve los valores de arriba (p.e: token.type devuelve de t_CORCHETEDER : CORCHETEDER)
-     #   t.type = reserved[t.value]
-    #Regresa la variable o ID
-    #return t
-    r'^@[A-Za-z0-9#-]{3,9}$'
-
-    #r'^[@\w#]{2,9}\w?$'
-    #if t.value in reserved:
-        # token.type devuelve los valores de arriba (p.e: token.type devuelve de t_CORCHETEDER : CORCHETEDER)
-       # t.type = reserved[t.value]
-        #Regresa la variable o ID
+    r'@[a-zA-Z][a-zA-Z0-9_]*'
+    if t.value == '@Principal':
+        t.type = 'MAIN'
+    else:
+        t.type = 'ID'
     return t
 
 
 def t_COMMENT(token):
     r'--.*'
     return token
+
+def t_TYPE(t):
+    r'(int | bool)'
+    t.type = 'TYPE'
+    return t
+
+# def t_VALUE(t):
+#     r'(True|False|\d+)'
+#     if t.value == 'True' or t.value == 'False':
+#         t.value = True if t.value == 'True' else False
+#         t.type = 'VALUE'
+#     else:
+#         t.value = int(t.value)
+#         t.type = 'VALUE'
+#     return t
+
+def t_BOOL(t):
+    r'(True|False)'
+    if t.value == 'True':
+        t.value = True
+    elif t.value == 'False':
+        t.value = False
+    t.type = 'BOOL'
+    return t
 
 # Error handling rule
 def t_error(t):
@@ -155,12 +183,16 @@ t_ignore  = ' \t'
 # Build the lexer
 lexer = lex.lex()
 
+#Open the input file and read its contents
+with open('prueba.txt', 'r') as f:
+    input_string = f.read()
 
+#Pass the input string to the lexer
+lexer.input(input_string)
 
-#Testeo
-lexer.input(''';''')
+#Tokenize the input and print the resulting tokens
 while True:
     tok = lexer.token()
-    if not tok: 
-        break      # No more input
+    if not tok:
+        break
     print(tok)

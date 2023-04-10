@@ -1,1 +1,33 @@
-Def @RATON1
+-- Hola Mundo
+@Principal();
+Proc @Luna (
+    Def (@sol, bool);
+    Alter(@estrella,2);
+    Alter(@uvas, @fresa);
+    Call(@barro);
+    Not(@luna4);
+    IsTrue(@sol);
+);
+
+Proc @barco (
+    Mover(ATR);
+    Print();
+    While 2<3 (
+        Def (@agua, int, 1500);
+    );
+    Until(Alter(@yogurt, 5);
+    ) 6<7;
+
+);
+
+Proc @proc3 (
+Case When(5==5) Then (Not(@jirafa););
+Case When(5==6) Then (Not(@cebra);) Else(Call(@cama););
+Aleatorio();
+Repeat(Mover(ATR););
+@lotie (4);
+@oros (True);
+@Plata45#(False);
+
+
+);
