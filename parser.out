@@ -2,65 +2,187 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    INTEGER
+    BOOL
+    DIF
+    ELSE
+    EQUAL
+    FALSE
+    GT
+    GTE
+    LSB
+    LT
+    LTE
+    RSB
+    THEN
+    TRUE
+    TYPE
+    UMINUS
+    WHEN
 
 Grammar
 
 Rule 0     S' -> init
-Rule 1     init -> comment code
-Rule 2     init -> comment
-Rule 3     code -> procedimientos main
-Rule 4     code -> main procedimientos
-Rule 5     code -> procedimientos main procedimientos
-Rule 6     procedimientos -> procedimiento procedimientos
-Rule 7     procedimientos -> procedimiento
-Rule 8     procedimiento -> proc
-Rule 9     id -> ID
-Rule 10    instrucciones -> instruccion instrucciones
-Rule 11    instrucciones -> instruccion
-Rule 12    instruccion -> def
-Rule 13    def -> DEF LP ID RP
-Rule 14    expression -> expression PLUS term
-Rule 15    expression -> expression MINUS term
-Rule 16    expression -> term
-Rule 17    term -> term STAR factor
-Rule 18    term -> term SLASH factor
-Rule 19    term -> factor
-Rule 20    factor -> NUMBER
-Rule 21    factor -> LP expression RP
-Rule 22    proc -> PROC LP RP
-Rule 23    comment -> COMMENT
+Rule 1     init -> func
+Rule 2     second -> comment code
+Rule 3     second -> comment
+Rule 4     func -> DEF ID
+Rule 5     code -> procedimientos main
+Rule 6     code -> main procedimientos
+Rule 7     code -> procedimientos main procedimientos
+Rule 8     code -> main
+Rule 9     procedimientos -> procedimiento procedimientos
+Rule 10    procedimientos -> procedimiento
+Rule 11    procedimiento -> proc
+Rule 12    proc -> PROC ID LP factor RP SEMICOLON
+Rule 13    main -> MAIN LP instrucciones RP SEMICOLON
+Rule 14    main -> MAIN SEMICOLON
+Rule 15    id -> ID
+Rule 16    instrucciones -> instruccion instrucciones
+Rule 17    instrucciones -> instruccion
+Rule 18    instruccion -> def
+Rule 19    instruccion -> call
+Rule 20    instruccion -> alter
+Rule 21    instruccion -> not
+Rule 22    instruccion -> print
+Rule 23    instruccion -> iterative
+Rule 24    instruccion -> case
+Rule 25    instruccion -> mover
+Rule 26    instruccion -> aleatorio
+Rule 27    instruccion -> repeat
+Rule 28    def -> DEF LP factor RP
+Rule 29    call -> CALL LP id RP SEMICOLON
+Rule 30    alter -> ALTER LP id COMMA factor RP SEMICOLON
+Rule 31    not -> NOT LP id RP SEMICOLON
+Rule 32    istrue -> ISTRUE LP id RP SEMICOLON
+Rule 33    print -> PRINT LP RP SEMICOLON
+Rule 34    iterative -> WHILE LP instrucciones SEMICOLON
+Rule 35    iterative -> UNTIL LP RP instrucciones SEMICOLON
+Rule 36    case -> CASE instrucciones SEMICOLON
+Rule 37    case -> CASE ID instrucciones SEMICOLON
+Rule 38    mover -> MOVER LP DIR RP SEMICOLON
+Rule 39    aleatorio -> ALEATORIO LP RP SEMICOLON
+Rule 40    repeat -> REPEAT LP instrucciones RP
+Rule 41    expression -> expression PLUS term
+Rule 42    expression -> expression MINUS term
+Rule 43    expression -> term
+Rule 44    term -> term STAR factor
+Rule 45    term -> term SLASH factor
+Rule 46    term -> factor
+Rule 47    factor -> INTEGER
+Rule 48    factor -> LP expression RP
+Rule 49    comment -> COMMENT
 
 Terminals, with rules where they appear
 
-DEF                  : 13
-ID                   : 9 13
-INTEGER              : 
-LP                   : 13 21 22
-MINUS                : 15
-PLUS                 : 14
-PROC                 : 22
-RP                   : 13 21 22
-SLASH                : 18
-STAR                 : 17
+ALEATORIO            : 39
+ALTER                : 30
+BOOL                 : 
+CALL                 : 29
+CASE                 : 36 37
+COMMA                : 30
+COMMENT              : 49
+DEF                  : 4 28
+DIF                  : 
+DIR                  : 38
+ELSE                 : 
+EQUAL                : 
+FALSE                : 
+GT                   : 
+GTE                  : 
+ID                   : 4 12 15 37
+INTEGER              : 47
+ISTRUE               : 32
+LP                   : 12 13 28 29 30 31 32 33 34 35 38 39 40 48
+LSB                  : 
+LT                   : 
+LTE                  : 
+MAIN                 : 13 14
+MINUS                : 42
+MOVER                : 38
+NOT                  : 31
+PLUS                 : 41
+PRINT                : 33
+PROC                 : 12
+REPEAT               : 40
+RP                   : 12 13 28 29 30 31 32 33 35 38 39 40 48
+RSB                  : 
+SEMICOLON            : 12 13 14 29 30 31 32 33 34 35 36 37 38 39
+SLASH                : 45
+STAR                 : 44
+THEN                 : 
+TRUE                 : 
+TYPE                 : 
+UMINUS               : 
+UNTIL                : 35
+WHEN                 : 
+WHILE                : 34
 error                : 
 
 Nonterminals, with rules where they appear
 
-COMMENT              : 23
-NUMBER               : 20
-code                 : 1
-comment              : 1 2
-def                  : 12
-expression           : 14 15 21
-factor               : 17 18 19
-id                   : 
+aleatorio            : 26
+alter                : 20
+call                 : 19
+case                 : 24
+code                 : 2
+comment              : 2 3
+def                  : 18
+expression           : 41 42 48
+factor               : 12 28 30 44 45 46
+func                 : 1
+id                   : 29 30 31 32
 init                 : 0
-instruccion          : 10 11
-instrucciones        : 10
-main                 : 3 4 5
-proc                 : 8
-procedimiento        : 6 7
-procedimientos       : 3 4 5 5 6
-term                 : 14 15 16 17 18
+instruccion          : 16 17
+instrucciones        : 13 16 34 35 36 37 40
+istrue               : 
+iterative            : 23
+main                 : 5 6 7 8
+mover                : 25
+not                  : 21
+print                : 22
+proc                 : 11
+procedimiento        : 9 10
+procedimientos       : 5 6 7 7 9
+repeat               : 27
+second               : 
+term                 : 41 42 43 44 45
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . init
+    (1) init -> . func
+    (4) func -> . DEF ID
+
+    DEF             shift and go to state 3
+
+    init                           shift and go to state 1
+    func                           shift and go to state 2
+
+state 1
+
+    (0) S' -> init .
+
+
+
+state 2
+
+    (1) init -> func .
+
+    $end            reduce using rule 1 (init -> func .)
+
+
+state 3
+
+    (4) func -> DEF . ID
+
+    ID              shift and go to state 4
+
+
+state 4
+
+    (4) func -> DEF ID .
+
+    $end            reduce using rule 4 (func -> DEF ID .)
 

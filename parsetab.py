@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftPLUSMINUSleftSTARSLASHLP MINUS NUMBER PLUS PROC RP SLASH STARinit : proc\n            | expressionexpression : expression PLUS termexpression : expression MINUS termexpression : termterm : term STAR factorterm : term SLASH factorterm : factorfactor : NUMBERfactor : LP expression RPproc : PROC LP RP'
+_lr_signature = 'leftPLUSMINUSleftSTARSLASHALEATORIO ALTER BOOL CALL CASE COMMA COMMENT DEF DIF DIR ELSE EQUAL FALSE GT GTE ID INTEGER ISTRUE LP LSB LT LTE MAIN MINUS MOVER NOT PLUS PRINT PROC REPEAT RP RSB SEMICOLON SLASH STAR THEN TRUE TYPE UMINUS UNTIL WHEN WHILEinit : funcsecond : comment code\n              | commentfunc : DEF IDcode : procedimientos main\n            | main procedimientos\n            | procedimientos main procedimientos\n            | main procedimientos : procedimiento procedimientos\n                      | procedimiento\n    procedimiento : procproc : PROC ID LP factor RP SEMICOLON main : MAIN LP instrucciones RP SEMICOLON\n             | MAIN SEMICOLONid : IDinstrucciones : instruccion instrucciones\n                     | instruccion  \n    instruccion : def\n                    | call\n                    | alter\n                    | not\n                    | print\n                    | iterative\n                    | case\n                    | mover\n                    | aleatorio\n                    | repeatdef : DEF LP factor RPcall : CALL LP id RP SEMICOLONalter : ALTER LP id COMMA factor RP SEMICOLONnot : NOT LP id RP SEMICOLONistrue : ISTRUE LP id RP SEMICOLONprint : PRINT LP RP SEMICOLONiterative : WHILE LP instrucciones SEMICOLON\n                | UNTIL LP RP instrucciones SEMICOLON\n    case : CASE instrucciones SEMICOLON\n            | CASE ID instrucciones SEMICOLON\n    mover : MOVER LP DIR RP SEMICOLONaleatorio : ALEATORIO LP RP SEMICOLONrepeat : REPEAT LP instrucciones RP expression : expression PLUS termexpression : expression MINUS termexpression : termterm : term STAR factorterm : term SLASH factorterm : factorfactor : INTEGERfactor : LP expression RPcomment : COMMENT'
     
-_lr_action_items = {'PROC':([0,],[4,]),'NUMBER':([0,5,9,10,13,14,],[8,8,8,8,8,8,]),'LP':([0,4,5,9,10,13,14,],[5,11,5,5,5,5,5,]),'$end':([1,2,3,6,7,8,15,16,17,18,19,20,],[0,-1,-2,-5,-8,-9,-3,-4,-11,-10,-6,-7,]),'PLUS':([3,6,7,8,12,15,16,18,19,20,],[9,-5,-8,-9,9,-3,-4,-10,-6,-7,]),'MINUS':([3,6,7,8,12,15,16,18,19,20,],[10,-5,-8,-9,10,-3,-4,-10,-6,-7,]),'RP':([6,7,8,11,12,15,16,18,19,20,],[-5,-8,-9,17,18,-3,-4,-10,-6,-7,]),'STAR':([6,7,8,15,16,18,19,20,],[13,-8,-9,13,13,-10,-6,-7,]),'SLASH':([6,7,8,15,16,18,19,20,],[14,-8,-9,14,14,-10,-6,-7,]),}
+_lr_action_items = {'DEF':([0,],[3,]),'$end':([1,2,4,],[0,-1,-4,]),'ID':([3,],[4,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'init':([0,],[1,]),'proc':([0,],[2,]),'expression':([0,5,],[3,12,]),'term':([0,5,9,10,],[6,6,15,16,]),'factor':([0,5,9,10,13,14,],[7,7,7,7,19,20,]),}
+_lr_goto_items = {'init':([0,],[1,]),'func':([0,],[2,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,15 +27,53 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> init","S'",1,None,None,None),
-  ('init -> proc','init',1,'p_init','myparser.py',10),
-  ('init -> expression','init',1,'p_init','myparser.py',11),
-  ('expression -> expression PLUS term','expression',3,'p_expression_plus','myparser.py',15),
-  ('expression -> expression MINUS term','expression',3,'p_expression_minus','myparser.py',19),
-  ('expression -> term','expression',1,'p_expression_term','myparser.py',23),
-  ('term -> term STAR factor','term',3,'p_term_times','myparser.py',27),
-  ('term -> term SLASH factor','term',3,'p_term_div','myparser.py',31),
-  ('term -> factor','term',1,'p_term_factor','myparser.py',35),
-  ('factor -> NUMBER','factor',1,'p_factor_num','myparser.py',39),
-  ('factor -> LP expression RP','factor',3,'p_factor_expr','myparser.py',43),
-  ('proc -> PROC LP RP','proc',3,'p_proc','myparser.py',47),
+  ('init -> func','init',1,'p_init','myparser.py',34),
+  ('second -> comment code','second',2,'p_second','myparser.py',45),
+  ('second -> comment','second',1,'p_second','myparser.py',46),
+  ('func -> DEF ID','func',2,'p_paren','myparser.py',49),
+  ('code -> procedimientos main','code',2,'p_code','myparser.py',54),
+  ('code -> main procedimientos','code',2,'p_code','myparser.py',55),
+  ('code -> procedimientos main procedimientos','code',3,'p_code','myparser.py',56),
+  ('code -> main','code',1,'p_code','myparser.py',57),
+  ('procedimientos -> procedimiento procedimientos','procedimientos',2,'p_procedimientos','myparser.py',67),
+  ('procedimientos -> procedimiento','procedimientos',1,'p_procedimientos','myparser.py',68),
+  ('procedimiento -> proc','procedimiento',1,'p_procedimiento','myparser.py',78),
+  ('proc -> PROC ID LP factor RP SEMICOLON','proc',6,'p_proc','myparser.py',83),
+  ('main -> MAIN LP instrucciones RP SEMICOLON','main',5,'p_main','myparser.py',88),
+  ('main -> MAIN SEMICOLON','main',2,'p_main','myparser.py',89),
+  ('id -> ID','id',1,'p_id','myparser.py',97),
+  ('instrucciones -> instruccion instrucciones','instrucciones',2,'p_instrucciones','myparser.py',102),
+  ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones','myparser.py',103),
+  ('instruccion -> def','instruccion',1,'p_instruccion','myparser.py',113),
+  ('instruccion -> call','instruccion',1,'p_instruccion','myparser.py',114),
+  ('instruccion -> alter','instruccion',1,'p_instruccion','myparser.py',115),
+  ('instruccion -> not','instruccion',1,'p_instruccion','myparser.py',116),
+  ('instruccion -> print','instruccion',1,'p_instruccion','myparser.py',117),
+  ('instruccion -> iterative','instruccion',1,'p_instruccion','myparser.py',118),
+  ('instruccion -> case','instruccion',1,'p_instruccion','myparser.py',119),
+  ('instruccion -> mover','instruccion',1,'p_instruccion','myparser.py',120),
+  ('instruccion -> aleatorio','instruccion',1,'p_instruccion','myparser.py',121),
+  ('instruccion -> repeat','instruccion',1,'p_instruccion','myparser.py',122),
+  ('def -> DEF LP factor RP','def',4,'p_def','myparser.py',129),
+  ('call -> CALL LP id RP SEMICOLON','call',5,'p_call','myparser.py',133),
+  ('alter -> ALTER LP id COMMA factor RP SEMICOLON','alter',7,'p_alter','myparser.py',137),
+  ('not -> NOT LP id RP SEMICOLON','not',5,'p_not','myparser.py',141),
+  ('istrue -> ISTRUE LP id RP SEMICOLON','istrue',5,'p_condFuncion','myparser.py',145),
+  ('print -> PRINT LP RP SEMICOLON','print',4,'p_print','myparser.py',149),
+  ('iterative -> WHILE LP instrucciones SEMICOLON','iterative',4,'p_iterativo','myparser.py',154),
+  ('iterative -> UNTIL LP RP instrucciones SEMICOLON','iterative',5,'p_iterativo','myparser.py',155),
+  ('case -> CASE instrucciones SEMICOLON','case',3,'p_case','myparser.py',163),
+  ('case -> CASE ID instrucciones SEMICOLON','case',4,'p_case','myparser.py',164),
+  ('mover -> MOVER LP DIR RP SEMICOLON','mover',5,'p_mover','myparser.py',172),
+  ('aleatorio -> ALEATORIO LP RP SEMICOLON','aleatorio',4,'p_aleatorio','myparser.py',176),
+  ('repeat -> REPEAT LP instrucciones RP','repeat',4,'p_repeat','myparser.py',181),
+  ('expression -> expression PLUS term','expression',3,'p_expression_plus','myparser.py',188),
+  ('expression -> expression MINUS term','expression',3,'p_expression_minus','myparser.py',192),
+  ('expression -> term','expression',1,'p_expression_term','myparser.py',196),
+  ('term -> term STAR factor','term',3,'p_term_times','myparser.py',200),
+  ('term -> term SLASH factor','term',3,'p_term_div','myparser.py',204),
+  ('term -> factor','term',1,'p_term_factor','myparser.py',208),
+  ('factor -> INTEGER','factor',1,'p_factor_num','myparser.py',212),
+  ('factor -> LP expression RP','factor',3,'p_factor_expr','myparser.py',216),
+  ('comment -> COMMENT','comment',1,'p_comment','myparser.py',221),
 ]
