@@ -1,4 +1,5 @@
 import ply.lex as lex
+from functions import *
 
 #list of reserved words
 reserved = {

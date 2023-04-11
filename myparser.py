@@ -1,4 +1,7 @@
 import ply.yacc as yacc
+
+import functions
+import random
 from mylexer import tokens
 inputFile = "prueba.txt"
 
@@ -15,6 +18,9 @@ procedures = {}
 #list of errors
 errorList=[]
 
+#List of prints
+printsList=[]
+
 #comments
 commentList=[]
 
@@ -27,23 +33,29 @@ variableNumber=0
 precedence = (('left','PLUS','MINUS'),
             ('left','STAR','SLASH'))
 
-#TODO: Arreglat Condicion
+#TODO: Break para repeat
 #Estado inicial
 def p_init(p):
     '''init : comment code
             | comment'''
 
-    if len(p) == 3:
-         p[0]= [p[1]] + [p[2]]
-    if len(p) == 2:
-        p[0] = p[1]
+    if p[1][1]!= '-':
+        errorList.append("Error: Must contain at least one comment at the beginning of the program.")
+        print(errorList)
+    else:
+        if len(p) == 3:
+            p[0] = [p[1]] + [p[2]]
+        if len(p) == 2:
+            p[0] = p[1]
 
 #Estructura del codigo esperado
 def p_code(p):
     '''code : procedimientos main
             | main procedimientos
             | procedimientos main procedimientos
-            | main '''
+            | main
+            | comment code
+            | code comment'''
     if len(p) == 3:
         p[0] = [p[1]] + [p[2]]
     if len(p) == 4:
@@ -117,7 +129,8 @@ def p_instruccion(p):
                     | aleatorio
                     | istrue
                     | repeat
-                    | change'''
+                    | change
+                    | comment'''
     p[0]=p[1]
 
 
@@ -136,6 +149,7 @@ def p_def(p):
         #agrega la variable local al diccionario de variables
         localVars[p[3]]= None
         p[0]= [p[1],p[3],p[5]]
+        functions.definition(p[1],p[3],p[5])
     else:
         #agrega la variable local al diccionario de variables
         localVars.append(str(p[3]),p[7])
@@ -150,6 +164,7 @@ def p_call(p):
     if p[3] in procedures:
         #p[0]=(p[1],p[3])
         p[0] = [p[1], p[3]]
+        functions.llamada(p[1], p[3])
 
 def p_alter(p):
     '''alter : ALTER LP ID COMMA INTEGER RP SEMICOLON
@@ -165,6 +180,7 @@ def p_alter(p):
             localVars[p[3]]+= int(p[5])
             #p[0]=(p[1],p[3])
             p[0] = [p[1], p[3], p[5]]
+            functions.alterar(p[3], p[5])
 
 def p_not(p):
     '''not : NOT LP ID RP SEMICOLON'''
@@ -177,7 +193,9 @@ def p_not(p):
             localVars[p[3]]=not(localVars[p[3]])
             #p[0]=(p[1],p[3])
             p[0] = [p[1], p[3]]
-
+            functions.cambioBool(p[3])
+        else:
+            errorList.append("Error: Variable must be bool in line {1}".format(p[3],p.lineno(1)))
 
 
 def p_istrue(p):
@@ -192,11 +210,28 @@ def p_istrue(p):
         p[0] = [p[1], p[3]]
     else:
         errorList.append("Error: Invalid condition. Expected boolean variable as parameter in line {0}.".format(p.lineno(1)))
+    functions.validarTrue(p[3])
 
 def p_print(p):
-    '''print : PRINT LP RP SEMICOLON'''
+    '''print : PRINT LP prints RP SEMICOLON'''
     p[0] = p[1]
+    printsList.append(''.join(map(str, p[3])))
+    functions.printear(p[3])
 
+
+
+def p_prints(p):
+    '''prints : printexpr
+             | prints printexpr'''
+    p[0]= [p[1]] if len(p)==2 else p[1] + p[2]
+
+def p_stringexpr(p):
+    '''printexpr : STRING'''
+    p[0]=p[1]
+
+def p_idexpr(p):
+    '''printexpr : ID'''
+    p[0]=str(p[1])
 
 def p_iterativo(p):
     '''iterative : WHILE condicion LP instrucciones RP SEMICOLON
@@ -204,8 +239,10 @@ def p_iterativo(p):
     '''
     if p[1]=='While':
         p[0]=[p[1],p[2],p[4]] #(While, condition, instructions)
+        functions.funcionWhile(p[2], p[4])
     if p[1]=='Until':
         p[0]=[p[1],p[3],p[5]] #(Until, instructions, condition)
+        functions.funcionUntil(p[3], p[5])
 
 def p_case(p):
     '''case : CASE funciones SEMICOLON
@@ -213,21 +250,28 @@ def p_case(p):
     '''
     if len(p) == 5:
         p[0]=[p[1],p[2],p[3]]
+        functions.funcionCase2(p[2], p[3])
     else:
         p[0]=[p[1],p[2]]
+        functions.funcionCase1(p[2])
 
 def p_mover(p):
     '''mover : MOVER LP DIR RP SEMICOLON'''
     p[0] = [p[1], p[3]]
+    functions.mover(p[3])
 
 def p_aleatorio(p):
     '''aleatorio : ALEATORIO LP RP SEMICOLON'''
     p[0] = p[1]
+    listDir=['ATR','ADL','ADE','AIZ','IZQ','DER','DDE','DIZ']
+    for i in range (0,9):
+        functions.mover(random.choice(listDir))
 
 
 def p_repeat(p):
     '''repeat : REPEAT LP instrucciones RP SEMICOLON'''
     p[0] = [p[1], p[3]]
+    functions.repetir(p[3])
 
 def p_value(p):
     '''value : INTEGER
@@ -338,6 +382,7 @@ def p_change(p):
     if p[1] in localVars:
         localVars.update({p[1]:p[3]})
         p[0] = [p[1], p[3]]
+        functions.cambioVariable(p[1], p[3])
 
 
 #Expresiones matematicas
@@ -376,6 +421,9 @@ def p_factor_expr(p):
 
 def p_comment(p):
     '''comment : COMMENT'''
+    global commentNumber
+    commentNumber+=1
+    commentList.append(p[1])
     p[0]=p[1]
 
 
@@ -384,8 +432,10 @@ def p_comment(p):
 def p_error(p):
     if p:
         print(f"Error de sintaxis en línea {p.lineno}, columna {p.lexpos}: '{p.value}'")
+        print(errorList)
     else:
         print("Error de sintaxis: EOF")
+        print(errorList)
 
     #print("Syntax error in input!")
 

@@ -33,8 +33,6 @@ tokens = [
    'RP',
    'COMMENT',
    'ID', #+list(reserved.values())
-   'LSB', #left square bracket '['
-   'RSB', #right square bracket ']'
    'COMMA',
    'SEMICOLON',
    'EQUAL',#==
@@ -47,10 +45,6 @@ tokens = [
    'GT',#greater than
    'LT',#less than
    'DIR', #Direction
-    'LTE',#<= - less or equal
-    'GTE',#>= - greater or equal
-    'DIF', #>< - different
-    'EQUAL',
 
     #Tokens Reserved
     'DEF',
@@ -69,11 +63,10 @@ tokens = [
    'WHEN',
    'ELSE',
    'THEN',
-   'TRUE',
-   'FALSE',
    'PRINT',
     'VALUE',
-    'CHANGE'
+    'CHANGE',
+    'STRING'
 ]
 
 
@@ -116,10 +109,9 @@ t_CASE = r'Case'
 t_WHEN = r'When'
 t_ELSE = r'Else'
 t_THEN = r'Then'
-t_TRUE = r'True'
-t_FALSE = r'False'
 t_PRINT = r'=>'
 t_CHANGE = r'Change'
+t_STRING = r'\"[^\"]*\"'
 
 
 #Token int
