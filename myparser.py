@@ -3,7 +3,7 @@ import ply.yacc as yacc
 import functions
 import random
 from mylexer import tokens
-inputFile = "prueba.txt"
+inputFile = "./Tests/test.sfra"
 
 
 #list of local variables ID:Value
@@ -445,7 +445,7 @@ def p_error(p):
 
 
 
-#create parser
+# #create parser
 parser = yacc.yacc(debug=True)
 
 with open(inputFile, 'r') as file:

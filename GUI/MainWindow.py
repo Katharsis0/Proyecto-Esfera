@@ -1,5 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
+from myparser import *
+from mylexer import *
 
 
 class MainWindow:
@@ -94,7 +96,8 @@ class MainWindow:
     
     #Save file function
     def saveFile(self):
-        self.file_name = filedialog.asksaveasfilename(initialdir="/", title="Save file", filetypes=(("Esfera File","*.sfra"), ("All files", "*.*")))
+        #self.file_name = filedialog.asksaveasfilename(initialdir="/", title="Save file", filetypes=(("Esfera File","*.sfra"), ("All files", "*.*")))
+        self.file_name = filedialog.asksaveasfilename(initialdir="./Tests", title="Save file", filetypes=(("Esfera File","*.sfra"), ("All files", "*.*")))
         self.file_name = self.file_name + ".sfra"
         self.master.title("Esfera IDE - " + self.file_name)
         file = open(self.file_name,"x")
@@ -148,3 +151,20 @@ class MainWindow:
     #Compile process. TODO: Add compile process 
     def compile(self):
         print("Compiling...")
+        # #create parser and lexer
+        # parser = yacc.yacc(debug=True)
+        # lexer = lex.lex()
+        # #Open file
+        # with open(inputFile, 'r') as file:
+        #     data=file.read()
+        #     res=parser.parse(data)
+        #     lexer.input(data)
+        #     if res != None:
+        #         res = list(filter(None, res))
+        #     print(res)
+        # while True:
+        #     tok = lexer.token()
+        #     if not tok:
+        #         break
+        #     print(tok)
+
