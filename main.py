@@ -1,12 +1,10 @@
-import lexer
-import parsing 
+from tkinter import *
+import GUI.MainWindow
 
+def main():
+    window = Tk()
+    mainWindow = GUI.MainWindow.MainWindow(window)
+    window.mainloop()
 
-#Test
-
-inputString= "1 + 2"
-lexer_init= lexer.lex()
-parser_init= parsing.yacc()
-
-parse_tree=parser_init.parse(inputString,lexer=lexer_init)
-
+if __name__ == '__main__':
+    main()

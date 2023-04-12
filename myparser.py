@@ -6,13 +6,13 @@ from mylexer import tokens
 inputFile = "prueba.txt"
 
 
-#list of local variables
+#list of local variables ID:Value
 localVars={}
 
 #list of global variables
 globalVars={}
 
-#list of Procs
+#dictionary of Procs to map funcName:instruction
 procedures = {}
 
 #list of errors
@@ -448,4 +448,6 @@ parser = yacc.yacc(debug=True)
 with open(inputFile, 'r') as file:
     data=file.read()
     res=parser.parse(data)
+    if res != None:
+        res = list(filter(None, res))
     print(res)

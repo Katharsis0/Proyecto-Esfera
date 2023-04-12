@@ -13,7 +13,7 @@ class MainWindow:
         self.master.title("Esfera IDE")#Title of window
         self.master.geometry("1000x650+0+0")
         self.master.resizable(False, False)
-        photo = PhotoImage(file = "Images/rosa.png")#Icon of window
+        photo = PhotoImage(file = "./Images/rosa.png")#Icon of window
 
         self.master.iconphoto(False, photo)        
         self.master.configure(background="#313335")
@@ -143,7 +143,6 @@ class MainWindow:
 
     #Run process TODO: Add run process
     def run(self):
-        print()
         print(self.editor_text.get(1.0, END))
 
     #Compile process. TODO: Add compile process 
