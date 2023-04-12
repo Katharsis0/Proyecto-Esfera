@@ -1,4 +1,3 @@
---Esto es un comentario
 @Principal(
     Def(@Prueba, bool);
     --Otro comentario

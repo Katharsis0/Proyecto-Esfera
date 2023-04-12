@@ -14,6 +14,7 @@ globalVars={}
 
 #dictionary of Procs to map funcName:instruction
 procedures = {}
+proceduresList=[]
 
 #list of errors
 errorList=[]
@@ -38,15 +39,10 @@ precedence = (('left','PLUS','MINUS'),
 def p_init(p):
     '''init : comment code
             | comment'''
-
-    if p[1][1]!= '-':
-        errorList.append("Error: Must contain at least one comment at the beginning of the program.")
-        print(errorList)
-    else:
-        if len(p) == 3:
-            p[0] = [p[1]] + [p[2]]
-        if len(p) == 2:
-            p[0] = p[1]
+    if len(p) == 3:
+        p[0] = [p[1]] + [p[2]]
+    if len(p) == 2:
+        p[0] = p[1]
 
 #Estructura del codigo esperado
 def p_code(p):
@@ -60,7 +56,7 @@ def p_code(p):
         p[0] = [p[1]] + [p[2]]
     if len(p) == 4:
         p[0] = p[1] + [p[2] + p[3]] #revisar luego
-    if len(p)==2:
+    if len(p) == 2:
         p[0] = [p[1]]
 
 #Definicion de procedimientos
@@ -70,10 +66,10 @@ def p_procedimientos(p):
 
     '''
     if len(p) == 3:
-        p[0]= p[1] + [p[2]]
+        p[0] = p[1] + [p[2]]
 
     else:
-        p[0]=p[1]
+        p[0] = p[1]
 
 #Definicion de procedimiento
 def p_procedimiento(p):
@@ -83,11 +79,17 @@ def p_procedimiento(p):
 #Definicion de proc (palabra reservada)
 def p_proc(p):
     '''proc : PROC ID LP instrucciones RP SEMICOLON'''
-    if p[2] in procedures:
-        errorList.append("Error: procedure {0} cannot be defined more than once in line {1}.".format(p[2],p.lineno(1)))
-    else:
-        procedures[p[2]]=p[4]
-        p[0]= [p[1],p[2], p[4]]
+    if p[2] not in procedures:
+        procedures[p[2]] = [len(proceduresList)]
+        proceduresList.append([p[2], p[4]])
+        p[0] = [p[1], p[2], p[4]]
+
+    elif p[2] in procedures:
+        procedures[p[2]] = procedures[p[2]] + [len(proceduresList)]
+        errorList.append("Error: The main procedure cannot be defined on line {0} because it can only be declared once.".format(p.lineno(1)))
+
+
+
 
 #Definicion del procedimiento main
 def p_main(p):
@@ -149,7 +151,7 @@ def p_def(p):
         #agrega la variable local al diccionario de variables
         localVars[p[3]]= None
         p[0]= [p[1],p[3],p[5]]
-        functions.definition(p[1],p[3],p[5])
+        #functions.definition(p[1],p[3],p[5])
     else:
         #agrega la variable local al diccionario de variables
         localVars.append(str(p[3]),p[7])
@@ -164,7 +166,7 @@ def p_call(p):
     if p[3] in procedures:
         #p[0]=(p[1],p[3])
         p[0] = [p[1], p[3]]
-        functions.llamada(p[1], p[3])
+        #functions.llamada(p[1], p[3])
 
 def p_alter(p):
     '''alter : ALTER LP ID COMMA INTEGER RP SEMICOLON
@@ -180,7 +182,7 @@ def p_alter(p):
             localVars[p[3]]+= int(p[5])
             #p[0]=(p[1],p[3])
             p[0] = [p[1], p[3], p[5]]
-            functions.alterar(p[3], p[5])
+           # functions.alterar(p[3], p[5])
 
 def p_not(p):
     '''not : NOT LP ID RP SEMICOLON'''
@@ -193,7 +195,7 @@ def p_not(p):
             localVars[p[3]]=not(localVars[p[3]])
             #p[0]=(p[1],p[3])
             p[0] = [p[1], p[3]]
-            functions.cambioBool(p[3])
+            #functions.cambioBool(p[3])
         else:
             errorList.append("Error: Variable must be bool in line {1}".format(p[3],p.lineno(1)))
 
@@ -210,13 +212,13 @@ def p_istrue(p):
         p[0] = [p[1], p[3]]
     else:
         errorList.append("Error: Invalid condition. Expected boolean variable as parameter in line {0}.".format(p.lineno(1)))
-    functions.validarTrue(p[3])
+   # functions.validarTrue(p[3])
 
 def p_print(p):
     '''print : PRINT LP prints RP SEMICOLON'''
     p[0] = p[1]
     printsList.append(''.join(map(str, p[3])))
-    functions.printear(p[3])
+    #functions.printear(p[3])
 
 
 
@@ -239,10 +241,10 @@ def p_iterativo(p):
     '''
     if p[1]=='While':
         p[0]=[p[1],p[2],p[4]] #(While, condition, instructions)
-        functions.funcionWhile(p[2], p[4])
+        #functions.funcionWhile(p[2], p[4])
     if p[1]=='Until':
         p[0]=[p[1],p[3],p[5]] #(Until, instructions, condition)
-        functions.funcionUntil(p[3], p[5])
+        #functions.funcionUntil(p[3], p[5])
 
 def p_case(p):
     '''case : CASE funciones SEMICOLON
@@ -250,28 +252,28 @@ def p_case(p):
     '''
     if len(p) == 5:
         p[0]=[p[1],p[2],p[3]]
-        functions.funcionCase2(p[2], p[3])
+        #functions.funcionCase2(p[2], p[3])
     else:
         p[0]=[p[1],p[2]]
-        functions.funcionCase1(p[2])
+        #functions.funcionCase1(p[2])
 
 def p_mover(p):
     '''mover : MOVER LP DIR RP SEMICOLON'''
     p[0] = [p[1], p[3]]
-    functions.mover(p[3])
+    #functions.mover(p[3])
 
 def p_aleatorio(p):
     '''aleatorio : ALEATORIO LP RP SEMICOLON'''
     p[0] = p[1]
     listDir=['ATR','ADL','ADE','AIZ','IZQ','DER','DDE','DIZ']
-    for i in range (0,9):
-        functions.mover(random.choice(listDir))
+   # for i in range (0,9):
+        #functions.mover(random.choice(listDir))
 
 
 def p_repeat(p):
     '''repeat : REPEAT LP instrucciones RP SEMICOLON'''
     p[0] = [p[1], p[3]]
-    functions.repetir(p[3])
+    #functions.repetir(p[3])
 
 def p_value(p):
     '''value : INTEGER
@@ -382,7 +384,7 @@ def p_change(p):
     if p[1] in localVars:
         localVars.update({p[1]:p[3]})
         p[0] = [p[1], p[3]]
-        functions.cambioVariable(p[1], p[3])
+       # functions.cambioVariable(p[1], p[3])
 
 
 #Expresiones matematicas
@@ -431,7 +433,8 @@ def p_comment(p):
 # Error rule for syntax errors
 def p_error(p):
     if p:
-        print(f"Error de sintaxis en línea {p.lineno}, columna {p.lexpos}: '{p.value}'")
+        errorList.append(f"Error de sintaxis en línea {p.lineno}, columna {p.lexpos}: '{p.value}'")
+        #print(f"Error de sintaxis en línea {p.lineno}, columna {p.lexpos}: '{p.value}'")
         print(errorList)
     else:
         print("Error de sintaxis: EOF")
