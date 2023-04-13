@@ -1,5 +1,1 @@
-@Principal(
-    Def(@Prueba, bool);
-    --Otro comentario
-);
 --Hola
