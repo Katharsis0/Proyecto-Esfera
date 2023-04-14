@@ -90,7 +90,7 @@ def p_proc(p):
     if p[2] not in procedures:
         procedures[p[2]] = [len(proceduresList)]
         proceduresList.append([p[2], p[4]])
-        p[0] = [p[1], p[2], p[4]]
+        p[0] = ["PROC", p[2], p[4]]
 
     elif p[2] in procedures:
         procedures[p[2]] = procedures[p[2]] + [len(proceduresList)]
@@ -110,9 +110,9 @@ def p_main(p):
     else:
         main+=1
         if len(p) == 6:
-            p[0] = [p[1], p[3]]
+            p[0] = ["MAIN", p[3]]
         else:
-            p[0] = p[1]
+            p[0] = ["MAIN"]
 
 
 #Definición de las instrucciones recursivas

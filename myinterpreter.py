@@ -12,7 +12,11 @@ from mysemantic import printsList
 errorFolder= os.getcwd() + "/Errors/error.txt"
 
 #Code to execute
-code=[]
+codeMain=[]
+
+codeProcs=[]
+
+codeExe=[]
 
 #NodeMCU instructions
 instructions=[]
@@ -222,25 +226,26 @@ def executeFunc(procCall):
 
 def moverExe(direction):
     #En cada caso se hace la transformación debida
+    dir=[]
     if direction[2] == 'ATR':
-        pass
+        dir.append("pwm:-100")
     elif  direction[2] == 'ADL':
-        pass
+        dir.append("pwm:100")
     elif  direction[2] == 'ADE':
-        pass
+        dir.append("diagD:-1")
     elif  direction[2] == 'AIZ':
-        pass
+        dir.append("diagI:-1")
     elif  direction[2] == 'IZQ':
-        pass
+        dir.append("dir:-1")
     elif  direction[2] == 'DER':
-        pass
+        dir.append("dir:1")
     elif  direction[2] == 'DDE':
-        pass
+        dir.append("diagD:1")
     elif  direction[2] == 'DIZ':
-        pass
+        dir.append("diagI:1")
 
     #Se retorna el dato debido
-    return 'DIRECCION'
+    return dir
 
 def aleatorioExe():
 
@@ -294,14 +299,9 @@ def execute(instructionList):
             
             #Executes a Repeat
             elif i[0] == "Repeat":
-                #checks proper semantic
-                if semanticAnalysis([i[0],i[1]]) == False:
-                    validFlag=False
-                    
-                else:
-                    repeatedOrder= repeatExe(i)
-                    for j in repeatedOrder:
-                        route.append(j)
+                repeatedOrder= repeatExe(i)
+                for j in repeatedOrder:
+                    route.append(j)
             
             #Verifies When
             elif i[0]== "When":
@@ -365,24 +365,24 @@ def execute(instructionList):
                     errorList.append("Error: Cannot call {2} as it does not exist".format(i[2]))
 
             #Verifies Mover
-            elif i[0] == 'Mover': #Se toman en cuenta los paréntesis
+            elif i[0] == "Mover": #Se toman en cuenta los paréntesis
                 result = moverExe(i[2])
                 route.append(result) #O la comunicación con el arduino
 
 
-            elif i[0] == 'Aleatorio':
+            elif i[0] == "Aleatorio":
                 newDir = aleatorioExe()
                 route.append(newDir) #O la comunicación con el arduino
 
-            elif i[0] == 'Proc':
-                if i[1] in globalVars or i[1] in localVars:
+            elif i[0] == "Proc":#Modifique la lista no es variables sino procs
+                if i[1] in proceduresList or i[1] in proceduresList:
                     errorList.append("Error: Cannot define {1} to procedure {0} as it already exists".format(i[1],i[0]))
                 else:
                     result = executeFunc([i[1], i[3]]) #Se toman en cuenta paréntesis
                     route.append(result)
 
 
-            elif i[0] == 'Not': #Se toman en cuenta paréntesis
+            elif i[0] == "Not": #Se toman en cuenta paréntesis
                 if isinstance(i[2], int):
                     errorList.append("Error: Value is not bool {2}".format(i[2]))
                 elif i[2] in globalVars or i[2] in localVars:
@@ -390,29 +390,6 @@ def execute(instructionList):
                     route.append(result)
                 else:
                     errorList.append("Error: Variable {2} does not exist".format(i[2]))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 def checkCondition(CONDITION):
@@ -450,3 +427,50 @@ def checkCondition(CONDITION):
 
 def semanticAnalysis():
     pass
+
+
+########### Main route ########################
+
+if AST is not None:
+    for sentence in AST:
+        if isinstance(sentence,list):
+            #If Main is found
+            if sentence[0]=="MAIN":
+                
+                if len(sentence)==1:
+                    print("Main is declared but empty.")
+                
+                #Appends the main instructions
+                else:
+                    codeMain.append(sentence[1])
+            if sentence[0]=="PROC":
+                codeProcs.append(sentence[2])
+                
+    codeExe.append(codeMain+codeProcs)
+    
+    #Filters out invalid productions
+    codeExe= list(filter(None,codeExe[0]))
+    
+    arduinoOrders= execute(codeExe)
+    
+else:
+    with open(errorFolder,'w+') as errorFile:
+        for i in errorList:
+            errorFile.write(i + "\n")
+            
+if validFlag and not(errorFlag):
+    print("MyInterpreter results: \n")
+    print("Code to execute:\n")
+    print(AST)
+    
+    print("Code to arduino: ", arduinoOrders)
+    
+    print("Created procedures: ", procedures)#Dictionary
+
+
+with open(errorFolder,'w+') as errorFile:
+        for i in errorList:
+            errorFile.write(i + "\n")
+
+if not validFlag or errorFlag:
+    exit()
