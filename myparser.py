@@ -1,7 +1,7 @@
 import ply.yacc as yacc
 
 
-import functions
+import ast
 import random
 from mylexer import tokens
 
@@ -39,6 +39,7 @@ main=0
 commentNumber=0
 variableNumber=0
 
+#Parsing result
 precedence = (('left','PLUS','MINUS'),
             ('left','STAR','SLASH'))
 
@@ -154,7 +155,7 @@ def p_def(p):
     if p[5]== 'int' and isinstance(p[7],bool):
         errorList.append("Error: Variable {0} type and value must match in line {1}.".format(p[1].type, p.lineno(1)))
     if p[5]== 'bool' and isinstance(p[7],int):
-        errorList.append("Error: Variable {0} type and value must match in line {1}.".format(p[1].type, p.lineno(1)))
+        errorList.append("Error: Variable {0} type and value must match in line {1}.".format(p[1], p.lineno(1)))
     if len(p)==8:
         #agrega la variable local al diccionario de variables
         localVars[p[3]]= None
@@ -162,7 +163,7 @@ def p_def(p):
         #functions.definition(p[1],p[3],p[5])
     else:
         #agrega la variable local al diccionario de variables
-        localVars.append(str(p[3]),p[7])
+        localVars[str(p[3])]=p[7]
         #p[0]=(p[1],p[3])
         p[0]= [p[1],p[3],p[5],p[7]]
 
@@ -453,22 +454,22 @@ def p_error(p):
 
 
 
-# #create parser
+# create parser
 parser = yacc.yacc(debug=True)
 
-def file_path(file_path):
-    with open(file_path, 'r') as file:
-        print(file_path)
+# def file_path(file_path):
+#     with open(file_path, 'r') as file:
+#         print(file_path)
+#         data=file.read()
+#         res=parser.parse(data)
+#         if res != None:
+#             res = list(filter(None, res))
+#         #print(res)
+
+with open(inputFile, 'r') as file:
+        #print(file_path)
         data=file.read()
         res=parser.parse(data)
         if res != None:
             res = list(filter(None, res))
         print(res)
-
-# with open(inputFile, 'r') as file:
-#         #print(file_path)
-#         data=file.read()
-#         res=parser.parse(data)
-#         if res != None:
-#             res = list(filter(None, res))
-#         print(res)

@@ -32,19 +32,18 @@ procStack= 0
 variableStack=[]
 
 #Flag to check if code is free of errors in order to run
-valid= True
+validFlag= True
 
 ##################### Evaluation of code #####################
- 
-def assignVariable(list, scope):
+def assignVariable(LIST, scope):
     #Stores defined variables as local or global depending on the scope
     if scope=="global":
-        globalVars[list[1]]= value(list[2])
+        globalVars[LIST[1]]= value(LIST[2])
         #test comment later
-        print(list[1], value(list[2]))
+        print(LIST[1], value(LIST[2]))
     
     if scope=="local":
-        localVars[list[1]] = value(list[2])
+        localVars[LIST[1]] = value(LIST[2])
         
 def value(x):
     #Returns the value of a variable
@@ -60,11 +59,160 @@ def value(x):
         return x
         
 ######Execution of code#######
-def until(until):
+def untilExe(UNTIL):
     #Receives a list of instructions and conditions to loop
     #Checks the condition and executes a while with the condition values
     #Calls execute function with the instructions
-    #Creates and appends a list with the results from exe function
+    #Creates and appends a list with the results from execute function
+    
+    route= [] #route that follows the program
+    
+    while checkCondition(UNTIL[2]) == True:
+        for i in execute(UNTIL[1]):
+            route.append(i)
+    
+    return route
+        
+
+def whileExe(WHILE):
+    #Receives a list with the instructions and condition to loop
+    #Checks the condition and executes a while with the condition values
+    #Calls execute function with instructions
+    #Creates and alppends a list with the results from execute func
+    
+    route=[] #route that follows the program
+    routeAux=[]
+    
+    while checkCondition(WHILE[2]) == True:
+        for i in execute(WHILE[1]):
+            route.append(i)
+            
+    if route != []:
+        for i in route:
+            if i != None:
+                for j in i:
+                    routeAux.append(j)
+        return routeAux
+
+def repeatExe(REPEAT):
+    #Receives the instructions and the amount of times to loop
+    #Calls exe func with the instructions
+    #Creates and appends the list with the results of the route
+    
+    route=[]
+    track=0
+    
+    while track < value(REPEAT[2]):
+        for i in execute(REPEAT[1]):
+            route.append(i)
+        track+=1
+    return track
+
+
+def whenExe(WHEN):
+    #Checks the condition of if statement
+    #Calls exe function with the
+    #Creates a list with the results of the route
     
     route= []
+    
+    if checkCondition(WHEN[1]) == True:
+        for i in execute(WHEN[2]):
+            route.append(i)
+    
+    if route != []:
+        #for testing purposes, comment later
+        print ("When Route: ", route)
+        return route
+    
+def elseExe(ELSE):
+    #Checks the condition of else statement
+    #Calls exe function with the
+    #Creates a list with the results of the route
+    
+    route= []
+    
+    if checkCondition(ELSE[1]) == True:
+        for i in execute(ELSE[2]):
+            route.append(i)
+    
+    else:
+        for i in execute(ELSE[3]):
+            route.append(i)
+            
+    return route
+
+
+def executeFunc(procCall):
+    #Receives a list with the procName and the instructions
+    global procStack, localVars, variableStack
+    route =[]
+    
+    #Tracks the proc # in the stack
+    procStack = procStack + 1
+    
+    #If localVars exist, appends it to the stack before jumping to the next proc
+    if localVars != {}:
+        variableStack.append(localVars.copy())
+    
+    #Checks the existance of the proc
+    if procCall[1] in procedures:
+        for i in procedures[procCall[1]]:
+            #Saves in the list the results of the instructions of the procs
+            instructions= execute(procedureList[i][1])
+            
+            #Formats the nested lists
+            for i in instructions:
+                route.append(i)
+    
+    #At the end of proc execution reduces the number of procs in the stack            
+    procStack = procStack - 1
+    
+    #Clears the localVars after proc execution
+    localVars.clear()
+    
+    if variableStack != []:
+        #If vcariable exists in stack, fills the list with the last proc's variables
+        localVars = variableStack[-1]    
+        variableStack.pop(-1)
+    
+    return route
+
+
+def execute(instructionList):
+    #receives a list of instructions
+    #Checks the order and executes it accordingly
+    #generates a list with the instructions results
+    
+    global scope, procStack, variableStack, validFlag
+    
+    route= []
+    
+    #For each line in the input file
+    for i in instructionList:
+        if isinstance(i,list):
+            
+            if i[0] == "Def":
+                #Checks if variable exists, if it does generates error
+                if i[1] in localVars or i[1] in globalVars:
+                    errorList.append("Error: Cannot define {1} to variable {0} as it was already defined".format(i[1],i[2]))
+                    validFlag= False
+                else: #if it doesn't, assigns it
+                    assignVariable(i, scope)
+            
+                            
+            
+            
+                    
+            
+            
+            
+            
+    
+    
+
+def checkCondition():
+    pass
+
+def semanticAnalysis():
     pass
