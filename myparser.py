@@ -6,7 +6,6 @@ import random
 from mylexer import tokens
 
 
-inputFile = 'prueba.txt'
 #Función que recibe el path del documento
 #def path(file_path):
     #global inputFile
@@ -450,6 +449,16 @@ def p_error(p):
     #print("Syntax error in input!")
 
 
+#Functions to connect with IDE
+inputFile = ""
+def set_file_path(path):
+    global inputFile
+    inputFile = path
+
+def get_file_path():
+    return inputFile
+
+
 
 
 # create parser
@@ -464,10 +473,20 @@ parser = yacc.yacc(debug=True)
 #             res = list(filter(None, res))
 #         #print(res)
 
-with open(inputFile, 'r') as file:
-        #print(file_path)
-        data=file.read()
-        res=parser.parse(data)
-        if res != None:
+# with open(get_file_path(), 'r') as file:
+#         #print(file_path)
+#         data=file.read()
+#         res=parser.parse(data)
+#         if res != None:
+#             res = list(filter(None, res))
+#         print(res)
+
+def parse_file(file_path):
+    with open(file_path, 'r') as file:
+        data = file.read()
+        res = parser.parse(data)
+        if res is not None:
             res = list(filter(None, res))
-        print(res)
+        else:
+            res = []
+        return res

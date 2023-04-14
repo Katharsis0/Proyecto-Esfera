@@ -105,6 +105,7 @@ class MainWindow:
         else:
             self.file_name = self.file_name
         self.file_name = self.file_name + ".sfra"
+        self.set_file_path(self.file_name)
         self.master.title("Esfera IDE - " + self.file_name)
         file = open(self.file_name,"x")
         file.write(self.editor_text.get(1.0,END))
@@ -115,6 +116,7 @@ class MainWindow:
         #self.file_name = filedialog.asksaveasfilename(initialdir="/", title="Save file", filetypes=(("Esfera File","*.sfra"), ("All files", "*.*")))
         self.file_name = filedialog.asksaveasfilename(initialdir="./Tests", title="Save file", filetypes=(("Esfera File","*.sfra"), ("All files", "*.*")))
         self.file_name = self.file_name + ".sfra"
+        self.set_file_path(self.file_name)
         self.master.title("Esfera IDE - " + self.file_name)
         file = open(self.file_name,"x")
         file.write(self.editor_text.get(1.0,END))
@@ -142,6 +144,7 @@ class MainWindow:
 
     #Load file function
     def loadFile(self, file_name):
+        self.set_file_path(self.file_name)
         file = open(file_name, "r", encoding="utf-8")
         self.editor_text.delete(1.0, END)
         self.editor_text.insert(END, file.read())
@@ -150,11 +153,11 @@ class MainWindow:
 
 
 
-    # def set_file_path(self, path):
-    #     self.file_name = self.path
-    #
-    # def get_file_path(self):
-    #     return self.file_name
+    def set_file_path(self, path):
+        self.file_name = path
+
+    def get_file_path(self):
+        return self.file_name
 
 
 
@@ -193,10 +196,20 @@ class MainWindow:
 
         print(self.editor_text.get(1.0, END))
 
+
     #Compile process. TODO: Add compile process 
     def compile(self):
-        myparser.file_path(self.file_name)
+        self.file_path = self.get_file_path()
+        if self.file_path:
+            print("Compilando archivo:", self.file_path)
+            res = parse_file(self.file_path)
+            print(res)
+        else:
+            print("No se ha seleccionado ningún archivo.")
         print("Compiling...")
+
+
+
         # #create parser and lexer
         # parser = yacc.yacc(debug=True)
         # lexer = lex.lex()
