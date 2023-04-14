@@ -2,7 +2,7 @@ import os
 from mysemantic import errorFlag 
 from mysemantic import AST
 from mysemantic import procedures 
-from mysemantic import procedureList
+from mysemantic import proceduresList
 from mysemantic import errorList
 
 errorFolder= os.getcwd() + "/Errors/error.txt"
@@ -159,7 +159,7 @@ def executeFunc(procCall):
     if procCall[1] in procedures:
         for i in procedures[procCall[1]]:
             #Saves in the list the results of the instructions of the procs
-            instructions= execute(procedureList[i][1])
+            instructions= execute(proceduresList[i][1])
             
             #Formats the nested lists
             for i in instructions:
@@ -192,6 +192,7 @@ def execute(instructionList):
     for i in instructionList:
         if isinstance(i,list):
             
+            #Executes a Def
             if i[0] == "Def":
                 #Checks if variable exists, if it does generates error
                 if i[1] in localVars or i[1] in globalVars:
@@ -200,11 +201,32 @@ def execute(instructionList):
                 else: #if it doesn't, assigns it
                     assignVariable(i, scope)
             
+            #Executes an Until
             elif i[0] == "Until":
                 for j in untilExe(i):
                     route.append(j)
-                    
+            
+            #Executes a While
             elif i[0] == "While":
+                executedWhile= whileExe(i)
+                if executedWhile is not None:
+                    for j in executedWhile:
+                        route.append(j)
+            
+            #Executes a Repeat
+            elif i[0] == "Repeat":
+                #checks proper semantic
+                if semanticAnalysis([i[0],i[1]]) == False:
+                    validFlag=False
+                    
+                else:
+                    repeatedOrder= repeatExe(i)
+                    for j in repeatedOrder:
+                        route.append(j)
+            
+                        
+                        
+                    
                 
 
             

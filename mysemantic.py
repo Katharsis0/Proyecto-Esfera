@@ -5,6 +5,9 @@ from myparser import commentNumber
 from myparser import main
 from myparser import errorList
 from myparser import res as AST
+from myparser import proceduresList
+from myparser import procedures
+
 
 #Flag for error verification
 errorFlag=False
