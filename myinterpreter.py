@@ -4,6 +4,8 @@ from mysemantic import AST
 from mysemantic import procedures 
 from mysemantic import proceduresList
 from mysemantic import errorList
+from mysemantic import printsList
+
 
 errorFolder= os.getcwd() + "/Errors/error.txt"
 
@@ -73,7 +75,6 @@ def untilExe(UNTIL):
     
     return route
         
-
 def whileExe(WHILE):
     #Receives a list with the instructions and condition to loop
     #Checks the condition and executes a while with the condition values
@@ -108,7 +109,6 @@ def repeatExe(REPEAT):
         track+=1
     return track
 
-
 def whenExe(WHEN):
     #Checks the condition of if statement
     #Calls exe function with the
@@ -141,6 +141,46 @@ def elseExe(ELSE):
             route.append(i)
             
     return route
+
+def caseExe(CASE):
+    route=[]
+    
+    if len(CASE) ==2:
+        for i in execute(CASE[1]):
+            route.append(i)
+    elif len(CASE) ==3:
+        if checkCondition(CASE[1]):
+            for i in execute(CASE[2]):
+                route.append(i)
+    return route
+    
+def isTrueExe(ISTRUE):
+    if ISTRUE[1]==True:
+        result=True
+    elif ISTRUE[1]==False:
+        result=False
+    
+    return result    
+
+def changeExe(CHANGE):
+    
+    if CHANGE[1] in localVars:
+        localVars.update({CHANGE[1]:CHANGE[2]})
+        
+        
+    if CHANGE[1] in globalVars:
+        globalVars.update({CHANGE[1]:CHANGE[2]})
+    
+    else:
+        errorList.append("Variable cannot be changed.")
+        
+def printExe(PRINT):
+    if isinstance(PRINT[1],str):
+        printsList.append(PRINT[1])
+    return printsList
+        
+    
+
 
 
 def executeFunc(procCall):
@@ -177,7 +217,6 @@ def executeFunc(procCall):
         variableStack.pop(-1)
     
     return route
-
 
 def execute(instructionList):
     #receives a list of instructions
@@ -224,6 +263,40 @@ def execute(instructionList):
                     for j in repeatedOrder:
                         route.append(j)
             
+            #Verifies When
+            elif i[0]== "When":
+                route.append(whenExe(i))
+            
+            #Verifies Else
+            elif i[0]=="Else":
+                result=elseExe(i)
+                route.append(result)
+            
+            #Verifies IsTrue
+            elif i[0]=="IsTrue":
+                result= isTrueExe(i)
+                route.append(result)
+            
+            #Verifies Case
+            elif i[0]=="Case":
+                result= caseExe(i)
+                route.append(result)
+            
+            #Verifies Change (ID modification)
+            elif i[0]== "Change":
+                result= changeExe(i)
+                route.append(result)
+            
+            #Verifies Print
+            elif i[0] == "=>":
+                result=printExe(i)
+                route.append(result)
+            
+                
+                
+            
+            
+            
                         
                         
                     
@@ -239,8 +312,38 @@ def execute(instructionList):
     
     
 
-def checkCondition():
-    pass
+def checkCondition(CONDITION):
+    
+    #GT
+    if CONDITION[0]=="GT":
+        result= CONDITION[1] > CONDITION[2]
+    #LT
+    elif CONDITION[0]=="LT":
+        result= CONDITION[1] < CONDITION[2]
+    
+    #DIF
+    elif CONDITION[0]=="DIF":
+        result= CONDITION[1] != CONDITION[2]
+    #EQUAL
+    elif CONDITION[0]=="EQUAL":
+        result= CONDITION[1] == CONDITION[2]
+    
+    #GTE
+    elif CONDITION[0]=="GTE":
+        result= CONDITION[1] >= CONDITION[2]
+        
+    #GTE
+    elif CONDITION[0]=="LTE":
+        result= CONDITION[1] <= CONDITION[2]
+    
+    #ISTRUE
+    elif CONDITION[0]=="ISTRUE":
+        result= isTrueExe(CONDITION)
+        
+    return result
+    
+    
+        
 
 def semanticAnalysis():
     pass

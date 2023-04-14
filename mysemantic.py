@@ -7,6 +7,8 @@ from myparser import errorList
 from myparser import res as AST
 from myparser import proceduresList
 from myparser import procedures
+from myparser import printsList
+
 
 
 #Flag for error verification

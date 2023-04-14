@@ -225,7 +225,7 @@ def p_istrue(p):
 
 def p_print(p):
     '''print : PRINT LP prints RP SEMICOLON'''
-    p[0] = p[1]
+    p[0] = [p[1], p[3]]
     printsList.append(''.join(map(str, p[3])))
     #functions.printear(p[3])
 
@@ -338,41 +338,39 @@ def p_condicion(p):
     '''
     if p[2]=='>':
         if isinstance(p[1],int) and isinstance(p[3],int):
-            p[0]= p[1] > p[3]
+            p[0]= ["GT",p[1],p[3]]
         else:
             errorList.append("Error: Invalid comparison. Comparison not valid for booleans in line {0}.".format(p.lineno(1)))
 
     if p[2]=='<':
         if isinstance(p[1],int) and isinstance(p[3],int):
-            p[0]= p[1] == p[3]
-        if isinstance(p[1],int) and isinstance(p[3],int):
-            p[0]= p[1] == p[3]
+            p[0]= ["LT",p[1],p[3]]
         else:
             errorList.append("Error: Invalid condition. Comparison between different types in line {0}.".format(p.lineno(1)))
 
     if p[2]=='><':
         if isinstance(p[1],bool) and isinstance(p[3],bool):
-            p[0]= p[1] != p[3]
+            p[0]= ["DIF",p[1],p[3]]
         if isinstance(p[1],int) and isinstance(p[3],int):
-            p[0]= p[1] != p[3]
+            p[0]= ["DIF",p[1],p[3]]
         else:
             errorList.append("Error: Invalid condition. Comparison between different types in line {0}.".format(p.lineno(1)))
 
     if p[2]=='>=':
         if isinstance(p[1], int) and isinstance(p[3], int):
-            p[0]= p[1] >= p[3]
+            p[0]= ["GTE",p[1],p[3]]
         else:
             errorList.append("Error: Invalid comparison. Comparison not valid for booleans in line {0}.".format(p.lineno(1)))
 
     if p[2]=='<=':
         if isinstance(p[1], int) and isinstance(p[3], int):
-            p[0]= p[1] <= p[3]
+            p[0]= ["LTE",p[1],p[3]]
         else:
             errorList.append("Error: Invalid comparison. Comparison not valid for booleans in line {0}.".format(p.lineno(1)))
 
     if p[2]=='==':
         if isinstance(p[1], int) and isinstance(p[3], int):
-            p[0]= p[1] == p[3]
+            p[0]= ["EQUAL",p[1], p[3]]
         else:
             errorList.append("Error: Invalid comparison. Comparison not valid for booleans in line {0}.".format(p.lineno(1)))
 
@@ -392,7 +390,7 @@ def p_change(p):
         errorList.append("Error: Variable {0} must be defined first before modifying value on line {1}.").format(p[1],p.lineno(1))
     if p[1] in localVars:
         localVars.update({p[1]:p[3]})
-        p[0] = [p[1], p[3]]
+        p[0] = ["Change", p[1], p[3]]
        # functions.cambioVariable(p[1], p[3])
 
 
