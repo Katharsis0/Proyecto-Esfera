@@ -12,30 +12,29 @@ errorFlag=False
 
 ###Semantic Analysis###
 
-print(AST)
-# if commentNumber == 0:
-#     errorFlag = True
-#     errorList.append("Error: The program must have at least one comment.")
+if commentNumber == 0:
+    errorFlag = True
+    errorList.append("Error: The program must have at least one comment.")
 
-# elif commentNumber > 0 and AST is not None:
-#     if commentList[0] != AST[0]:
-#         errorFlag = True
-#         errorList.append("Error: The program must start with at least one comment.")
-#     for comment in commentList:
-#         if comment in AST:
-#             AST.remove(comment)
+elif commentNumber > 0 and AST is not None:
+    if commentList[0] != AST[0]:
+        errorFlag = True
+        errorList.append("Error: The program must start with at least one comment.")
+    for comment in commentList:
+        if comment in AST:
+            AST.remove(comment)
 
-# elif main == 0:
-#     errorFlag = True
-#     errorList.append("Error: The program must contain at least one @Principal() procedure.")
+elif main == 0:
+    errorFlag = True
+    errorList.append("Error: The program must contain at least one @Principal() procedure.")
 
-# if len(errorList) != 0:
-#     errorFlag = True
-#     errorList.append("\nError: Program cannot be executed until errors are solved.\n")
+if len(errorList) != 0:
+    errorFlag = True
+    errorList.append("\nError: Program cannot be executed until errors are solved.\n")
 
 
-# if AST is not None:
-#     AST = list(filter(None, AST))
+if AST is not None:
+    AST = list(filter(None, AST))
 
 
 

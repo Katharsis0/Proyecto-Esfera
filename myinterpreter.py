@@ -200,7 +200,13 @@ def execute(instructionList):
                 else: #if it doesn't, assigns it
                     assignVariable(i, scope)
             
-                            
+            elif i[0] == "Until":
+                for j in untilExe(i):
+                    route.append(j)
+                    
+            elif i[0] == "While":
+                
+
             
             
                     
