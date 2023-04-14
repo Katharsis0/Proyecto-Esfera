@@ -1,9 +1,17 @@
 import ply.yacc as yacc
 
+
 import functions
 import random
 from mylexer import tokens
-inputFile = "./Tests/test.sfra"
+
+
+inputFile = 'prueba.txt'
+#Función que recibe el path del documento
+#def path(file_path):
+    #global inputFile
+    #inputFile = file_path
+    #return file_path
 
 
 #list of local variables ID:Value
@@ -448,9 +456,19 @@ def p_error(p):
 # #create parser
 parser = yacc.yacc(debug=True)
 
-with open(inputFile, 'r') as file:
-    data=file.read()
-    res=parser.parse(data)
-    if res != None:
-        res = list(filter(None, res))
-    print(res)
+def file_path(file_path):
+    with open(file_path, 'r') as file:
+        print(file_path)
+        data=file.read()
+        res=parser.parse(data)
+        if res != None:
+            res = list(filter(None, res))
+        print(res)
+
+# with open(inputFile, 'r') as file:
+#         #print(file_path)
+#         data=file.read()
+#         res=parser.parse(data)
+#         if res != None:
+#             res = list(filter(None, res))
+#         print(res)

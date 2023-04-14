@@ -176,7 +176,7 @@ t_ignore  = ' \t'
 lexer = lex.lex()
 
 #Open the input file and read its contents
-with open('./Tests/test.sfra', 'r') as f:
+with open('./Tests/fresa3.sfra', 'r') as f:
     input_string = f.read()
 
 #Pass the input string to the lexer
