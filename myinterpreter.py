@@ -1,5 +1,7 @@
 import os
-from mysemantic import errorFlag 
+import random
+
+from mysemantic import errorFlag
 from mysemantic import AST
 from mysemantic import procedures 
 from mysemantic import proceduresList
@@ -218,6 +220,44 @@ def executeFunc(procCall):
     
     return route
 
+def moverExe(direction):
+    #En cada caso se hace la transformación debida
+    if direction[2] == 'ATR':
+        pass
+    elif  direction[2] == 'ADL':
+        pass
+    elif  direction[2] == 'ADE':
+        pass
+    elif  direction[2] == 'AIZ':
+        pass
+    elif  direction[2] == 'IZQ':
+        pass
+    elif  direction[2] == 'DER':
+        pass
+    elif  direction[2] == 'DDE':
+        pass
+    elif  direction[2] == 'DIZ':
+        pass
+
+    #Se retorna el dato debido
+    return 'DIRECCION'
+
+def aleatorioExe():
+
+    route = []
+    listDir=['ATR','ADL','ADE','AIZ','IZQ','DER','DDE','DIZ']
+    for x in range(11):
+        route += random.choice(listDir)
+    return route
+
+def notExe(variable):
+    if variable == 'True':
+        return 'False'
+    else:
+        return 'True'
+
+
+
 def execute(instructionList):
     #receives a list of instructions
     #Checks the order and executes it accordingly
@@ -291,26 +331,89 @@ def execute(instructionList):
             elif i[0] == "=>":
                 result=printExe(i)
                 route.append(result)
-            
-                
-                
-            
-            
-            
-                        
-                        
-                    
-                
 
-            
-            
-                    
-            
-            
-            
-            
-    
-    
+            #Verifies Alter
+            elif i[0] == "Alter": #Se toman en cuenta los paréntesis y las comas
+                if semanticAnalysis(i, scope) == False:
+                    validFlag = False
+                else:
+                    if i[2] in globalVars and i[4] in globalVars:
+                        globalVars[i[1]] = value(globalVars(i[2])) + value(globalVars(i[4]))
+
+                    elif i[2] in globalVars and i[4] in localVars:
+                        globalVars[i[1]] = value(globalVars(i[2])) + value(localVars(i[4]))
+
+                    elif i[2] in localVars and i[4] in localVars:
+                        localVars[i[1]] = value(localVars(i[2])) + value(localVars(i[4]))
+
+                    elif i[2] in localVars and i[4] in globalVars:
+                        localVars[i[1]] = value(localVars(i[2])) + value(globalVars(i[4]))
+
+                    elif i[2] in globalVars and isinstance(i[4], int):
+                        globalVars[i[1]] = value(globalVars(i[2])) + value(i[4])
+
+
+                    elif i[2] in localVars and isinstance(i[4], int):
+                        localVars[i[1]] = value(localVars(i[2])) + value(i[4])
+
+            #Verifies Call
+            elif i[0] == "Call": #Se toman en cuenta los paréntesis
+                if i[2] in globalVars or i[2] in localVars:
+                    result = executeFunc([i[2], value(i[2])]) #value(i[2]) Devuelve una lista con instrucciones?
+                    route.append(result)
+                else:
+                    errorList.append("Error: Cannot call {2} as it does not exist".format(i[2]))
+
+            #Verifies Mover
+            elif i[0] == 'Mover': #Se toman en cuenta los paréntesis
+                result = moverExe(i[2])
+                route.append(result) #O la comunicación con el arduino
+
+
+            elif i[0] == 'Aleatorio':
+                newDir = aleatorioExe()
+                route.append(newDir) #O la comunicación con el arduino
+
+            elif i[0] == 'Proc':
+                if i[1] in globalVars or i[1] in localVars:
+                    errorList.append("Error: Cannot define {1} to procedure {0} as it already exists".format(i[1],i[0]))
+                else:
+                    result = executeFunc([i[1], i[3]]) #Se toman en cuenta paréntesis
+                    route.append(result)
+
+
+            elif i[0] == 'Not': #Se toman en cuenta paréntesis
+                if isinstance(i[2], int):
+                    errorList.append("Error: Value is not bool {2}".format(i[2]))
+                elif i[2] in globalVars or i[2] in localVars:
+                    result = notExe(value(i[2]))
+                    route.append(result)
+                else:
+                    errorList.append("Error: Variable {2} does not exist".format(i[2]))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def checkCondition(CONDITION):
     
