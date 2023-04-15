@@ -2,7 +2,7 @@
 @Principal();
 Proc @prueba(
 	Def(@luna, bool, True);
-	Def(@sol, bool True);
+	Def(@sol, bool, True);
 	
 	Until (
 		Def(@fifa, int, 4);

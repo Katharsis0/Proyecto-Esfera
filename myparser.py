@@ -391,16 +391,11 @@ def p_condicion(p):
             errorList.append("Error: Invalid comparison. Comparison not valid for booleans in line {0}.".format(p.lineno(1)))
 
     if p[2]=='==':
-        if isinstance(p[1], int) and isinstance(p[3], int):
-            p[0]= ["EQUAL",p[1], p[3]]
-        else:
-            errorList.append("Error: Invalid comparison. Comparison not valid for booleans in line {0}.".format(p.lineno(1)))
+        p[0]= ["EQUAL",p[1], p[3]]
+
     if p[1]== 'IsTrue':
-        p[0]=p[1]
-    
-    if p[1]== 'ID':
-        if p[1] in localVars or p[1] in globalVars:
-            p[0]=p[1]
+        p[0] = p[1]
+
 
 def p_oper(p):
     '''oper : factor
