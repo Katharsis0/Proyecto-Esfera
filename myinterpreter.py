@@ -47,13 +47,14 @@ duino=[]
 ##################### Evaluation of code #####################
 def assignVariable(LIST, scope):
     #Stores defined variables as local or global depending on the scope
+    print(f'VariableList {LIST}')
     if scope=="global":
-        globalVars[LIST[1]]= value(LIST[2])
+        globalVars[LIST[1]]= value(LIST[3])
         #test comment later
-        print(LIST[1], value(LIST[2]))
+        print(LIST[1], value(LIST[3]))
     
     if scope=="local":
-        localVars[LIST[1]] = value(LIST[2])
+        localVars[LIST[1]] = value(LIST[3])
         
 def value(x):
     #Returns the value of a variable
@@ -88,34 +89,31 @@ def whileExe(WHILE):
     #Checks the condition and executes a while with the condition values
     #Calls execute function with instructions
     #Creates and alppends a list with the results from execute func
-    
+    print("El while", WHILE)
     route=[] #route that follows the program
     routeAux=[]
     
-    while checkCondition(WHILE[2]) == True:
-        for i in execute(WHILE[1]):
+    while checkCondition(WHILE[1]) == True:
+        for i in execute(WHILE[2]):
             route.append(i)
+        print("Ruta while: ",route)
             
     if route != []:
         for i in route:
             if i != None:
                 for j in i:
                     routeAux.append(j)
+        print("Ruta while aux:", routeAux)
         return routeAux
 
 def repeatExe(REPEAT):
+    print(REPEAT)
     #Receives the instructions and the amount of times to loop
     #Calls exe func with the instructions
     #Creates and appends the list with the results of the route
     
-    route=[]
-    track=0
     
-    while track < value(REPEAT[2]):
-        for i in execute(REPEAT[1]):
-            route.append(i)
-        track+=1
-    return track
+    
 
 def whenExe(WHEN):
     #Checks the condition of if statement
@@ -163,24 +161,20 @@ def caseExe(CASE):
     return route
     
 def isTrueExe(ISTRUE):
-    if ISTRUE[1]==True:
-        result=True
-    elif ISTRUE[1]==False:
-        result=False
+    return value(ISTRUE[1])
     
-    return result    
-
 def changeExe(CHANGE):
-    
+    print(globalVars) 
     if CHANGE[1] in localVars:
         localVars.update({CHANGE[1]:CHANGE[2]})
-        
-        
+    
     if CHANGE[1] in globalVars:
         globalVars.update({CHANGE[1]:CHANGE[2]})
     
     else:
         errorList.append("Variable cannot be changed.")
+    print(globalVars) 
+        
         
 def printExe(PRINT):
     if isinstance(PRINT[1],str):
@@ -254,10 +248,8 @@ def aleatorioExe():
     return route
 
 def notExe(variable):
-    if variable == 'True':
-        return 'False'
-    else:
-        return 'True'
+    print("el not: " , variable)
+    changeExe(["Change",variable, not(value(variable))])
 
 
 
@@ -329,6 +321,14 @@ def execute(instructionList):
             
             #Verifies Change (ID modification)
             elif i[0]== "Change":
+                print("I del change:", i)
+                if isinstance(i[2],list):
+                    if i[2][1] in localVars or i[2][1] in globalVars:
+                        i[2]=not(value(i[2][1]))
+                    
+                elif i[2] in localVars or i[2] in globalVars:
+                    i[2]=value(i[2])        
+            
                 result= changeExe(i)
                 route.append(result)
             
@@ -338,53 +338,19 @@ def execute(instructionList):
                 route.append(result)
 
             #Verifies Alter
-            elif i[0] == "Alter": #Se toman en cuenta los paréntesis y las comas
-                if semanticAnalysis(i, scope) == False:
-                    validFlag = False
-                else:
-                    if i[2] in globalVars and i[4] in globalVars:
-                        globalVars[i[1]] = value(globalVars(i[2])) + value(globalVars(i[4]))
-
-                    elif i[2] in globalVars and i[4] in localVars:
-                        globalVars[i[1]] = value(globalVars(i[2])) + value(localVars(i[4]))
-
-                    elif i[2] in localVars and i[4] in localVars:
-                        localVars[i[1]] = value(localVars(i[2])) + value(localVars(i[4]))
-
-                    elif i[2] in localVars and i[4] in globalVars:
-                        localVars[i[1]] = value(localVars(i[2])) + value(globalVars(i[4]))
-
-                    elif i[2] in globalVars and isinstance(i[4], int):
-                        globalVars[i[1]] = value(globalVars(i[2])) + value(i[4])
-
-
-                    elif i[2] in localVars and isinstance(i[4], int):
-                        localVars[i[1]] = value(localVars(i[2])) + value(i[4])
-
+            elif i[0] == "Alter":
+                print("Alter:" , i)
+                i[2]=value(i[1])+i[2]
+                result=changeExe(i)
+                route.append(result)
+    
             #Verifies Call
-            elif i[0] == "Call": #Se toman en cuenta los paréntesis
+            elif i[0] == "Call": 
                 if i[2] in proceduresList:
                     result = executeFunc([i[1],procedures[i[1]]])
                     route.append(result)
                 else:
-                    errorList.append("Error: Cannot call {2} as it does not exist".format(i[2]))
-
-            #Verifies Mover
-            # elif i[0] == "Mover": #Se toman en cuenta los paréntesis
-            #     result = i[1]
-            #     print(result)
-            #     route.append(result) #O la comunicación con el arduino
-
-
-            # elif i[0] == "Aleatorio":
-            #     #newDir = aleatorioExe()
-            #     #route.append(newDir) #O la comunicación con el arduino
-            #     listDir=['ATR','ADL','ADE','AIZ','IZQ','DER','DDE','DIZ']
-            #     for x in range(11):
-            #         result.append(random.choice(listDir))
-            #     print(result)
-            #     route.append(result)
-                
+                    errorList.append("Error: Cannot call {2} as it does not exist".format(i[2]))              
 
             elif i[0] == "Proc":#Modifique la lista no es variables sino procs
                 if i[1] in proceduresList:
@@ -395,11 +361,11 @@ def execute(instructionList):
 
 
             elif i[0] == "Not": #Se toman en cuenta paréntesis
-                if isinstance(i[2], int):
+                print("i del not: " ,i)
+                if isinstance(i[1], int):
                     errorList.append("Error: Value is not bool {2}".format(i[2]))
-                elif i[2] in globalVars or i[2] in localVars:
-                    result = notExe(value(i[2]))
-                    route.append(result)
+                elif i[1] in globalVars or i[1] in localVars:
+                    result = notExe(i[1])
                 else:
                     errorList.append("Error: Variable {2} does not exist".format(i[2]))
             
@@ -428,7 +394,7 @@ def execute(instructionList):
     return route
 
 def checkCondition(CONDITION):
-    
+    print("la condicion",CONDITION)
     #GT
     if CONDITION[0]=="GT":
         result= CONDITION[1] > CONDITION[2]

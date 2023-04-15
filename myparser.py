@@ -42,6 +42,7 @@ testFile='E:\Escritorio\Code\TEC\Compi\Esfera\Proyecto-Esfera\prueba.txt'
 #Parsing result
 precedence = (('left','PLUS','MINUS'),
             ('left','STAR','SLASH'))
+            
 
 #TODO: Break para repeat
 #Estado inicial
@@ -145,7 +146,10 @@ def p_instruccion(p):
                     | comment'''
     p[0]=p[1]
 
-
+def p_break(p):
+    '''break : BREAK'''
+    p[0]=p[1]
+    
 
 #Definicion de cada caso de instruccion
 def p_def(p):
@@ -191,23 +195,24 @@ def p_alter(p):
         else:
             localVars[p[3]]+= int(p[5])
             #p[0]=(p[1],p[3])
-            p[0] = [p[1], p[3], p[5]]
+            p[0] = ["Alter", p[3], p[5]]
            # functions.alterar(p[3], p[5])
 
 def p_not(p):
-    '''not : NOT LP ID RP SEMICOLON'''
+    '''not : NOT LP ID RP'''
     #p[0] = [p[1], p[3]]
-
-    if p[3] not in localVars:
+    print("P del not: ",p[3])
+    if p[3] not in localVars and p[3] not in globalVars:
         errorList.append("Error: Variable {0} has not been defined in line {1}.".format(p[3], p.lineno(1)))
     if p[3] in localVars:
-        if isinstance(p[3],bool):
-            localVars[p[3]]=not(localVars[p[3]])
-            #p[0]=(p[1],p[3])
-            p[0] = [p[1], p[3]]
+        localVars[p[3]]=not(localVars[p[3]])
+        p[0] = ["Not", p[3]]
+    if p[3] in globalVars:
+        globalVars[p[3]]=not(globalVars[p[3]])
+        p[0] = ["Not", p[3]]
             #functions.cambioBool(p[3])
-        else:
-            errorList.append("Error: Variable must be bool in line {1}".format(p[3],p.lineno(1)))
+    else:
+        errorList.append("Error: Variable must be bool in line {1}".format(p[3],p.lineno(1)))
 
 
 def p_istrue(p):
@@ -246,14 +251,15 @@ def p_idexpr(p):
     p[0]=str(p[1])
 
 def p_iterativo(p):
-    '''iterative : WHILE condicion LP instrucciones RP SEMICOLON
-                | UNTIL LP instrucciones RP condicion SEMICOLON
+    '''iterative : WHILE LP condicion RP LP instrucciones RP SEMICOLON
+                | UNTIL LP instrucciones RP LP condicion RP SEMICOLON
     '''
+    print("El while del parser",p[3])
     if p[1]=='While':
-        p[0]=[p[1],p[2],p[4]] #(While, condition, instructions)
+        p[0]=[p[1],p[3],p[6]] #(While, condition, instructions)
         #functions.funcionWhile(p[2], p[4])
     if p[1]=='Until':
-        p[0]=[p[1],p[3],p[5]] #(Until, instructions, condition)
+        p[0]=[p[1],p[3],p[6]] #(Until, instructions, condition)
         #functions.funcionUntil(p[3], p[5])
 
 def p_case(p):
@@ -279,13 +285,15 @@ def p_aleatorio(p):
 
 
 def p_repeat(p):
-    '''repeat : REPEAT LP instrucciones RP SEMICOLON'''
-    p[0] = [p[1], p[3]]
-    #functions.repetir(p[3])
+    '''repeat : REPEAT LP instrucciones break RP SEMICOLON'''
+    p[0] = [p[1], p[3],p[4]] #out(REPEAT, INSTRU, BREAK)
 
 def p_value(p):
     '''value : INTEGER
             | BOOL
+            | expression
+            | ID
+            | not
     '''
     p[0]=p[1]
 
@@ -335,6 +343,7 @@ def p_condicion(p):
                 | oper LTE oper
                 | istrue
     '''
+        
     if p[2]=='>':
         if isinstance(p[1],int) and isinstance(p[3],int):
             p[0]= ["GT",p[1],p[3]]
@@ -372,9 +381,12 @@ def p_condicion(p):
             p[0]= ["EQUAL",p[1], p[3]]
         else:
             errorList.append("Error: Invalid comparison. Comparison not valid for booleans in line {0}.".format(p.lineno(1)))
-
-    else:
-        p[0] = p[1]
+    if p[1]== 'IsTrue':
+        p[0]=p[1]
+    
+    if p[1]== 'ID':
+        if p[1] in localVars or p[1] in globalVars:
+            p[0]=p[1]
 
 def p_oper(p):
     '''oper : value
@@ -385,12 +397,15 @@ def p_oper(p):
 #Cambiar el valor de una variable
 def p_change(p):
     '''change : ID LP value RP SEMICOLON'''
-    if p[1] not in localVars:
+    if p[1] not in localVars and p[1] not in globalVars:
         errorList.append("Error: Variable {0} must be defined first before modifying value on line {1}.").format(p[1],p.lineno(1))
     if p[1] in localVars:
         localVars.update({p[1]:p[3]})
         p[0] = ["Change", p[1], p[3]]
        # functions.cambioVariable(p[1], p[3])
+    if p[1] in globalVars:
+        globalVars.update({p[1]:p[3]})
+        p[0] = ["Change", p[1], p[3]]
 
 
 #Expresiones matematicas
@@ -406,6 +421,10 @@ def p_expression_term(p):
     'expression : term'
     p[0] = p[1]
 
+# def p_expression_uminus(p):
+#     'expression : MINUS term'
+#     p[0] = -p[2]
+
 def p_term_times(p):
     'term : term STAR factor'
     p[0] = p[1] * p[3]
@@ -419,12 +438,15 @@ def p_term_factor(p):
     p[0] = p[1]
 
 def p_factor_num(p):
-    'factor : INTEGER'
+    '''factor : INTEGER'''
+                    
     p[0] = p[1]
 
 def p_factor_expr(p):
     'factor : LP expression RP'
     p[0] = p[2]
+
+
 ########################################################################
 
 def p_comment(p):

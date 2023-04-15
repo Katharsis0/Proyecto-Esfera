@@ -39,7 +39,7 @@ tokens = [
    'LTE',#<= - less or equal
    'GTE',#>= - greater or equal
    'DIF', #>< - different
-   'UMINUS',
+   #'UMINUS',
    'TYPE',
    'BOOL',
    'GT',#greater than
@@ -66,7 +66,8 @@ tokens = [
    'PRINT',
     'VALUE',
     'CHANGE',
-    'STRING'
+    'STRING',
+    'BREAK'
 ]
 
 
@@ -112,6 +113,9 @@ t_THEN = r'Then'
 t_PRINT = r'=>'
 t_CHANGE = r'Change'
 t_STRING = r'\"[^\"]*\"'
+t_BREAK = r'Break'
+
+
 
 
 #Token int
