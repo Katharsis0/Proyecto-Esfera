@@ -415,25 +415,42 @@ def checkCondition(CONDITION):
     print("la condicion",CONDITION)
     #GT
     if CONDITION[0]=="GT":
-        result= CONDITION[1] > CONDITION[2]
+        if isinstance(value(CONDITION[1]), int) and isinstance(value(CONDITION[2]), int):
+            result= CONDITION[1] > CONDITION[2]
+        else:
+            errorList.append("Error: Invalid comparison. ")
+
     #LT
     elif CONDITION[0]=="LT":
-        result= CONDITION[1] < CONDITION[2]
+        if isinstance(value(CONDITION[1]), int) and isinstance(value(CONDITION[2]), int):
+            result= CONDITION[1] < CONDITION[2]
+        else:
+            errorList.append("Error: Invalid comparison. ")
+
     
     #DIF
     elif CONDITION[0]=="DIF":
         result= CONDITION[1] != CONDITION[2]
+
     #EQUAL
     elif CONDITION[0]=="EQUAL":
         result= CONDITION[1] == CONDITION[2]
     
     #GTE
     elif CONDITION[0]=="GTE":
-        result= CONDITION[1] >= CONDITION[2]
+        if isinstance(value(CONDITION[1]), int) and isinstance(value(CONDITION[2]), int):
+            result= CONDITION[1] >= CONDITION[2]
+        else:
+            errorList.append("Error: Invalid comparison. ")
+
         
     #GTE
     elif CONDITION[0]=="LTE":
-        result= CONDITION[1] <= CONDITION[2]
+        if isinstance(value(CONDITION[1]), int) and isinstance(value(CONDITION[2]), int):
+            result= CONDITION[1] <= CONDITION[2]
+        else:
+            errorList.append("Error: Invalid comparison. ")
+
     
     #ISTRUE
     elif CONDITION[0]=="ISTRUE":

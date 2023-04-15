@@ -1,5 +1,0 @@
-Error: Variable Def type and value must match in line 10.
-Error: Variable Def type and value must match in line 11.
-
-Error: Program cannot be executed until errors are solved.
-
