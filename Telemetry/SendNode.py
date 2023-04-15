@@ -27,7 +27,7 @@ myCar = NodeMCU()
 myCar.start()
 
 
-def send():
+def send(acciones):
     for i in acciones:
         myCar.send(i)
         time.sleep(3)
