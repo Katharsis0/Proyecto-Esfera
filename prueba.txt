@@ -1,2 +1,12 @@
---Hola Mundo
-@Principal(Zigzag(););
+-- Prueba del Until con variables
+@Principal();
+Proc @prueba(
+	Def(@luna, bool, True);
+	Def(@sol, bool, True);
+	
+	Until (
+		Def(@fifa, int, 4);
+		@fifa(19);
+	)(@luna == @sol);
+);
+

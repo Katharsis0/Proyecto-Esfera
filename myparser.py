@@ -37,7 +37,8 @@ variableNumber=0
 
 
 #tests
-testFile=r'D:\Proyecto-Compi\Proyecto-Esfera\Tests\Pruebas\While.txt'
+#testFile=r'D:\Proyecto-Compi\Proyecto-Esfera\Tests\Pruebas\While.txt'
+testFile= r"Tests\Pruebas\Until.sfra"
 
 #Parsing result
 precedence = (('left','PLUS','MINUS'),
@@ -144,8 +145,8 @@ def p_instruccion(p):
                     | repeat
                     | change
                     | led
-                    | zigzag
-                    | zagzig
+                    | circulo
+                    | trompo
                     | comment'''
     p[0]=p[1]
 
@@ -286,12 +287,12 @@ def p_aleatorio(p):
     p[0] = ["Aleatorio"]
    
 def p_zigzag(p):
-    '''zigzag : ZIGZAG LP RP SEMICOLON'''
-    p[0]=["Zigzag"]
+    '''circulo : CIRCULO LP RP SEMICOLON'''
+    p[0]=["Circulo"]
 
 def p_zagzig(p):
-    '''zagzig : ZAGZIG LP RP SEMICOLON'''
-    p[0]=["Zagzig"]
+    '''trompo : TROMPO LP RP SEMICOLON'''
+    p[0]=["Trompo"]
 
 def p_led(p):
     '''led : LED LP RP SEMICOLON'''

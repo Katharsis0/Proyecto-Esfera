@@ -385,18 +385,18 @@ def execute(instructionList):
                     route.append(random.choice(listDir))
                 print("Ruta aleatorio: ", route)
                 
-            elif i[0] == "Zigzag":
-                print("encontro ZigZag")
+            elif i[0] == "Trompo":
+                print("encontro Trompo")
                 listDir=['DER', 'IZQ', 'DER', 'IZQ', 'DER', 'IZQ']
-                route.append(listDir)
+                route.append(['Trompo'])
             
-            elif i[0] == "Zagzig":
+            elif i[0] == "Circulo":
                 listDir=['IZQ', 'DER', 'IZQ', 'DER', 'IZQ', 'DER']
-                route.append(listDir)
+                route.append(['Circulo'])
                 
             elif i[0] == "Led":
                 print("encontro led")
-                route.append(['LED'])
+                route.append(['Led'])
             
             
         elif i=="Aleatorio":

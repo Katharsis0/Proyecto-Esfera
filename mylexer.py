@@ -69,8 +69,8 @@ tokens = [
     'STRING',
     'BREAK',
     'LED',
-    'ZAGZIG',
-    'ZIGZAG',
+    'TROMPO',
+    'CIRCULO',
 ]
 
 
@@ -120,8 +120,8 @@ t_STRING = r'\"[^\"]*\"'
 t_BREAK = r'Break'
 #func opcionales
 t_LED= r'Led'
-t_ZIGZAG = r'Zigzag'
-t_ZAGZIG = r'Zagzig'
+t_TROMPO = r'Trompo'
+t_CIRCULO = r'Circulo'
 
 
 
