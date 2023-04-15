@@ -53,13 +53,13 @@ const long interval = 100;
  * In3 = 0 ∧ In4 = 1 -> Moverse hacia adelante motor B
  * In3 = 1 ∧ In4 = 0 -> Moverse en reversa motor B
  */
-#define EnA 2 //D4 
+#define EnA 2 //D4
 #define In1 0 //D3 
 #define In2 4 //D2
 #define In3 5 //D1
-#define EnB 14 //D5 
-#define In4 16 //D0
-// 0 para ir hacia adelante
+#define EnB 14 //D5
+#define In4 12 //D6
+#define LED 16 //D0 led del Node MCU
 
 
 /**
@@ -78,6 +78,7 @@ void setup() {
   pinMode(In4,OUTPUT);
   pinMode(EnA,OUTPUT);
   pinMode(EnB,OUTPUT);
+  pinMode(LED,OUTPUT);
   
   // ip estática para el servidor
   IPAddress ip(192,168,43,200);
@@ -106,6 +107,7 @@ void setup() {
   }
   server.begin();
   server.setNoDelay(true);
+
 
 }
 
@@ -173,7 +175,7 @@ String implementar(String llave, String valor){
   
   //LLave pwm = movimientos hacia adelante, atras o detener el movimiento
   if(llave == "pwm"){
-
+    
       if(valor.toInt()==0){
       digitalWrite (In1,LOW);
       digitalWrite (In2,LOW);
@@ -190,6 +192,9 @@ String implementar(String llave, String valor){
       digitalWrite (In4,LOW);
       analogWrite (EnA,valor.toInt());
       analogWrite (EnB,valor.toInt());
+      delay(2000);
+      implementar("pwm", "0");
+
       result = "adelante";
     }
     else if(valor.toInt()<0){
@@ -200,7 +205,9 @@ String implementar(String llave, String valor){
       y= -(valor.toInt());
       analogWrite (EnA,y);
       analogWrite (EnB,y);
-      
+      delay(2000);
+      implementar("pwm", "0");
+
       result = "reversa";
       
     } 
@@ -213,22 +220,21 @@ String implementar(String llave, String valor){
   
   else if(llave == "dir"){
     if(valor.toInt() == -1){
-      //Motor A apagado
+      //Motor A hacia atras
       digitalWrite (In1,LOW);
-      digitalWrite (In2,LOW);
+      digitalWrite (In2,HIGH);
 
       //Motor B hacia adelante 
       digitalWrite (In3,HIGH);
       digitalWrite (In4,LOW);
 
-      analogWrite (EnA,0);
-      analogWrite(EnB,1000);
+      analogWrite (EnA,100);
+      analogWrite(EnB,100);
       result = "izquierda";
       Serial.println("Girando izquierda");
 
-      delay(5000); //Girar durante 5s
+      delay(135); //Girar durante 0.7s
       implementar("pwm", "10");
-      
       }
 
       else if(valor.toInt() == 0){
@@ -244,15 +250,15 @@ String implementar(String llave, String valor){
       digitalWrite (In1,HIGH);
       digitalWrite (In2,LOW);
 
-      //Motor B apagado
+      //Motor B hacia atras
       digitalWrite (In3,LOW);
-      digitalWrite (In4,LOW);
-      analogWrite(EnB,1000);
+      digitalWrite (In4,HIGH);
+      analogWrite(EnB,100);
       result = "derecha";
       Serial.println("Girando derecha");
 
-      delay(5000); //Girar durante 5s
-      implementar("pwm", "10");
+      delay(125); //Girar durante 1s
+      implementar("pwm", "100");
       }
       
   }
@@ -265,15 +271,15 @@ String implementar(String llave, String valor){
       digitalWrite (In1,HIGH);
       digitalWrite (In2,LOW);
 
-      //Motor B apagado
+      //Motor B hacia atras
       digitalWrite (In3,LOW);
-      digitalWrite (In4,LOW);
-      analogWrite(EnB,1000);
+      digitalWrite (In4,HIGH);
+      analogWrite(EnB,10);
       result = "derecha";
       Serial.println("Girando diagonal adelante derecha");
 
-      delay(2500); //Girar durante 2.5s (la mitad del tiempo de giro a la derecha)
-      implementar("pwm", "10");
+      delay(92); 
+      implementar("pwm", "100");
     }
 
     else if(valor.toInt() == -1){
@@ -281,23 +287,23 @@ String implementar(String llave, String valor){
       digitalWrite (In1,LOW);
       digitalWrite (In2,HIGH);
 
-      //Motor B apagado
-      digitalWrite (In3,LOW);
+      //Motor B hacia adelante
+      digitalWrite (In3,HIGH);
       digitalWrite (In4,LOW);
-      analogWrite(EnB,1000);
+      analogWrite(EnB,10);
       result = "derecha";
       Serial.println("Girando diagonal atras derecha");
 
-      delay(2500); //Girar durante 2.5s (la mitad del tiempo de giro a la derecha)
-      implementar("pwm", "-10");
+      delay(92); //Girar durante la mitad del tiempo de giro a la derecha
+      implementar("pwm", "-100");
     }
   }
 
   else if(llave == "diagI"){
     if(valor.toInt() == 1){
-      //Motor A apagado
+      //Motor A hacia atras
       digitalWrite (In1,LOW);
-      digitalWrite (In2,LOW);
+      digitalWrite (In2,HIGH);
 
       //Motor B hacia adelante
       digitalWrite (In3,HIGH);
@@ -305,13 +311,13 @@ String implementar(String llave, String valor){
       result = "izquierda";
       Serial.println("Girando diagonal adelante izquierda");
 
-      delay(2500); //Girar durante 2.5s (la mitad del tiempo de giro a la derecha)
-      implementar("pwm", "10");
+      delay(92); //Girar durante la mitad del tiempo de giro a la izquierda
+      implementar("pwm", "100");
     }
 
     else if(valor.toInt() == -1){
-      //Motor A apagado
-      digitalWrite (In1,LOW);
+      //Motor A hacia adelante
+      digitalWrite (In1,HIGH);
       digitalWrite (In2,LOW);
 
       //Motor B hacia atras
@@ -320,13 +326,12 @@ String implementar(String llave, String valor){
       result = "izquierda";
       Serial.println("Girando diagonal aadelante izquierda");
 
-      delay(2500); //Girar durante 2.5s (la mitad del tiempo de giro a la derecha)
-      implementar("pwm", "-10");
+      delay(92);
+      implementar("pwm", "-100");
     }
     
   }
-  
-  
+
 
    /* El comando tiene el formato correcto pero no tiene sentido para el servidor
    */
@@ -370,13 +375,14 @@ void procesar(String input, String * output){
         Serial.println(valor);
         //Una vez separado en llave valor 
         *output = implementar(llave,valor); 
+        
     }
     //Aqui se llamaba getSense en caso de que comando == "sense"
     //No se necesita porque se usaba para obtener valores de la bateria y fotoresistencia
 
       //Aqui iban movimientos como zig zag, circulo, etc
     
-    else if(comando=="det"){
+    else if(comando == "det"){
       digitalWrite (In1,LOW);
       digitalWrite (In2,LOW);
       digitalWrite (In3,LOW);
@@ -384,6 +390,36 @@ void procesar(String input, String * output){
       result="detenido";
       
       }
+    else if(comando == "led"){ //Parpadeo del led del node mcu
+      for(int i = 0; i < 5; i++){
+        digitalWrite(LED, HIGH);
+        delay(1000);
+        digitalWrite(LED, LOW);
+        delay(700);
+      }
+      result = "parpadeo";
+    }
+
+    else if(comando == "trompo"){
+      //Motor A hacia adelante
+        digitalWrite (In1,HIGH);
+        digitalWrite (In2,LOW);
+
+        //Motor B hacia atras
+        digitalWrite (In3,LOW);
+        digitalWrite (In4,HIGH);
+        delay(4000); 
+        result = "trompo";
+    }
+
+    else if(comando == "circulo"){
+        digitalWrite (In1,HIGH);
+        digitalWrite (In2,LOW);
+        digitalWrite (In3,LOW);
+        digitalWrite (In4,LOW);
+        delay(1000);
+        result = "circulo"
+    }
     comienzo = delComa+1;
     delComa = input.indexOf(';',comienzo);
   }

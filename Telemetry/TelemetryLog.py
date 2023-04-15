@@ -22,13 +22,12 @@ Detenerse: det;
 #__________/BIBLIOTECAS
 from tkinter import *               # Tk(), Label, Canvas, Photo
 from threading import Thread        # p.start()
-import threading                    # 
-import os                           # ruta = os.path.join('')
-import time                         # time.sleep(x)
-from tkinter import messagebox      # AskYesNo ()
+import threading                    #
+import os                           
+import time                         
+from tkinter import messagebox      
 import tkinter.scrolledtext as tkscrolled
-##### Biblioteca para el Carro
-from WiFiClient import NodeMCU
+from WiFiClient import NodeMCU #Archivo Arduino
 
 
 #           ____________________________
