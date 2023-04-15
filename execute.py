@@ -1,4 +1,5 @@
 #from myinterpreter import arduinoOrders
+from Telemetry.SendNode import send
 
 
 
@@ -39,6 +40,7 @@ while True:
 
     if done==True:
         #sendData(result)
+        SendNode.send(result)
         break
     
 print("\n--------- Execute Result ---------\n")
