@@ -1,0 +1,5 @@
+Error: Variable Def type and value must match in line 10.
+Error: Invalid comparison. Comparison not valid for booleans in line 0.
+
+Error: Program cannot be executed until errors are solved.
+

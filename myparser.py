@@ -37,14 +37,14 @@ variableNumber=0
 
 
 #tests
-testFile='E:\Escritorio\Code\TEC\Compi\Esfera\Proyecto-Esfera\prueba.txt'
+testFile=r'D:\Proyecto-Compi\Proyecto-Esfera\Tests\Pruebas\Until.sfra'
 
 #Parsing result
 precedence = (('left','PLUS','MINUS'),
-            ('left','STAR','SLASH'))
+            ('left','STAR','SLASH', 'UMINUS'))
             
 
-#TODO: Break para repeat
+
 #Estado inicial
 def p_init(p):
     '''init : comment code
@@ -150,7 +150,7 @@ def p_instruccion(p):
     p[0]=p[1]
 
 def p_break(p):
-    '''break : BREAK'''
+    '''break : BREAK SEMICOLON'''
     p[0]=p[1]
     
 
@@ -186,7 +186,7 @@ def p_call(p):
         #functions.llamada(p[1], p[3])
 
 def p_alter(p):
-    '''alter : ALTER LP ID COMMA INTEGER RP SEMICOLON
+    '''alter : ALTER LP ID COMMA factor RP SEMICOLON
             | ALTER LP ID COMMA ID RP SEMICOLON'''
     #p[0] = [p[1], p[3], p[5]]
 
@@ -202,7 +202,7 @@ def p_alter(p):
            # functions.alterar(p[3], p[5])
 
 def p_not(p):
-    '''not : NOT LP ID RP'''
+    '''not : NOT LP ID RP SEMICOLON'''
     #p[0] = [p[1], p[3]]
     print("P del not: ",p[3])
     if p[3] not in localVars and p[3] not in globalVars:
@@ -257,7 +257,7 @@ def p_iterativo(p):
     '''iterative : WHILE LP condicion RP LP instrucciones RP SEMICOLON
                 | UNTIL LP instrucciones RP LP condicion RP SEMICOLON
     '''
-    print("El while del parser",p[3])
+    print("El while/until del parser",p[3])
     if p[1]=='While':
         p[0]=[p[1],p[3],p[6]] #(While, condition, instructions)
         #functions.funcionWhile(p[2], p[4])
@@ -300,10 +300,10 @@ def p_led(p):
 
 def p_repeat(p):
     '''repeat : REPEAT LP instrucciones break RP SEMICOLON'''
-    p[0] = [p[1], p[3],p[4]] #out(REPEAT, INSTRU, BREAK)
+    p[0] = [p[1], p[3]] #out(REPEAT, INSTRU, BREAK)
 
 def p_value(p):
-    '''value : INTEGER
+    '''value : factor
             | BOOL
             | expression
             | ID
@@ -320,7 +320,7 @@ def p_funciones(p):
     else:
         p[0]=[p[1]]+[p[2]]
 
-def p_funcion(p):#TODO: revisar la concatenacion de functions
+def p_funcion(p):
     '''funcion : when then
                 | when then else'''
     if len(p) == 3:
@@ -351,8 +351,8 @@ def p_else(p):
 def p_condicion(p):
     '''condicion : oper GT oper
                 | oper LT oper
-                | oper EQUAL oper
-                | oper DIF oper
+                | value EQUAL value
+                | value DIF value
                 | oper GTE oper
                 | oper LTE oper
                 | istrue
@@ -403,10 +403,12 @@ def p_condicion(p):
             p[0]=p[1]
 
 def p_oper(p):
-    '''oper : value
+    '''oper : factor
             | expression
+            | ID
     '''
     p[0]=p[1]
+
 
 #Cambiar el valor de una variable
 def p_change(p):
@@ -452,9 +454,14 @@ def p_term_factor(p):
     p[0] = p[1]
 
 def p_factor_num(p):
-    '''factor : INTEGER'''
+    '''factor : INTEGER
+    '''
                     
     p[0] = p[1]
+
+def p_factor_uminus(p):
+    'factor : MINUS expression %prec UMINUS'
+    p[0] = -p[2]
 
 def p_factor_expr(p):
     'factor : LP expression RP'

@@ -2,5 +2,5 @@
 @Principal(
 	Def(@edad, int, 9);
 	Def(@flag, bool, True);
-	Not(@flag);
+	Not(@flag)
 );

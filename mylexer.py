@@ -70,7 +70,7 @@ tokens = [
     'BREAK',
     'LED',
     'ZAGZIG',
-    'ZIGZAG'
+    'ZIGZAG',
 ]
 
 
@@ -94,6 +94,7 @@ t_LT=r'<'
 t_GTE=r'>='
 t_LTE=r'<='
 t_EQUAL = r'=='
+
 
 
 #Reserved
@@ -138,7 +139,7 @@ def t_newline(t):
 
 
 #Token ID or reserved word. If its reserved word return its value.
-#TODO: Validar en el parser que si es un ID inicie con @.
+
 def t_ID(t):
     r'@[a-zA-Z][a-zA-Z0-9_]*'
     if t.value == '@Principal':
@@ -156,16 +157,6 @@ def t_TYPE(t):
     r'(int | bool)'
     t.type = 'TYPE'
     return t
-
-# def t_VALUE(t):
-#     r'(True|False|\d+)'
-#     if t.value == 'True' or t.value == 'False':
-#         t.value = True if t.value == 'True' else False
-#         t.type = 'VALUE'
-#     else:
-#         t.value = int(t.value)
-#         t.type = 'VALUE'
-#     return t
 
 def t_BOOL(t):
     r'(True|False)'

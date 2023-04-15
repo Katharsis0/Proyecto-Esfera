@@ -108,9 +108,10 @@ def whileExe(WHILE):
 
 def repeatExe(REPEAT):
     print(REPEAT)
-    #Receives the instructions and the amount of times to loop
-    #Calls exe func with the instructions
-    #Creates and appends the list with the results of the route
+    route = []
+    for i in execute(REPEAT[1]):
+        route.append(i)
+    return route
     
     
     
@@ -173,7 +174,8 @@ def changeExe(CHANGE):
     
     else:
         errorList.append("Variable cannot be changed.")
-    print(globalVars) 
+    print(globalVars)
+
         
         
 def printExe(PRINT):
@@ -295,7 +297,7 @@ def execute(instructionList):
             #Executes a Repeat
             elif i[0] == "Repeat":
                 print("Encontro repeat")
-                repeatedOrder= repeatExe(i)
+                repeatedOrder = repeatExe(i)
                 for j in repeatedOrder:
                     route.append(j)
             
@@ -340,7 +342,8 @@ def execute(instructionList):
             #Verifies Alter
             elif i[0] == "Alter":
                 print("Alter:" , i)
-                i[2]=value(i[1])+i[2]
+
+                i[2]=value(i[1])+value(i[2])
                 result=changeExe(i)
                 route.append(result)
     
@@ -360,14 +363,15 @@ def execute(instructionList):
                     route.append(result)
 
 
-            elif i[0] == "Not": #Se toman en cuenta paréntesis
+            elif i[0] == "Not":
                 print("i del not: " ,i)
                 if isinstance(i[1], int):
-                    errorList.append("Error: Value is not bool {2}".format(i[2]))
+                    errorList.append("Error: Value is not bool {1}".format(i[1]))
                 elif i[1] in globalVars or i[1] in localVars:
                     result = notExe(i[1])
+                    route.append(result)
                 else:
-                    errorList.append("Error: Variable {2} does not exist".format(i[2]))
+                    errorList.append("Error: Variable {1} does not exist".format(i[1]))
             
             elif i[0] == "Mover":
                 print("Encontro Mover")

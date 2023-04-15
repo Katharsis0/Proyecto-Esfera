@@ -1,0 +1,11 @@
+--Esto es un comentario
+@Principal(
+	Repeat(
+		Def(@verde, bool, False);
+		Not(@verde);
+		Aleatorio();
+		Break;
+	);
+
+
+);
