@@ -143,6 +143,9 @@ def p_instruccion(p):
                     | istrue
                     | repeat
                     | change
+                    | led
+                    | zigzag
+                    | zagzig
                     | comment'''
     p[0]=p[1]
 
@@ -282,6 +285,17 @@ def p_aleatorio(p):
     '''aleatorio : ALEATORIO LP RP SEMICOLON'''
     p[0] = ["Aleatorio"]
    
+def p_zigzag(p):
+    '''zigzag : ZIGZAG LP RP SEMICOLON'''
+    p[0]=["Zigzag"]
+
+def p_zagzig(p):
+    '''zagzig : ZAGZIG LP RP SEMICOLON'''
+    p[0]=["Zagzig"]
+
+def p_led(p):
+    '''led : LED LP RP SEMICOLON'''
+    p[0]=["Led"]
 
 
 def p_repeat(p):

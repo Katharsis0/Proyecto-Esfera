@@ -67,7 +67,10 @@ tokens = [
     'VALUE',
     'CHANGE',
     'STRING',
-    'BREAK'
+    'BREAK',
+    'LED',
+    'ZAGZIG',
+    'ZIGZAG'
 ]
 
 
@@ -114,6 +117,10 @@ t_PRINT = r'=>'
 t_CHANGE = r'Change'
 t_STRING = r'\"[^\"]*\"'
 t_BREAK = r'Break'
+#func opcionales
+t_LED= r'Led'
+t_ZIGZAG = r'Zigzag'
+t_ZAGZIG = r'Zagzig'
 
 
 

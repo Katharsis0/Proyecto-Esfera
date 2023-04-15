@@ -1,2 +1,2 @@
 --Hola Mundo
-@Principal(Def(@variable1,int,2);Case When ();););
+@Principal(Zigzag(););
