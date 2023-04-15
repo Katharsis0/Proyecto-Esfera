@@ -12,18 +12,13 @@ Uso del módudo NodeMCU de wifiConnection
 """
 
 #           _____________________________
-#__________/BIBLIOTECAS
-from tkinter import *               
-from threading import Thread        
-import threading                    
-import os                           
+#__________/BIBLIOTECAS                          
 import time                         
-from tkinter import messagebox      
-import tkinter.scrolledtext as tkscrolled
 from WiFiClient import NodeMCU #Archivo Arduino
-#import archivo
+#from execute import result
 
 #["pwm:100;", "pwm:-100;", "led;"]
+#acciones = result
 acciones = ["pwm:100;", "pwm:-100;", "led;"]
 
 #           _____________________________________

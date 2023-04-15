@@ -233,7 +233,7 @@ String implementar(String llave, String valor){
       result = "izquierda";
       Serial.println("Girando izquierda");
 
-      delay(135); //Girar durante 0.7s
+      delay(330); 
       implementar("pwm", "10");
       }
 
@@ -257,7 +257,7 @@ String implementar(String llave, String valor){
       result = "derecha";
       Serial.println("Girando derecha");
 
-      delay(125); //Girar durante 1s
+      delay(270); //Girar durante 1s
       implementar("pwm", "100");
       }
       
@@ -278,7 +278,7 @@ String implementar(String llave, String valor){
       result = "derecha";
       Serial.println("Girando diagonal adelante derecha");
 
-      delay(92); 
+      delay(100); 
       implementar("pwm", "100");
     }
 
@@ -294,24 +294,27 @@ String implementar(String llave, String valor){
       result = "derecha";
       Serial.println("Girando diagonal atras derecha");
 
-      delay(92); //Girar durante la mitad del tiempo de giro a la derecha
+      delay(100); //Girar durante la mitad del tiempo de giro a la derecha
       implementar("pwm", "-100");
     }
   }
 
   else if(llave == "diagI"){
     if(valor.toInt() == 1){
-      //Motor A hacia atras
+     //Motor A hacia atras
       digitalWrite (In1,LOW);
       digitalWrite (In2,HIGH);
 
-      //Motor B hacia adelante
+      //Motor B hacia adelante 
       digitalWrite (In3,HIGH);
       digitalWrite (In4,LOW);
+
+      analogWrite (EnA,100);
+      analogWrite(EnB,100);
       result = "izquierda";
       Serial.println("Girando diagonal adelante izquierda");
 
-      delay(92); //Girar durante la mitad del tiempo de giro a la izquierda
+      delay(170); //Girar durante la mitad del tiempo de giro a la izquierda
       implementar("pwm", "100");
     }
 
@@ -326,7 +329,7 @@ String implementar(String llave, String valor){
       result = "izquierda";
       Serial.println("Girando diagonal aadelante izquierda");
 
-      delay(92);
+      delay(100);
       implementar("pwm", "-100");
     }
     
@@ -408,7 +411,8 @@ void procesar(String input, String * output){
         //Motor B hacia atras
         digitalWrite (In3,LOW);
         digitalWrite (In4,HIGH);
-        delay(4000); 
+        delay(4000);
+        implementar("pwm", "0"); 
         result = "trompo";
     }
 
@@ -417,8 +421,9 @@ void procesar(String input, String * output){
         digitalWrite (In2,LOW);
         digitalWrite (In3,LOW);
         digitalWrite (In4,LOW);
-        delay(1000);
-        result = "circulo"
+        delay(3000);
+        implementar("pwm", "0");
+        result = "circulo";
     }
     comienzo = delComa+1;
     delComa = input.indexOf(';',comienzo);
