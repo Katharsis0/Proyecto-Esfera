@@ -1,7 +1,6 @@
 --Hola Mundo
-@Principal(
-	Def(@fresa, bool, True);
-	
-
-	
-);
+@Principal(Mover(ADL);Mover(ATR);Mover(ATR););
+Proc @Func1(Mover(ATR););
+Proc @Func2(Mover(DER);Mover(IZQ););
+Proc @Func3(Mover(IZQ);Mover(DDE);Mover(ATR););
+Proc @Func4(Mover(DDE);Mover(DER);Mover(ATR);Mover(ATR););

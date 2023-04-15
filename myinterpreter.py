@@ -42,6 +42,8 @@ variableStack=[]
 #Flag to check if code is free of errors in order to run
 validFlag= True
 
+duino=[]
+
 ##################### Evaluation of code #####################
 def assignVariable(LIST, scope):
     #Stores defined variables as local or global depending on the scope
@@ -185,10 +187,6 @@ def printExe(PRINT):
         printsList.append(PRINT[1])
     return printsList
         
-    
-
-
-
 def executeFunc(procCall):
     #Receives a list with the procName and the instructions
     global procStack, localVars, variableStack
@@ -202,10 +200,10 @@ def executeFunc(procCall):
         variableStack.append(localVars.copy())
     
     #Checks the existance of the proc
-    if procCall[1] in procedures:
+    if procCall[0] in procedures:
         for i in procedures[procCall[1]]:
             #Saves in the list the results of the instructions of the procs
-            instructions= execute(proceduresList[i][1])
+            instructions= execute(procCall[1])
             
             #Formats the nested lists
             for i in instructions:
@@ -271,13 +269,15 @@ def execute(instructionList):
     global scope, procStack, variableStack, validFlag
     
     route= []
-    
+    print("Init execute")
+    print("InstructionList: ", instructionList)
     #For each line in the input file
-    for i in instructionList:
+    for i in instructionList:    
         if isinstance(i,list):
             
             #Executes a Def
             if i[0] == "Def":
+                print("Encontro def")
                 #Checks if variable exists, if it does generates error
                 if i[1] in localVars or i[1] in globalVars:
                     errorList.append("Error: Cannot define {1} to variable {0} as it was already defined".format(i[1],i[2]))
@@ -287,11 +287,14 @@ def execute(instructionList):
             
             #Executes an Until
             elif i[0] == "Until":
+                print("Encontro Until")
+                
                 for j in untilExe(i):
                     route.append(j)
             
             #Executes a While
             elif i[0] == "While":
+                print("Encontro While")
                 executedWhile= whileExe(i)
                 if executedWhile is not None:
                     for j in executedWhile:
@@ -299,12 +302,14 @@ def execute(instructionList):
             
             #Executes a Repeat
             elif i[0] == "Repeat":
+                print("Encontro repeat")
                 repeatedOrder= repeatExe(i)
                 for j in repeatedOrder:
                     route.append(j)
             
             #Verifies When
             elif i[0]== "When":
+                print("Encontro When")
                 route.append(whenExe(i))
             
             #Verifies Else
@@ -358,27 +363,34 @@ def execute(instructionList):
 
             #Verifies Call
             elif i[0] == "Call": #Se toman en cuenta los paréntesis
-                if i[2] in globalVars or i[2] in localVars:
-                    result = executeFunc([i[2], value(i[2])]) #value(i[2]) Devuelve una lista con instrucciones?
+                if i[2] in proceduresList:
+                    result = executeFunc([i[1],procedures[i[1]]])
                     route.append(result)
                 else:
                     errorList.append("Error: Cannot call {2} as it does not exist".format(i[2]))
 
             #Verifies Mover
-            elif i[0] == "Mover": #Se toman en cuenta los paréntesis
-                result = moverExe(i[2])
-                route.append(result) #O la comunicación con el arduino
+            # elif i[0] == "Mover": #Se toman en cuenta los paréntesis
+            #     result = i[1]
+            #     print(result)
+            #     route.append(result) #O la comunicación con el arduino
 
 
-            elif i[0] == "Aleatorio":
-                newDir = aleatorioExe()
-                route.append(newDir) #O la comunicación con el arduino
+            # elif i[0] == "Aleatorio":
+            #     #newDir = aleatorioExe()
+            #     #route.append(newDir) #O la comunicación con el arduino
+            #     listDir=['ATR','ADL','ADE','AIZ','IZQ','DER','DDE','DIZ']
+            #     for x in range(11):
+            #         result.append(random.choice(listDir))
+            #     print(result)
+            #     route.append(result)
+                
 
             elif i[0] == "Proc":#Modifique la lista no es variables sino procs
-                if i[1] in proceduresList or i[1] in proceduresList:
+                if i[1] in proceduresList:
                     errorList.append("Error: Cannot define {1} to procedure {0} as it already exists".format(i[1],i[0]))
                 else:
-                    result = executeFunc([i[1], i[3]]) #Se toman en cuenta paréntesis
+                    result = executeFunc([i[1], i[2]]) #Se toman en cuenta paréntesis
                     route.append(result)
 
 
@@ -390,7 +402,30 @@ def execute(instructionList):
                     route.append(result)
                 else:
                     errorList.append("Error: Variable {2} does not exist".format(i[2]))
-
+            
+            elif i[0] == "Mover":
+                print("Encontro Mover")
+                route.append(i[1])
+            
+            elif i[0]=="Aleatorio":
+                print("Encontro Aleatorio")
+                listDir=['ATR','ADL','ADE','AIZ','IZQ','DER','DDE','DIZ']
+        
+                for x in range(11):
+                    route.append(random.choice(listDir))
+                print("Ruta aleatorio: ", route)
+                
+        elif i=="Aleatorio":
+            print("Encontro Aleatorio")
+            listDir=['ATR','ADL','ADE','AIZ','IZQ','DER','DDE','DIZ']
+        
+            for x in range(11):
+                route.append(random.choice(listDir))
+            print("Ruta aleatorio: ", route)
+            
+                        
+        
+    return route
 
 def checkCondition(CONDITION):
     
@@ -432,36 +467,54 @@ def semanticAnalysis():
 ########### Main route ########################
 
 if AST is not None:
+    print("Este es el AST\n", AST)
     for sentence in AST:
+        print("Sentencia: ", sentence)
         if isinstance(sentence,list):
             #If Main is found
+            print("Sentence0:",sentence[0])
             if sentence[0]=="MAIN":
-                
                 if len(sentence)==1:
                     print("Main is declared but empty.")
                 
                 #Appends the main instructions
                 else:
-                    codeMain.append(sentence[1])
-            if sentence[0]=="PROC":
-                codeProcs.append(sentence[2])
+                    if isinstance(sentence[1],list):
+                        codeMain+=sentence[1]
+                    else:
+                        codeMain.append(sentence[1])
+                        
+            if sentence=="PROC":
+                if isinstance(sentence[2],list):
+                        codeProcs+=sentence[2]
+                else:
+                    codeProcs.append(sentence[2])
                 
-    codeExe.append(codeMain+codeProcs)
     
     #Filters out invalid productions
-    codeExe= list(filter(None,codeExe[0]))
+    print("Code main antes de conc", codeMain)
+    print("Code procs antes de conc", codeProcs)
+    if codeProcs != []:
+        if isinstance(codeProcs[0],list):
+            codeMain+=codeProcs
+        else:
+            codeMain.append(codeProcs)
+            
     
-    arduinoOrders= execute(codeExe)
+    filter(None,codeMain)
+    
+    print("Antes de ardino: ", codeMain)
+    arduinoOrders= execute(codeMain)
     
 else:
+    #print("se esta yendo por aca")
     with open(errorFolder,'w+') as errorFile:
-        for i in errorList:
-            errorFile.write(i + "\n")
+       for i in errorList:
+           errorFile.write(i + "\n")
             
 if validFlag and not(errorFlag):
-    print("MyInterpreter results: \n")
-    print("Code to execute:\n")
-    print(AST)
+    print("Code to execute: ", codeMain)
+    #print(AST)
     
     print("Code to arduino: ", arduinoOrders)
     

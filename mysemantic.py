@@ -39,7 +39,7 @@ if len(errorList) != 0:
 
 
 if AST is not None:
-    AST = list(filter(None, AST))
+    AST = list(filter(None, AST))[0]
 
 
 

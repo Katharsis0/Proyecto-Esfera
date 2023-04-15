@@ -1,8 +1,5 @@
 import ply.yacc as yacc
 
-
-import ast
-import random
 from mylexer import tokens
 
 
@@ -38,6 +35,10 @@ main=0
 commentNumber=0
 variableNumber=0
 
+
+#tests
+testFile='E:\Escritorio\Code\TEC\Compi\Esfera\Proyecto-Esfera\prueba.txt'
+
 #Parsing result
 precedence = (('left','PLUS','MINUS'),
             ('left','STAR','SLASH'))
@@ -60,10 +61,11 @@ def p_code(p):
             | main
             | comment code
             | code comment'''
+    print(f"largo: {len(p)}")
     if len(p) == 3:
         p[0] = [p[1]] + [p[2]]
     if len(p) == 4:
-        p[0] = p[1] + [p[2] + p[3]] #revisar luego
+        p[0] = [p[1]] + [p[2]] + [p[3]] 
     if len(p) == 2:
         p[0] = [p[1]]
 
@@ -74,10 +76,10 @@ def p_procedimientos(p):
 
     '''
     if len(p) == 3:
-        p[0] = p[1] + [p[2]]
+        p[0] = [p[1]] + p[2]
 
     else:
-        p[0] = p[1]
+        p[0] = [p[1]]
 
 #Definicion de procedimiento
 def p_procedimiento(p):
@@ -121,10 +123,10 @@ def p_instrucciones(p):
                      | instruccion  
     '''  
     if len(p) == 3:
-        p[0]= [p[1]] + [p[2]]
+        p[0]= [p[1]] + p[2]
 
     else:
-        p[0]=p[1]
+        p[0]=[p[1]]
 
 #Definición de una instruccion (estructura)
 def p_instruccion(p):
@@ -267,15 +269,13 @@ def p_case(p):
 
 def p_mover(p):
     '''mover : MOVER LP DIR RP SEMICOLON'''
-    p[0] = [p[1], p[3]]
+    p[0] = ["Mover", p[3]]
     #functions.mover(p[3])
 
 def p_aleatorio(p):
     '''aleatorio : ALEATORIO LP RP SEMICOLON'''
-    p[0] = p[1]
-    listDir=['ATR','ADL','ADE','AIZ','IZQ','DER','DDE','DIZ']
-   # for i in range (0,9):
-        #functions.mover(random.choice(listDir))
+    p[0] = ["Aleatorio"]
+   
 
 
 def p_repeat(p):
@@ -450,13 +450,13 @@ def p_error(p):
 
 
 #Functions to connect with IDE
-inputFile = ""
-def set_file_path(path):
-    global inputFile
-    inputFile = path
+# inputFile = ""
+# def set_file_path(path):
+#     global inputFile
+#     inputFile = path
 
-def get_file_path():
-    return inputFile
+# def get_file_path():
+#     return inputFile
 
 
 
@@ -473,20 +473,27 @@ parser = yacc.yacc(debug=True)
 #             res = list(filter(None, res))
 #         #print(res)
 
-# with open(get_file_path(), 'r') as file:
-#         #print(file_path)
-#         data=file.read()
-#         res=parser.parse(data)
-#         if res != None:
-#             res = list(filter(None, res))
-#         print(res)
-
-def parse_file(file_path):
-    with open(file_path, 'r') as file:
-        data = file.read()
-        res = parser.parse(data)
-        if res is not None:
+with open(testFile, 'r') as file:
+        #print(file_path)
+        data=file.read()
+        res=parser.parse(data)
+        if res != None:
             res = list(filter(None, res))
-        else:
-            res = []
-        return res
+        print("Parser result before: " , res)
+        for i in res:
+            for j in i:
+                if isinstance(j,list):
+                    for k in j:
+                        if isinstance(k,list):
+                            print("Parser result: ", k)
+
+# def parse_file(file_path):
+#     with open(file_path, 'r') as file:
+#         data = file.read()
+#         res = parser.parse(data)
+#         if res is not None:
+#             res = list(filter(None, res))
+#         else:
+#             res = []
+#         return res
+
