@@ -1,0 +1,7 @@
+--Esto es un comentario
+@Principal(
+	Def(@num1, int, 7);
+	Alter(@num1, -8);
+
+
+);

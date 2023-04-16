@@ -1,0 +1,9 @@
+--Comentario 1
+Proc @Luna2( 
+	Case When(2<3) Then (
+		Def(@star3, bool, True);
+		Not(@star3);
+);
+
+);
+@Principal();

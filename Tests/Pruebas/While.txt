@@ -1,0 +1,13 @@
+-- Prueba del While con variables
+@Principal();
+Proc @prueba(
+	Def(@num1, int, 10);
+	Def(@num2, int, 20);
+	
+	While (@num1 < @num2)(
+		Def(@fifa, int, 4);
+		@fifa(19);
+		Alter(@num1, 2);
+	);
+);
+

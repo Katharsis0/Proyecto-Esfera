@@ -1,0 +1,2 @@
+--Comentario
+@Principal(Def(@var1, bool););

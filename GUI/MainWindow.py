@@ -1,5 +1,9 @@
 from tkinter import *
 from tkinter import filedialog
+import myparser
+from myparser import *
+import subprocess
+from mylexer import *
 
 
 class MainWindow:
@@ -13,7 +17,7 @@ class MainWindow:
         self.master.title("Esfera IDE")#Title of window
         self.master.geometry("1000x650+0+0")
         self.master.resizable(False, False)
-        photo = PhotoImage(file = "Images/rosa.png")#Icon of window
+        photo = PhotoImage(file = "./Images/rosa.png")#Icon of window
 
         self.master.iconphoto(False, photo)        
         self.master.configure(background="#313335")
@@ -25,6 +29,7 @@ class MainWindow:
         self.file_menu = Menu(self.menu_bar)
         self.file_menu.add_command(label="Open...", command=self.openFileMenu)
         self.file_menu.add_command(label="Save", command=self.saveFile)
+        self.file_menu.add_command(label="Save as", command=self.saveFileAs)
 
         self.menu_bar.add_cascade(label="File", menu=self.file_menu)
         self.master.config(menu=self.menu_bar)
@@ -91,11 +96,27 @@ class MainWindow:
         self.master.title("Esfera IDE - " + self.file_name)
         self.editor_text.insert(END, self.file_name)
         self.loadFile(self.file_name)
-    
+
+
+    def saveFileAs(self):
+        if self.file_name == '':
+            self.file_name = filedialog.asksaveasfilename(initialdir="./Tests", title="Save file", filetypes=(("Esfera File","*.sfra"), ("All files", "*.*")))
+            self.file_name = self.file_name + ".sfra"
+        else:
+            self.file_name = self.file_name
+        self.file_name = self.file_name + ".sfra"
+        self.set_file_path(self.file_name)
+        self.master.title("Esfera IDE - " + self.file_name)
+        file = open(self.file_name,"x")
+        file.write(self.editor_text.get(1.0,END))
+        file.close()
+
     #Save file function
     def saveFile(self):
-        self.file_name = filedialog.asksaveasfilename(initialdir="/", title="Save file", filetypes=(("Esfera File","*.sfra"), ("All files", "*.*")))
+        #self.file_name = filedialog.asksaveasfilename(initialdir="/", title="Save file", filetypes=(("Esfera File","*.sfra"), ("All files", "*.*")))
+        self.file_name = filedialog.asksaveasfilename(initialdir="./Tests", title="Save file", filetypes=(("Esfera File","*.sfra"), ("All files", "*.*")))
         self.file_name = self.file_name + ".sfra"
+        self.set_file_path(self.file_name)
         self.master.title("Esfera IDE - " + self.file_name)
         file = open(self.file_name,"x")
         file.write(self.editor_text.get(1.0,END))
@@ -123,11 +144,22 @@ class MainWindow:
 
     #Load file function
     def loadFile(self, file_name):
+        self.set_file_path(self.file_name)
         file = open(file_name, "r", encoding="utf-8")
         self.editor_text.delete(1.0, END)
         self.editor_text.insert(END, file.read())
         file.close()
         self.updateLines()
+
+
+
+    def set_file_path(self, path):
+        self.file_name = path
+
+    def get_file_path(self):
+        return self.file_name
+
+
 
     def updateScroll(self):
         self.numberLine.config(state=DISABLED)
@@ -143,9 +175,55 @@ class MainWindow:
 
     #Run process TODO: Add run process
     def run(self):
-        print()
+        if self.file_name== '':
+            self.save_prompt = Toplevel()
+            self.save_prompt.title('Error')
+            self.save_prompt.geometry('200x100')
+            self.save_prompt.resizable(False, False)
+            self.save_prompt.configure(bg="#313335")
+
+            photo2 = PhotoImage(file = "./Images/rosa.png")
+            self.save_prompt.iconphoto(False, photo2)
+
+            text = Label(self.save_prompt, text='Please save your code first', font=('Arial', 12), fg ='white', bg="#313335")
+            text.pack(pady=10)
+            return
+        # command = f'python {file_path}'
+        # process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        # output, error = process.communicate()
+        # self.code_output.insert('1.0', output)
+        # self.code_output.insert('1.0',  error)
+
         print(self.editor_text.get(1.0, END))
+
 
     #Compile process. TODO: Add compile process 
     def compile(self):
+        self.file_path = self.get_file_path()
+        if self.file_path:
+            print("Compilando archivo:", self.file_path)
+            res = parse_file(self.file_path)
+            print(res)
+        else:
+            print("No se ha seleccionado ningún archivo.")
         print("Compiling...")
+
+
+
+        # #create parser and lexer
+        # parser = yacc.yacc(debug=True)
+        # lexer = lex.lex()
+        # #Open file
+        # with open(inputFile, 'r') as file:
+        #     data=file.read()
+        #     res=parser.parse(data)
+        #     lexer.input(data)
+        #     if res != None:
+        #         res = list(filter(None, res))
+        #     print(res)
+        # while True:
+        #     tok = lexer.token()
+        #     if not tok:
+        #         break
+        #     print(tok)
+

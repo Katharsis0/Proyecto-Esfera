@@ -1,0 +1,6 @@
+--Hola Mundo
+@Principal(
+	Def(@edad, int, 9);
+	Def(@flag, bool, True);
+	Not(@flag)
+);
